@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XI RPL 1 &middot; class.init()</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E17;
+    --panel:#111826;
+    --panel-alt:#161F30;
+    --line:#233047;
+    --text:#E7ECF6;
+    --muted:#8B98B3;
+    --cyan:#2DD4BF;
+    --violet:#8B5CF6;
+    --amber:#FBBF24;
+    --pink:#F472B6;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+    --font-body:'Inter', system-ui, sans-serif;
+  }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    background-image:
+      linear-gradient(rgba(45,212,191,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45,212,191,.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+  h1,h2,h3,h4,.font-mono{font-family:var(--font-mono);}
+  a{color:var(--cyan); text-decoration:none;}
+  ::selection{background:var(--cyan); color:#04211D;}
+
+  .comment{
+    font-family:var(--font-mono);
+    color:var(--cyan);
+    font-size:.8rem;
+    letter-spacing:.03em;
+  }
+  .comment::before{content:"// ";opacity:.65;}
+
+  /* NAVBAR — gaya tab file editor */
+  .navbar{
+    background:var(--panel)!important;
+    border-bottom:1px solid var(--line);
+  }
+  .navbar-brand{
+    font-family:var(--font-mono);
+    font-weight:700;
+    color:var(--text)!important;
+  }
+  .navbar-brand .bracket{color:var(--cyan);}
+  .file-tab{
+    font-family:var(--font-mono);
+    font-size:.82rem;
+    color:var(--muted)!important;
+    padding:.4rem .7rem!important;
+    border-radius:6px 6px 0 0;
+    border-bottom:2px solid transparent;
+  }
+  .file-tab:hover{color:var(--text)!important; background:var(--panel-alt);}
+  .file-tab.active-tab{color:var(--text)!important; border-bottom-color:var(--cyan); background:var(--panel-alt);}
+  .file-tab .ext{opacity:.55;}
+
+  /* HERO — jendela terminal */
+  .terminal{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    max-width:780px;
+    box-shadow: 0 0 60px rgba(45,212,191,.06), 0 20px 50px rgba(0,0,0,.4);
+    overflow:hidden;
+  }
+  .terminal-bar{
+    background:var(--panel-alt);
+    padding:.65rem 1rem;
+    display:flex; align-items:center; gap:.4rem;
+    border-bottom:1px solid var(--line);
+  }
+  .dot{width:11px;height:11px;border-radius:50%;}
+  .dot.red{background:#FF5F56;}
+  .dot.yellow{background:#FFBD2E;}
+  .dot.green{background:#27C93F;}
+  .terminal-title{font-family:var(--font-mono); font-size:.75rem; color:var(--muted); margin-left:.6rem;}
+  .terminal-body{padding:1.6rem; font-family:var(--font-mono); font-size:.92rem; text-align:left; line-height:1.9;}
+  .prompt{color:var(--cyan);}
+  .out-key{color:var(--violet);}
+  .out-str{color:var(--amber);}
+  .cursor{
+    display:inline-block; width:8px; height:1.05em; background:var(--cyan);
+    animation: blink 1s step-start infinite; vertical-align:text-bottom;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero-wrap{
+    padding: 4.5rem 0 3.5rem;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(139,92,246,.12), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(45,212,191,.1), transparent 70%);
+  }
+  .chip-stat{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+  }
+  .chip-stat .angka{font-family:var(--font-mono); font-weight:700; font-size:1.4rem; color:var(--cyan);}
+  .chip-stat .lbl{font-size:.72rem; color:var(--muted); font-family:var(--font-mono);}
+
+  section{padding:4rem 0;}
+  .section-alt{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+
+  .kartu{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  .kartu-anggota:hover{
+    transform: translateY(-3px);
+    border-color: var(--cyan);
+    box-shadow: 0 8px 26px rgba(45,212,191,.1);
+  }
+  .foto-bulat{
+    width:82px;height:82px;border-radius:10px;
+    object-fit:cover;
+    border:1px solid var(--line);
+  }
+  .foto-pengurus{
+    width:100px;height:100px;border-radius:14px;
+    object-fit:cover;
+    border:1px solid var(--line);
+  }
+  .badge-jabatan{
+    background:transparent;
+    color:var(--cyan);
+    border:1px solid rgba(45,212,191,.4);
+    font-family:var(--font-mono);
+    font-size:.66rem;
+    letter-spacing:.04em;
+  }
+  .table{color:var(--text);}
+  .table-piket thead, .table-jadwal thead{
+    background:var(--panel-alt);
+    color:var(--cyan);
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .table > :not(caption) > * > *{background:transparent; border-color:var(--line);}
+  .table-piket td, .table-jadwal td{vertical-align:middle;}
+
+  .nav-pills .nav-link{
+    color:var(--text);
+    font-weight:500;
+    font-family:var(--font-mono);
+    font-size:.82rem;
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-right:.35rem;
+    margin-bottom:.35rem;
+    background:var(--panel);
+  }
+  .nav-pills .nav-link.active{
+    background:var(--cyan);
+    color:#04211D;
+    border-color:var(--cyan);
+    font-weight:700;
+  }
+
+  .foto-kenangan{
+    aspect-ratio:4/3;
+    object-fit:cover;
+    border-radius:10px;
+    border:1px solid var(--line);
+    transition:transform .2s ease, border-color .2s ease;
+    filter:saturate(.92);
+  }
+  .foto-kenangan:hover{transform:scale(1.02); border-color:var(--cyan);}
+  .foto-kenangan.galeri-thumb{cursor:pointer;}
+
+  .foto-wrap{position:relative;}
+  .like-btn{
+    position:absolute; top:8px; right:8px;
+    display:flex; align-items:center; gap:.3rem;
+    background:rgba(10,14,23,.72); backdrop-filter:blur(4px);
+    border:1px solid var(--line); border-radius:20px;
+    padding:.28rem .6rem 0.28rem .55rem;
+    font-family:var(--font-mono); font-size:.72rem;
+    color:var(--text); cursor:pointer;
+    transition:border-color .15s ease, color .15s ease, transform .12s ease;
+    line-height:1;
+  }
+  .like-btn:hover{border-color:var(--pink); color:var(--pink);}
+  .like-btn.liked{color:var(--pink); border-color:var(--pink);}
+  .like-btn:active{transform:scale(.9);}
+  .like-btn:disabled{cursor:default; opacity:.9;}
+  .like-btn:disabled:hover{transform:none;}
+  .like-btn i{font-size:.85rem; vertical-align:-1px;}
+
+  .galeri-cover-card{overflow:hidden; cursor:pointer;}
+  .galeri-cover-card:hover{border-color:var(--cyan); box-shadow:0 8px 26px rgba(45,212,191,.1);}
+  .galeri-cover-img-wrap{position:relative;}
+  .galeri-cover-img{
+    width:100%; aspect-ratio:16/10; object-fit:cover; display:block;
+    filter:saturate(.92);
+  }
+  .galeri-badge{
+    position:absolute; left:.75rem; bottom:.75rem;
+    background:rgba(10,14,23,.72); backdrop-filter:blur(4px);
+    color:var(--text); font-family:var(--font-mono); font-size:.72rem;
+    padding:.32rem .65rem; border-radius:7px; border:1px solid var(--line);
+  }
+
+  .btn-kembali{
+    background:transparent; border:1px solid var(--line); color:var(--muted);
+    font-family:var(--font-mono); font-size:.82rem;
+    border-radius:8px; padding:.4rem .85rem;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .btn-kembali:hover{border-color:var(--cyan); color:var(--cyan);}
+
+  .lightbox-content{background:var(--panel); border:1px solid var(--line); border-radius:12px;}
+  #lightboxImg{max-height:75vh; object-fit:contain; background:var(--bg);}
+
+  #cariAnggota{
+    background:var(--panel-alt); color:var(--text); border:1px solid var(--line);
+  }
+  #cariAnggota::placeholder{color:var(--muted);}
+  #cariAnggota:focus{
+    background:var(--panel-alt); color:var(--text);
+    border-color:var(--cyan); box-shadow:0 0 0 .2rem rgba(45,212,191,.15);
+  }
+  .input-group-text{background:var(--panel-alt); border-color:var(--line); color:var(--muted);}
+
+  .text-muted{color:var(--muted)!important;}
+  .kartu .fw-semibold{color:var(--text);}
+
+  footer{
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    color:var(--muted);
+  }
+  .status-bar{
+    background:var(--cyan);
+    color:#04211D;
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.03em;
+  }
+
+  /* ===== SCROLL PROGRESS ===== */
+  .scroll-progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--cyan), var(--violet));
+    z-index:2000;
+    transition:width .1s linear;
+  }
+
+  /* ===== LOADING SCREEN ===== */
+  #loader{
+    position:fixed; inset:0; z-index:3000;
+    background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  #loader.hide{opacity:0; visibility:hidden; pointer-events:none;}
+  .loader-box{
+    width:min(420px, 88vw);
+    font-family:var(--font-mono);
+  }
+  .loader-box .lbl{
+    font-size:.78rem; color:var(--muted); letter-spacing:.06em;
+  }
+  .loader-box .nama-kelas{
+    font-size:clamp(1.6rem, 6vw, 2.4rem);
+    font-weight:700;
+    color:var(--text);
+    margin:.35rem 0 1.1rem;
+    min-height:1.3em;
+    border-right:2px solid var(--cyan);
+    white-space:nowrap;
+    overflow:hidden;
+    display:inline-block;
+  }
+  .loader-track{
+    height:6px; width:100%;
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .loader-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg, var(--cyan), var(--violet));
+    border-radius:99px;
+    transition:width .18s ease;
+    box-shadow:0 0 12px rgba(45,212,191,.5);
+  }
+  .loader-pct{
+    font-size:.78rem; color:var(--cyan); margin-top:.5rem; text-align:right;
+  }
+  .loader-glow{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 45% 35% at 50% 40%, rgba(45,212,191,.1), transparent 70%),
+      radial-gradient(ellipse 35% 30% at 70% 65%, rgba(139,92,246,.1), transparent 70%);
+    pointer-events:none;
+  }
+
+  /* ===== REVEAL ON SCROLL ===== */
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .reveal.show{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    #loader{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-glow"></div>
+  <div class="loader-box text-center position-relative">
+    <div class="lbl">// booting classroom-os v1.0</div>
+    <div class="nama-kelas" id="loaderNama"></div>
+    <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
+    <div class="loader-pct" id="loaderPct">0%</div>
+  </div>
+</div>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- STATUS BAR ala VS Code -->
+<div class="status-bar text-center py-1">
+  <i class="bi bi-git"></i> main &nbsp;|&nbsp; <i class="bi bi-check2-circle"></i> build passing &nbsp;|&nbsp; XI RPL 1 &middot; SMK &middot; T.A. 2026/2027
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top py-2">
+  <div class="container">
+    <a class="navbar-brand" href="#beranda"><span class="bracket">&lt;</span>XI-RPL-1<span class="bracket">/&gt;</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="border-color:var(--line)">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link file-tab" href="#pengurus">pengurus<span class="ext">.json</span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#anggota">anggota<span class="ext">.csv</span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#piket">piket<span class="ext">.sh</span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#jadwal">jadwal<span class="ext">.yaml</span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#kenangan">galeri<span class="ext">.png</span></a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="beranda" class="hero-wrap text-center">
+  <div class="container">
+    <div class="terminal mx-auto">
+      <div class="terminal-bar">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="terminal-title">kelas@rpl1: ~/tahun-ajaran-2026</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="prompt">$</span> whoami</div>
+        <div class="out-str">Kelas XI Rekayasa Perangkat Lunak 1</div>
+        <div class="mt-2"><span class="prompt">$</span> cat motto.txt</div>
+        <div class="out-str">"Debug bareng, deploy bareng, lulus bareng."</div>
+        <div class="mt-2"><span class="prompt">$</span> npm run status<span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center g-3 mt-4">
+      <div class="col-6 col-md-4">
+        <div class="chip-stat p-3">
+          <div class="angka" id="statAnggota">31</div>
+          <div class="lbl">ANGGOTA</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="chip-stat p-3">
+          <div class="angka">5</div>
+          <div class="lbl">SQUAD PIKET</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="chip-stat p-3">
+          <div class="angka">10+</div>
+          <div class="lbl">MAPEL/MINGGU</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- WALI KELAS & PENGURUS -->
+<section id="pengurus">
+  <div class="container">
+    <div class="comment">01_wali-kelas-dan-pengurus</div>
+    <h2 class="mb-1">Wali Kelas &amp; Pengurus Kelas</h2>
+    <p class="text-muted mb-4">Struktur organisasi Kelas XI RPL 1, tersusun berjenjang dari wali kelas hingga seksi-seksi.</p>
+
+    <!-- TINGKAT 1 — WALI KELAS -->
+    <div class="row justify-content-center mb-3">
+      <div class="col-md-5">
+        <div class="kartu kartu-anggota p-4 text-center">
+          <img src="https://i.pravatar.cc/300?img=12" class="foto-pengurus mb-3" alt="Wali Kelas">
+          <span class="badge badge-jabatan mb-2">WALI KELAS</span>
+          <h5 class="mb-0">Bpk. Teguh Wicaksono, S.Kom.</h5>
+          <div class="text-muted small">Guru Produktif RPL</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center text-muted mb-3" style="font-family:var(--font-mono); font-size:.75rem;">
+      <i class="bi bi-arrow-down"></i>
+    </div>
+
+    <!-- TINGKAT 2 — KETUA & WAKIL -->
+    <div class="row justify-content-center g-4 mb-3">
+      <div class="col-md-4">
+        <div class="kartu kartu-anggota p-4 text-center h-100">
+          <img src="assets/img/foto4.jpeg" class="foto-pengurus mb-3" alt="Ketua Kelas">
+          <span class="badge badge-jabatan mb-2">KETUA KELAS &middot; ADMIN</span>
+          <h5 class="mb-0">Mohd Izman</h5>
+          <div class="text-muted small">No. Absen 05</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kartu kartu-anggota p-4 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=47" class="foto-pengurus mb-3" alt="Wakil Ketua">
+          <span class="badge badge-jabatan mb-2">WAKIL KETUA &middot; CO-ADMIN</span>
+          <h5 class="mb-0">Nabila Putri</h5>
+          <div class="text-muted small">No. Absen 18</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center text-muted mb-3" style="font-family:var(--font-mono); font-size:.75rem;">
+      <i class="bi bi-arrow-down"></i>
+    </div>
+
+    <!-- TINGKAT 3 — SEKRETARIS, BENDAHARA & SEKSI-SEKSI -->
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-3 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=5" class="foto-bulat mb-2" alt="Sekretaris">
+          <div class="fw-semibold small">Ratna Sari</div>
+          <div class="text-muted" style="font-size:.75rem;">Sekretaris I</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-3 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=9" class="foto-bulat mb-2" alt="Sekretaris II">
+          <div class="fw-semibold small">Dewi Anggraini</div>
+          <div class="text-muted" style="font-size:.75rem;">Sekretaris II</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-3 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=14" class="foto-bulat mb-2" alt="Bendahara">
+          <div class="fw-semibold small">Rizky Ramadhan</div>
+          <div class="text-muted" style="font-size:.75rem;">Bendahara I</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-3 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=23" class="foto-bulat mb-2" alt="Bendahara II">
+          <div class="fw-semibold small">Siti Aisyah</div>
+          <div class="text-muted" style="font-size:.75rem;">Bendahara II</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-3 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=18" class="foto-bulat mb-2" alt="Seksi Kebersihan">
+          <div class="fw-semibold small">Budi Santoso</div>
+          <div class="text-muted" style="font-size:.75rem;">Seksi Kebersihan</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-3 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=51" class="foto-bulat mb-2" alt="Seksi IT">
+          <div class="fw-semibold small">Fajar Nugroho</div>
+          <div class="text-muted" style="font-size:.75rem;">Seksi IT &amp; Teknisi Lab</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-3 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=60" class="foto-bulat mb-2" alt="Seksi Rohani">
+          <div class="fw-semibold small">Aulia Rahman</div>
+          <div class="text-muted" style="font-size:.75rem;">Seksi Rohani</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-3 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=65" class="foto-bulat mb-2" alt="Seksi Olahraga">
+          <div class="fw-semibold small">Galih Pratama</div>
+          <div class="text-muted" style="font-size:.75rem;">Seksi Olahraga</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANGGOTA KELAS -->
+<section id="anggota" class="section-alt">
+  <div class="container">
+    <div class="comment">02_anggota-kelas</div>
+    <h2 class="mb-1">Anggota Kelas</h2>
+    <p class="text-muted mb-4">Daftar lengkap 31 siswa Kelas XI RPL 1. Ketik nama pada kolom pencarian untuk query cepat.</p>
+
+    <div class="row mb-4">
+      <div class="col-md-5">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-terminal"></i></span>
+          <input type="text" id="cariAnggota" class="form-control" placeholder="grep nama_siswa...">
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3" id="daftarAnggota"><!-- diisi oleh JavaScript --></div>
+  </div>
+</section>
+
+<!-- PIKET KEBERSIHAN -->
+<section id="piket">
+  <div class="container">
+    <div class="comment">03_piket-kebersihan</div>
+    <h2 class="mb-1">Jadwal Piket Kebersihan</h2>
+    <p class="text-muted mb-4">Pilih hari untuk menjalankan (run) jadwal squad piket yang bertugas.</p>
+
+    <ul class="nav nav-pills mb-3" id="tabPiket" role="tablist"></ul>
+    <div class="tab-content kartu p-3 p-md-4">
+      <table class="table table-piket table-borderless mb-0" id="tabelPiket">
+        <thead><tr><th>#</th><th>Nama Siswa</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- JADWAL PELAJARAN -->
+<section id="jadwal" class="section-alt">
+  <div class="container">
+    <div class="comment">04_jadwal-pelajaran</div>
+    <h2 class="mb-1">Jadwal Pelajaran</h2>
+    <p class="text-muted mb-4">Jadwal mata pelajaran &amp; mata pelajaran kejuruan RPL, Senin&ndash;Jumat.</p>
+
+    <ul class="nav nav-pills mb-3" id="tabJadwal" role="tablist"></ul>
+    <div class="table-responsive kartu p-3 p-md-4">
+      <table class="table table-jadwal align-middle mb-0" id="tabelJadwal">
+        <thead><tr><th style="width:140px;">Jam</th><th>Mata Pelajaran</th><th>Guru Pengampu</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- KENANGAN KELAS -->
+<section id="kenangan" class="section-alt">
+  <div class="container">
+    <div class="comment">05_kenangan-kelas</div>
+    <h2 class="mb-1">Kenangan Kelas</h2>
+    <p class="text-muted mb-4">Album digital berisi momen-momen terbaik Kelas XI RPL 1 sepanjang tahun ajaran &mdash; dipisah jadi foto cewek, foto cowok, dan foto bersama/dokumentasi.</p>
+
+    <!-- COVER ALBUM (3 kotak) -->
+    <div id="galeriCoverList" class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <div class="kartu galeri-cover-card" onclick="bukaGaleri('cewek')" role="button" tabindex="0">
+          <div class="galeri-cover-img-wrap">
+            <img src="https://picsum.photos/seed/cewek0/800/520" class="galeri-cover-img" alt="Foto Cewek">
+            <span class="galeri-badge"><i class="bi bi-images"></i> <span id="countCover-cewek">3</span> foto</span>
+          </div>
+          <div class="p-3">
+            <div class="fw-semibold">Foto Cewek</div>
+            <div class="text-muted small">Momen kebersamaan siswi XI RPL 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kartu galeri-cover-card" onclick="bukaGaleri('cowok')" role="button" tabindex="0">
+          <div class="galeri-cover-img-wrap">
+            <img src="https://picsum.photos/seed/cowok0/800/520" class="galeri-cover-img" alt="Foto Cowok">
+            <span class="galeri-badge"><i class="bi bi-images"></i> <span id="countCover-cowok">3</span> foto</span>
+          </div>
+          <div class="p-3">
+            <div class="fw-semibold">Foto Cowok</div>
+            <div class="text-muted small">Momen kebersamaan siswa XI RPL 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kartu galeri-cover-card" onclick="bukaGaleri('bersama')" role="button" tabindex="0">
+          <div class="galeri-cover-img-wrap">
+            <img src="https://picsum.photos/seed/rpl1/800/520" class="galeri-cover-img" alt="Foto Bersama / Dokumentasi">
+            <span class="galeri-badge"><i class="bi bi-images"></i> <span id="countCover-bersama">10</span> foto</span>
+          </div>
+          <div class="p-3">
+            <div class="fw-semibold">Foto Bersama &middot; Dokumentasi</div>
+            <div class="text-muted small">Momen kebersamaan XI RPL 1 &middot; Tahun Ajaran 2026/2027</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAIL GALERI -->
+    <div id="galeriDetail" class="d-none">
+      <button type="button" class="btn-kembali mb-3" onclick="tutupGaleri()">
+        <i class="bi bi-arrow-left"></i> Kembali ke Galeri
+      </button>
+      <h3 class="mb-1" id="galeriDetailTitle">&nbsp;</h3>
+      <p class="text-muted mb-2" id="galeriDetailDesc">&nbsp;</p>
+      <div class="text-muted small mb-3 font-mono">
+        <i class="bi bi-images"></i> <span id="galeriDetailCount">0</span> foto &middot; klik untuk memperbesar
+      </div>
+      <div class="row g-3" id="galeriIsi"><!-- diisi oleh JavaScript --></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX GALERI -->
+<div class="modal fade" id="modalLightbox" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content lightbox-content border-0">
+      <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      <img id="lightboxImg" src="" class="w-100 rounded" alt="">
+      <div class="text-center text-muted small mt-2 mb-3 font-mono" id="lightboxCaption"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="py-4 text-center">
+  <div class="container">
+    <div class="small font-mono">WEB KELAS RPL 1</div>
+    <div class="small mt-1">WEB KELAS RPL 1 &middot; XI RPL 1 &middot; Tahun Ajaran 2025/2027</div>
+    <div class="small font-mono" style="color:var(--muted);">apa di isikan ini?????????</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ================= DATA — silakan ganti sesuai data kelas Anda ================= */
+
+const anggotaKelas = [
+  "Ahmad Fauzan","Nabila Putri","Ratna Sari","Dewi Anggraini","Rizky Ramadhan",
+  "Siti Aisyah","Budi Santoso","Fajar Nugroho","Aulia Rahman","Galih Pratama",
+  "Putri Wulandari","Bagas Setiawan","Intan Permata","Yusuf Maulana","Salsabila Zahra",
+  "Reza Firmansyah","Anisa Fitri","Dimas Prakoso","Wulan Sari","Farhan Hidayat",
+  "Larasati Dewi","Adit Kurniawan","Nadia Safitri","Ilham Ramadhan","Cahyani Putri",
+  "Bimo Saputra","Zahra Amelia","Rangga Wijaya","Kirana Ayu","Fikri Alamsyah",
+  "Melati Rahayu"
+];
+
+const piketPerHari = {
+  "Senin":   { kelompok:"Squad 1", tugas:"Menyapu lantai, membersihkan papan tulis, merapikan meja guru" },
+  "Selasa":  { kelompok:"Squad 2", tugas:"Membuang sampah, menyiram tanaman kelas, mengelap jendela" },
+  "Rabu":    { kelompok:"Squad 3", tugas:"Menyapu lantai, merapikan kabel & perangkat lab komputer" },
+  "Kamis":   { kelompok:"Squad 4", tugas:"Membersihkan papan tulis, merapikan kursi" },
+  "Jumat":   { kelompok:"Squad 5", tugas:"Menyapu lantai, membuang sampah, mengunci jendela" }
+};
+const anggotaPiket = {
+  "Squad 1": ["Ahmad Fauzan","Nabila Putri","Ratna Sari","Dewi Anggraini","Rizky Ramadhan"],
+  "Squad 2": ["Siti Aisyah","Budi Santoso","Fajar Nugroho","Aulia Rahman","Galih Pratama"],
+  "Squad 3": ["Putri Wulandari","Bagas Setiawan","Intan Permata","Yusuf Maulana","Salsabila Zahra"],
+  "Squad 4": ["Reza Firmansyah","Anisa Fitri","Dimas Prakoso","Wulan Sari","Farhan Hidayat"],
+  "Squad 5": ["Larasati Dewi","Adit Kurniawan","Nadia Safitri","Ilham Ramadhan","Cahyani Putri"]
+};
+
+const jadwalPelajaran = {
+  "Senin": [
+    ["07.00 - 08.20","Upacara & Pemrograman Web","Bpk. Teguh Wicaksono, S.Kom."],
+    ["08.20 - 09.40","Pemrograman Web","Bpk. Teguh Wicaksono, S.Kom."],
+    ["09.40 - 10.00","Istirahat",""],
+    ["10.00 - 11.20","Basis Data","Ibu Anisa Kurnia, S.Kom."],
+    ["11.20 - 12.40","Matematika","Bpk. Hendra, S.Pd."]
+  ],
+  "Selasa": [
+    ["07.00 - 08.20","Pemrograman Berorientasi Objek","Bpk. Rian Saputra, S.Kom."],
+    ["08.20 - 09.40","Bahasa Inggris","Ibu Melinda, S.Pd."],
+    ["09.40 - 10.00","Istirahat",""],
+    ["10.00 - 11.20","Pendidikan Agama","Bpk. Wahid, S.Ag."],
+    ["11.20 - 12.40","Desain Antarmuka (UI/UX)","Ibu Anisa Kurnia, S.Kom."]
+  ],
+  "Rabu": [
+    ["07.00 - 08.20","Basis Data","Ibu Anisa Kurnia, S.Kom."],
+    ["08.20 - 09.40","Jaringan Dasar","Bpk. Rian Saputra, S.Kom."],
+    ["09.40 - 10.00","Istirahat",""],
+    ["10.00 - 11.20","PJOK","Bpk. Fikri, S.Pd."],
+    ["11.20 - 12.40","Bahasa Indonesia","Ibu Sri Wahyuni, S.Pd."]
+  ],
+  "Kamis": [
+    ["07.00 - 08.20","Pemrograman Web","Bpk. Teguh Wicaksono, S.Kom."],
+    ["08.20 - 09.40","Pemrograman Berorientasi Objek","Bpk. Rian Saputra, S.Kom."],
+    ["09.40 - 10.00","Istirahat",""],
+    ["10.00 - 11.20","Kewirausahaan","Ibu Fitriani, S.Pd."],
+    ["11.20 - 12.40","Matematika","Bpk. Hendra, S.Pd."]
+  ],
+  "Jumat": [
+    ["07.00 - 08.20","Pendidikan Agama","Bpk. Wahid, S.Ag."],
+    ["08.20 - 09.40","PPKn","Ibu Fitriani, S.Pd."],
+    ["09.40 - 10.00","Istirahat",""],
+    ["10.00 - 11.00","Proyek Kreatif & Kewirausahaan","Bpk. Teguh Wicaksono, S.Kom."]
+  ]
+};
+
+// Album galeri dipisah 3 kotak: cewek, cowok, bersama/dokumentasi
+const albumFoto = {
+  cewek: {
+    judul: "Foto Cewek",
+    deskripsi: "Momen kebersamaan siswi XI RPL 1",
+    foto: [
+      { file:"siswi_1.jpg", seed:"cewek1" },
+      { file:"siswi_2.jpg", seed:"cewek2" },
+      { file:"siswi_3.jpg", seed:"cewek3" }
+    ]
+  },
+  cowok: {
+    judul: "Foto Cowok",
+    deskripsi: "Momen kebersamaan siswa XI RPL 1",
+    foto: [
+      { file:"siswa_1.jpg", seed:"cowok1" },
+      { file:"siswa_2.jpg", seed:"cowok2" },
+      { file:"siswa_3.jpg", seed:"cowok3" }
+    ]
+  },
+  bersama: {
+    judul: "Foto Bersama \u00b7 Dokumentasi",
+    deskripsi: "Momen kebersamaan XI RPL 1 \u00b7 Tahun Ajaran 2026/2027",
+    foto: [
+      { file:"hackathon_kelas.jpg", seed:"rpl1" },
+      { file:"study_tour_bandung.jpg", seed:"rpl2" },
+      { file:"workshop_ui_ux.jpg", seed:"rpl3" },
+      { file:"demo_day_project.jpg", seed:"rpl4" },
+      { file:"lomba_lkbb_regional.jpg", seed:"rpl5" },
+      { file:"foto_bareng_wali_kelas.jpg", seed:"rpl6" },
+      { file:"praktik_lab_jaringan.jpg", seed:"rpl7" },
+      { file:"class_meeting_futsal.jpg", seed:"rpl8" },
+      { file:"perpisahan_liburan_semester.jpg", seed:"rpl9" },
+      { file:"upacara_hut_sekolah.jpg", seed:"rpl10" }
+    ]
+  }
+};
+
+/* ================= RENDER ================= */
+
+// Memetakan setiap nama ke salah satu dari 70 foto stok (i.pravatar.cc),
+// sehingga tiap siswa selalu dapat foto yang sama tiap kali halaman dibuka.
+function fotoSiswa(nama){
+  let hash = 0;
+  for(let i=0;i<nama.length;i++){
+    hash = nama.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const id = (Math.abs(hash) % 70) + 1;
+  return `https://i.pravatar.cc/300?img=${id}`;
+}
+
+function renderAnggota(filter=""){
+  const wrap = document.getElementById("daftarAnggota");
+  wrap.innerHTML = "";
+  const hasil = anggotaKelas.filter(n => n.toLowerCase().includes(filter.toLowerCase()));
+  hasil.forEach(nama => {
+    const nomor = anggotaKelas.indexOf(nama) + 1;
+    const col = document.createElement("div");
+    col.className = "col-6 col-md-3 col-lg-2";
+    col.innerHTML = `
+      <div class="kartu kartu-anggota p-3 text-center h-100">
+        <img src="${fotoSiswa(nama)}" class="foto-bulat mb-2" alt="${nama}">
+        <div class="fw-semibold small">${nama}</div>
+        <div class="text-muted font-mono" style="font-size:.72rem;">#${String(nomor).padStart(2,"0")}</div>
+      </div>`;
+    wrap.appendChild(col);
+  });
+  if(hasil.length === 0){
+    wrap.innerHTML = `<div class="col-12 text-center text-muted py-4 font-mono"><i class="bi bi-terminal"></i> $ 0 results found</div>`;
+  }
+  document.getElementById("statAnggota").textContent = anggotaKelas.length;
+}
+document.getElementById("cariAnggota").addEventListener("input", e => renderAnggota(e.target.value));
+
+function renderPiketTabs(){
+  const tabWrap = document.getElementById("tabPiket");
+  const hariList = Object.keys(piketPerHari);
+  tabWrap.innerHTML = hariList.map((hari,i) =>
+    `<li class="nav-item"><button class="nav-link ${i===0?'active':''}" onclick="tampilkanPiket('${hari}', this)">${hari}</button></li>`
+  ).join("");
+  tampilkanPiket(hariList[0]);
+}
+function tampilkanPiket(hari, btn){
+  if(btn){
+    document.querySelectorAll("#tabPiket .nav-link").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+  const data = piketPerHari[hari];
+  const tbody = document.querySelector("#tabelPiket tbody");
+  const anggota = anggotaPiket[data.kelompok] || [];
+  tbody.innerHTML = `<tr><td colspan="3" class="fw-semibold font-mono" style="color:var(--cyan);">${data.kelompok} — ${hari} — ${data.tugas}</td></tr>` +
+    anggota.map((nama,i) => `<tr><td>${i+1}</td><td>${nama}</td><td><span class="badge" style="background:rgba(74,222,128,.15); color:#4ADE80; font-family:var(--font-mono); font-weight:600;">active</span></td></tr>`).join("");
+}
+
+function renderJadwalTabs(){
+  const tabWrap = document.getElementById("tabJadwal");
+  const hariList = Object.keys(jadwalPelajaran);
+  tabWrap.innerHTML = hariList.map((hari,i) =>
+    `<li class="nav-item"><button class="nav-link ${i===0?'active':''}" onclick="tampilkanJadwal('${hari}', this)">${hari}</button></li>`
+  ).join("");
+  tampilkanJadwal(hariList[0]);
+}
+function tampilkanJadwal(hari, btn){
+  if(btn){
+    document.querySelectorAll("#tabJadwal .nav-link").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+  const tbody = document.querySelector("#tabelJadwal tbody");
+  tbody.innerHTML = jadwalPelajaran[hari].map(([jam,mapel,guru]) => `
+    <tr>
+      <td class="font-mono small" style="color:var(--muted);">${jam}</td>
+      <td class="fw-semibold">${mapel}</td>
+      <td class="text-muted">${guru || "-"}</td>
+    </tr>`).join("");
+}
+
+// Isi angka jumlah foto di tiap kotak cover album
+// ===== LIKE FOTO =====
+let likedPhotos = new Set();
+function loadLikedPhotos(){
+  try{
+    const raw = localStorage.getItem("rpl1-liked-photos");
+    likedPhotos = new Set(raw ? JSON.parse(raw) : []);
+  }catch(e){ likedPhotos = new Set(); }
+}
+function saveLikedPhotos(){
+  try{ localStorage.setItem("rpl1-liked-photos", JSON.stringify([...likedPhotos])); }catch(e){}
+}
+// Angka like dasar dibuat tetap per foto (dari hash nama file) supaya tidak berubah-ubah tiap dibuka
+function baseLikeCount(file){
+  return 0;
+}
+function idFoto(file){
+  return "like-" + file.replace(/[^a-zA-Z0-9]/g, "_");
+}
+function toggleLike(file){
+  // Satu perangkat (HP/laptop) hanya boleh like 1x per foto — tidak bisa dibatalkan
+  if(likedPhotos.has(file)) return;
+  likedPhotos.add(file);
+  saveLikedPhotos();
+  const btn = document.getElementById(idFoto(file));
+  if(!btn) return;
+  btn.classList.add("liked");
+  btn.disabled = true;
+  btn.querySelector("i").className = "bi bi-heart-fill";
+  btn.querySelector(".like-count").textContent = baseLikeCount(file) + 1;
+}
+
+function renderAlbumCovers(){
+  Object.keys(albumFoto).forEach(key => {
+    const el = document.getElementById(`countCover-${key}`);
+    if(el) el.textContent = albumFoto[key].foto.length;
+  });
+}
+
+// Buka salah satu album ('cewek' | 'cowok' | 'bersama')
+function bukaGaleri(kategori){
+  const data = albumFoto[kategori];
+  if(!data) return;
+  document.getElementById("galeriCoverList").classList.add("d-none");
+  document.getElementById("galeriDetail").classList.remove("d-none");
+  document.getElementById("galeriDetailTitle").textContent = data.judul;
+  document.getElementById("galeriDetailDesc").textContent = data.deskripsi;
+  document.getElementById("galeriDetailCount").textContent = data.foto.length;
+
+  const wrap = document.getElementById("galeriIsi");
+  wrap.innerHTML = data.foto.map(item => `
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="foto-wrap">
+        <img src="https://picsum.photos/seed/${item.seed}/500/380"
+             class="foto-kenangan galeri-thumb w-100"
+             alt="${item.file}"
+             onclick="bukaLightbox('https://picsum.photos/seed/${item.seed}/1200/900','${item.file}')">
+        <button type="button" class="like-btn ${likedPhotos.has(item.file) ? 'liked' : ''}" id="${idFoto(item.file)}" ${likedPhotos.has(item.file) ? 'disabled' : ''} onclick="event.stopPropagation(); toggleLike('${item.file}')">
+          <i class="bi ${likedPhotos.has(item.file) ? 'bi-heart-fill' : 'bi-heart'}"></i>
+          <span class="like-count">${baseLikeCount(item.file) + (likedPhotos.has(item.file) ? 1 : 0)}</span>
+        </button>
+      </div>
+      <div class="small text-muted mt-1 font-mono" style="font-size:.7rem;">${item.file}</div>
+    </div>`).join("");
+}
+function tutupGaleri(){
+  document.getElementById("galeriDetail").classList.add("d-none");
+  document.getElementById("galeriCoverList").classList.remove("d-none");
+}
+
+function bukaLightbox(src, caption){
+  document.getElementById("lightboxImg").src = src;
+  document.getElementById("lightboxImg").alt = caption;
+  document.getElementById("lightboxCaption").textContent = caption;
+  const modal = new bootstrap.Modal(document.getElementById("modalLightbox"));
+  modal.show();
+}
+
+loadLikedPhotos();
+renderAnggota();
+renderPiketTabs();
+renderJadwalTabs();
+renderAlbumCovers();
+
+/* ================= LOADING SCREEN ================= */
+(function(){
+  const namaKelas = "XI RPL 1";
+  const target = document.getElementById("loaderNama");
+  const fill = document.getElementById("loaderFill");
+  const pct = document.getElementById("loaderPct");
+  const loader = document.getElementById("loader");
+  let i = 0;
+
+  function ketikNama(){
+    if(i <= namaKelas.length){
+      target.textContent = namaKelas.slice(0, i);
+      i++;
+      setTimeout(ketikNama, 70);
+    }
+  }
+  ketikNama();
+
+  let progress = 0;
+  const naikProgress = setInterval(() => {
+    progress += Math.random() * 18 + 6;
+    if(progress >= 100){
+      progress = 100;
+      clearInterval(naikProgress);
+      setTimeout(() => {
+        loader.classList.add("hide");
+        document.body.style.overflow = "";
+      }, 350);
+    }
+    fill.style.width = progress + "%";
+    pct.textContent = Math.floor(progress) + "%";
+  }, 220);
+
+  document.body.style.overflow = "hidden";
+  setTimeout(() => { document.body.style.overflow = ""; }, 3000);
+})();
+
+/* ================= SCROLL PROGRESS BAR ================= */
+window.addEventListener("scroll", () => {
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById("scrollProgress").style.width = scrolled + "%";
+});
+
+/* ================= REVEAL ON SCROLL ================= */
+document.querySelectorAll("section .comment, section h2, section p.text-muted, .kartu, .terminal, .chip-stat")
+  .forEach(el => el.classList.add("reveal"));
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+</script>
+</body>
+</html>
