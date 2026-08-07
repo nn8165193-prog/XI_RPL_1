@@ -748,7 +748,7 @@ const albumFoto = {
     judul: "Foto Cewek",
     deskripsi: "Momen kebersamaan siswi XI RPL 1",
     foto: [
-    { file:"assets/cewek1.jpg", seed:"cewek1" },
+    { file:"assets/g1.jpg", seed:"cewek1" },
       { file:"assets/cewek2.jpg", seed:"cewek2" },
       { file:"assets/cewek3.jpg", seed:"cewek3" }
     ]
@@ -967,10 +967,11 @@ function bukaGaleri(kategori){
   wrap.innerHTML = data.foto.map(item => `
     <div class="col-6 col-md-4 col-lg-3">
       <div class="foto-wrap">
-        <img src="https://picsum.photos/seed/${item.seed}/500/380"
+        <img src="${item.file}"
              class="foto-kenangan galeri-thumb w-100"
              alt="${item.file}"
-             onclick="bukaLightbox('https://picsum.photos/seed/${item.seed}/1200/900','${item.file}')">
+             onerror="this.onerror=null;this.src='https://picsum.photos/seed/${item.seed}/500/380';"
+             onclick="bukaLightbox('${item.file}','${item.file}')">
         <button type="button" class="like-btn ${likedPhotos.has(item.file) ? 'liked' : ''}" id="${idFoto(item.file)}" ${likedPhotos.has(item.file) ? 'disabled' : ''} onclick="event.stopPropagation(); toggleLike('${item.file}')">
           <i class="bi ${likedPhotos.has(item.file) ? 'bi-heart-fill' : 'bi-heart'}"></i>
           <span class="like-count">&hellip;</span>
