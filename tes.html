@@ -155,6 +155,11 @@
   .table > :not(caption) > * > *{background:transparent; border-color:var(--line);}
   .table-piket td, .table-jadwal td{vertical-align:middle;}
 
+  /* ===== PIKET — teks putih ===== */
+  #piket, #piket h2, #piket p, #piket .nav-link, #piket .table, #piket .table td, #piket .table th{
+    color: #FFFFFF !important;
+  }
+
   .nav-pills .nav-link{
     color:var(--text);
     font-weight:500;
@@ -419,8 +424,8 @@
         <div class="kartu kartu-anggota p-4 text-center">
           <img src="https://i.pravatar.cc/300?img=12" class="foto-pengurus mb-3" alt="Wali Kelas">
           <span class="badge badge-jabatan mb-2">WALI KELAS</span>
-          <h5 class="mb-0">Bpk. Teguh Wicaksono, S.Kom.</h5>
-          <div class="text-muted small">Guru Produktif RPL</div>
+          <h5 class="mb-0">Ibu daruqtni </h5>
+          <div class="text-muted small">Guru Bahasa inggris</div>
         </div>
       </div>
     </div>
@@ -429,86 +434,38 @@
       <i class="bi bi-arrow-down"></i>
     </div>
 
-    <!-- TINGKAT 2 — KETUA & WAKIL -->
-    <div class="row justify-content-center g-4 mb-3">
-      <div class="col-md-4">
+    <!-- TINGKAT 2 — KETUA, WAKIL, SEKRETARIS & BENDAHARA -->
+    <div class="row g-3">
+      <div class="col-6 col-md-4 col-lg-2">
         <div class="kartu kartu-anggota p-4 text-center h-100">
           <img src="assets/izman.png" class="foto-pengurus mb-3" alt="Ketua Kelas">
           <span class="badge badge-jabatan mb-2">KETUA KELAS &middot; ADMIN</span>
           <h5 class="mb-0">Mohd Izman</h5>
-          <div class="text-muted small">No. Absen 05</div>
+          <div class="text-muted small">No. Absen 15</div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-6 col-md-4 col-lg-2">
         <div class="kartu kartu-anggota p-4 text-center h-100">
           <img src="https://i.pravatar.cc/300?img=47" class="foto-pengurus mb-3" alt="Wakil Ketua">
           <span class="badge badge-jabatan mb-2">WAKIL KETUA &middot; CO-ADMIN</span>
-          <h5 class="mb-0">Azraf</h5>
-          <div class="text-muted small">No. Absen 14</div>
+          <h5 class="mb-0">Asyraf Zhahir Syulfa</h5>
+          <div class="text-muted small">No. Absen 06</div>
         </div>
       </div>
-    </div>
-
-    <div class="text-center text-muted mb-3" style="font-family:var(--font-mono); font-size:.75rem;">
-      <i class="bi bi-arrow-down"></i>
-    </div>
-
-    <!-- TINGKAT 3 — SEKRETARIS, BENDAHARA & SEKSI-SEKSI -->
-    <div class="row g-3">
-      <div class="col-6 col-md-3">
-        <div class="kartu kartu-anggota p-3 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=5" class="foto-bulat mb-2" alt="Sekretaris">
-          <div class="fw-semibold small">Ratna Sari</div>
-          <div class="text-muted" style="font-size:.75rem;">Sekretaris I</div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="kartu kartu-anggota p-4 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=25" class="foto-pengurus mb-3" alt="Sekretaris I">
+          <span class="badge badge-jabatan mb-2">SEKRETARIS I</span>
+          <h5 class="mb-0">Nama Sekretaris I</h5>
+          <div class="text-muted small">&nbsp;</div>
         </div>
       </div>
-      <div class="col-6 col-md-3">
-        <div class="kartu kartu-anggota p-3 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=9" class="foto-bulat mb-2" alt="Sekretaris II">
-          <div class="fw-semibold small">Dewi Anggraini</div>
-          <div class="text-muted" style="font-size:.75rem;">Sekretaris II</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kartu kartu-anggota p-3 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=14" class="foto-bulat mb-2" alt="Bendahara">
-          <div class="fw-semibold small">Rizky Ramadhan</div>
-          <div class="text-muted" style="font-size:.75rem;">Bendahara I</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kartu kartu-anggota p-3 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=23" class="foto-bulat mb-2" alt="Bendahara II">
-          <div class="fw-semibold small">Siti Aisyah</div>
-          <div class="text-muted" style="font-size:.75rem;">Bendahara II</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kartu kartu-anggota p-3 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=18" class="foto-bulat mb-2" alt="Seksi Kebersihan">
-          <div class="fw-semibold small">Budi Santoso</div>
-          <div class="text-muted" style="font-size:.75rem;">Seksi Kebersihan</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kartu kartu-anggota p-3 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=51" class="foto-bulat mb-2" alt="Seksi IT">
-          <div class="fw-semibold small">Fajar Nugroho</div>
-          <div class="text-muted" style="font-size:.75rem;">Seksi IT &amp; Teknisi Lab</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kartu kartu-anggota p-3 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=60" class="foto-bulat mb-2" alt="Seksi Rohani">
-          <div class="fw-semibold small">Aulia Rahman</div>
-          <div class="text-muted" style="font-size:.75rem;">Seksi Rohani</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kartu kartu-anggota p-3 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=65" class="foto-bulat mb-2" alt="Seksi Olahraga">
-          <div class="fw-semibold small">Galih Pratama</div>
-          <div class="text-muted" style="font-size:.75rem;">Seksi Olahraga</div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="kartu kartu-anggota p-4 text-center h-100">
+          <img src="https://i.pravatar.cc/300?img=9" class="foto-pengurus mb-3" alt="Sekretaris II">
+          <span class="badge badge-jabatan mb-2">SEKRETARIS II</span>
+          <h5 class="mb-0">Dewi Anggraini</h5>
+          <div class="text-muted small">&nbsp;</div>
         </div>
       </div>
     </div>
@@ -711,20 +668,20 @@ const fotoOverride = {
   "IBRAHIM": "",
   "JASINDA IRIANI SATTI": "",
   "JUSRIADI": "",
-  "KHUSNUL KHATIMAH SN": "assets/usnu.png",
+  "KHUSNUL KHATIMAH SN": "assets/usnul.png",
   "MOHD IZMAN BIN YUDING": "assets/izman.png",
   "MUH. RIDWAN BIN ABDULLAH": "",
   "MUH.SYAUQI ANDRI": "assets/delon.png",
   "Muhammad Arif Gifari": "",
   "MUHAMMAD IHSAAN ABDILLAH. MK": "",
-  "MUHAMMAD LUTFI": "",
+  "MUHAMMAD LUTFI": "assets/luppi.png",
   "NATASYA": "",
   "Nur Hafizah": "",
   "NUR SYAFIKHA": "",
   "Nurul Halisa": "",
   "Rahmawati": "",
   "RESKY AHMAD YANI": "",
-  "RISKY SAPUTRA": "",
+  "RISKY SAPUTRA": "assets/risky.png",
   "SRI WAHIDAH": "",
   "WIWI ANGRENI": "",
   "YUSRAN SAPUTRA SALAM": "",
