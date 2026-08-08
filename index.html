@@ -180,6 +180,9 @@
   }
   .table > :not(caption) > * > *{background:transparent; border-color:var(--line);}
   .table-piket td, .table-jadwal td{vertical-align:middle;}
+  .table-jadwal td.jam-cell{color:var(--cyan);}
+  .table-jadwal td.mapel-cell{color: #fafaf9;}
+  .table-jadwal td.guru-cell{color:var(--muted);}
 
   /* ===== PIKET — teks putih ===== */
   #piket, #piket h2, #piket p, #piket .nav-link, #piket .table, #piket .table td, #piket .table th{
@@ -966,9 +969,9 @@ function tampilkanJadwal(hari, btn){
   const tbody = document.querySelector("#tabelJadwal tbody");
   tbody.innerHTML = jadwalPelajaran[hari].map(([jam,mapel,guru]) => `
     <tr>
-      <td class="font-mono small" style="color:var(--muted);">${jam}</td>
-      <td class="fw-semibold">${mapel}</td>
-      <td class="text-muted">${guru || "-"}</td>
+      <td class="font-mono small jam-cell">${jam}</td>
+      <td class="fw-semibold mapel-cell">${mapel}</td>
+      <td class="text-muted guru-cell">${guru || "-"}</td>
     </tr>`).join("");
 }
 

@@ -5,13 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XI RPL 1 &middot; syntaxone</title>
 
-<!-- ===== SEO / SOCIAL PREVIEW (Open Graph & Twitter Card) =====
-     PENTING: ganti GANTI_DENGAN_LINK_WEB_KAMU di bawah dengan alamat
-     web kamu yang sudah online (misal: https://xirpl1.vercel.app/).
-     og:image WAJIB pakai URL lengkap (https://...), tidak bisa pakai
-     path relatif seperti "assets/foto.png", karena WhatsApp/Instagram/
-     Telegram ambil gambarnya langsung dari internet, bukan dari file
-     lokal kamu. -->
 <meta property="og:title" content="XI RPL 1 &middot; syntaxone">
 <meta property="og:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
 <meta property="og:image" content="GANTI_DENGAN_LINK_WEB_KAMU/assets/cwek--cwok.png">
@@ -28,7 +21,6 @@
 <meta name="twitter:image" content="GANTI_DENGAN_LINK_WEB_KAMU/assets/cwek--cwok.png">
 
 <meta name="description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
-<!-- ============================================================ -->
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -70,7 +62,6 @@
   }
   .comment::before{content:"// ";opacity:.65;}
 
-  /* NAVBAR — gaya tab file editor */
   .navbar{
     background:var(--panel)!important;
     border-bottom:1px solid var(--line);
@@ -93,7 +84,6 @@
   .file-tab.active-tab{color:var(--text)!important; border-bottom-color:var(--cyan); background:var(--panel-alt);}
   .file-tab .ext{opacity:.55;}
 
-  /* HERO — jendela terminal */
   .terminal{
     background:var(--panel);
     border:1px solid var(--line);
@@ -180,6 +170,9 @@
   }
   .table > :not(caption) > * > *{background:transparent; border-color:var(--line);}
   .table-piket td, .table-jadwal td{vertical-align:middle;}
+  .table-jadwal td.jam-cell{color:#FFFFFF;}
+  .table-jadwal td.mapel-cell{color:#FFFFFF;}
+  .table-jadwal td.guru-cell{color:#FFFFFF;}
 
   /* ===== PIKET — teks putih ===== */
   #piket, #piket h2, #piket p, #piket .nav-link, #piket .table, #piket .table td, #piket .table th{
@@ -298,50 +291,6 @@
     letter-spacing:.05em; text-transform:uppercase; margin-top:.3rem;
   }
 
-  .btn-qr{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:38px; height:38px;
-    background:var(--panel-alt);
-    border:1px solid var(--line);
-    color:var(--cyan);
-    border-radius:8px;
-    font-size:1.1rem;
-    transition:border-color .15s ease, color .15s ease, transform .12s ease;
-  }
-  .btn-qr:hover{border-color:var(--cyan); color:var(--text); transform:translateY(-1px);}
-  .btn-qr:active{transform:scale(.92);}
-
-  .qr-modal-content{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:12px;
-  }
-  .qr-box{
-    background:#FFFFFF;
-    border-radius:10px;
-    padding:1rem;
-    display:inline-block;
-    line-height:0;
-  }
-  .qr-link{
-    font-family:var(--font-mono);
-    font-size:.78rem;
-    color:var(--cyan);
-    word-break:break-all;
-  }
-  .btn-download-qr{
-    background:var(--cyan);
-    color:#04211D;
-    border:none;
-    font-family:var(--font-mono);
-    font-weight:700;
-    font-size:.82rem;
-    border-radius:8px;
-    padding:.5rem 1.1rem;
-    transition:opacity .15s ease;
-  }
-  .btn-download-qr:hover{opacity:.85; color:#04211D;}
-
   .btn-kembali{
     background:transparent; border:1px solid var(--line); color:var(--muted);
     font-family:var(--font-mono); font-size:.82rem;
@@ -379,7 +328,6 @@
     letter-spacing:.03em;
   }
 
-  /* ===== SCROLL PROGRESS ===== */
   .scroll-progress{
     position:fixed; top:0; left:0; height:3px; width:0%;
     background:linear-gradient(90deg, var(--cyan), var(--violet));
@@ -387,7 +335,6 @@
     transition:width .1s linear;
   }
 
-  /* ===== LOADING SCREEN ===== */
   #loader{
     position:fixed; inset:0; z-index:3000;
     background:var(--bg);
@@ -438,7 +385,6 @@
     pointer-events:none;
   }
 
-  /* ===== REVEAL ON SCROLL ===== */
   .reveal{
     opacity:0;
     transform:translateY(18px);
@@ -454,11 +400,10 @@
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
 <div id="loader">
   <div class="loader-glow"></div>
   <div class="loader-box text-center position-relative">
-    <div class="lbl">// booting classroom-os v1.0</div>
+    <div class="lbl">// Syntaxone</div>
     <div class="nama-kelas" id="loaderNama"></div>
     <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
     <div class="loader-pct" id="loaderPct">0%</div>
@@ -467,34 +412,24 @@
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
-<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg sticky-top py-2">
   <div class="container">
     <a class="navbar-brand" href="#beranda"><span class="bracket">&lt;</span>XI-RPL-1<span class="bracket">/&gt;</span></a>
-    <button type="button" class="btn-qr d-lg-none order-1" onclick="bukaQR()" title="Tampilkan QR Code" aria-label="Tampilkan QR Code">
-      <i class="bi bi-qr-code"></i>
-    </button>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="border-color:var(--line)">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item"><a class="nav-link file-tab" href="#pengurus">pengurus<span class="ext">.json</span></a></li>
-        <li class="nav-item"><a class="nav-link file-tab" href="#anggota">anggota<span class="ext">.csv</span></a></li>
-        <li class="nav-item"><a class="nav-link file-tab" href="#piket">piket<span class="ext">.sh</span></a></li>
-        <li class="nav-item"><a class="nav-link file-tab" href="#jadwal">jadwal<span class="ext">.yaml</span></a></li>
-        <li class="nav-item"><a class="nav-link file-tab" href="#kenangan">galeri<span class="ext">.png</span></a></li>
-        <li class="nav-item ms-lg-2">
-          <button type="button" class="btn-qr d-none d-lg-inline-flex" onclick="bukaQR()" title="Tampilkan QR Code" aria-label="Tampilkan QR Code">
-            <i class="bi bi-qr-code"></i>
-          </button>
-        </li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#pengurus">pengurus<span class="ext"></span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#anggota">anggota<span class="ext"></span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#piket">piket<span class="ext"></span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#jadwal">jadwal<span class="ext"></span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#kenangan">galeri<span class="ext"></span></a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
 <header id="beranda" class="hero-wrap text-center">
   <div class="container">
     <div class="terminal mx-auto">
@@ -532,22 +467,28 @@
       </div>
     </div>
 
-    <!-- REMINDER PIKET HARI INI -->
     <div class="row justify-content-center mt-3">
       <div class="col-md-8">
         <div class="kartu piket-hari-ini p-3 p-md-4 text-start" id="piketHariIni">
-          <!-- diisi oleh JavaScript -->
         </div>
       </div>
     </div>
 
-    <!-- COUNTDOWN KELULUSAN -->
     <div class="row justify-content-center mt-3">
       <div class="col-md-8">
         <div class="kartu countdown-card p-3 p-md-4">
-          <div class="comment mb-2">countdown_kelulusan.js</div>
+          <div class="comment mb-2" id="labelCountdownPiket">piket_berikutnya</div>
+          <div class="countdown-grid" id="countdownPiketBerikutnya">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-8">
+        <div class="kartu countdown-card p-3 p-md-4">
+          <div class="comment mb-2">countdown_kelulusan</div>
           <div class="countdown-grid" id="countdownKelulusan">
-            <!-- diisi oleh JavaScript -->
           </div>
         </div>
       </div>
@@ -555,20 +496,18 @@
   </div>
 </header>
 
-<!-- WALI KELAS & PENGURUS -->
 <section id="pengurus">
   <div class="container">
     <div class="comment">01_wali-kelas-dan-pengurus</div>
     <h2 class="mb-1">Wali Kelas &amp; Pengurus Kelas</h2>
     <p class="text-muted mb-4">Struktur Kelas XI RPL 1, tersusun berjenjang dari wali kelas hingga anggota-anggota.</p>
 
-    <!-- TINGKAT 1 — WALI KELAS -->
     <div class="row justify-content-center mb-3">
       <div class="col-md-5">
         <div class="kartu kartu-anggota p-4 text-center">
           <img src="assets/ibu.png" class="foto-pengurus mb-3" alt="Wali Kelas">
           <span class="badge badge-jabatan mb-2">WALI KELAS</span>
-          <h5 class="mb-0">daruqtni S.Pd.</h5>
+          <h5 class="mb-0">Daruqti, S.Pd.</h5>
           <div class="text-muted small">Guru Bahasa inggris</div>
         </div>
       </div>
@@ -578,7 +517,6 @@
       <i class="bi bi-arrow-down"></i>
     </div>
 
-    <!-- TINGKAT 2 — KETUA, WAKIL, SEKRETARIS & BENDAHARA (digabung jadi satu baris) -->
     <div class="row g-3">
       <div class="col-6 col-md-3">
         <div class="kartu kartu-anggota p-4 text-center h-100">
@@ -618,7 +556,6 @@
   </div>
 </section>
 
-<!-- ANGGOTA KELAS -->
 <section id="anggota" class="section-alt">
   <div class="container">
     <div class="comment">02_anggota-kelas</div>
@@ -634,11 +571,10 @@
       </div>
     </div>
 
-    <div class="row g-3" id="daftarAnggota"><!-- diisi oleh JavaScript --></div>
+    <div class="row g-3" id="daftarAnggota"></div>
   </div>
 </section>
 
-<!-- PIKET KEBERSIHAN -->
 <section id="piket">
   <div class="container">
     <div class="comment">03_piket-kebersihan</div>
@@ -655,7 +591,6 @@
   </div>
 </section>
 
-<!-- JADWAL PELAJARAN -->
 <section id="jadwal" class="section-alt">
   <div class="container">
     <div class="comment">04_jadwal-pelajaran</div>
@@ -672,14 +607,12 @@
   </div>
 </section>
 
-<!-- KENANGAN KELAS -->
 <section id="kenangan" class="section-alt">
   <div class="container">
     <div class="comment">05_kenangan-kelas</div>
     <h2 class="mb-1">Kenangan Kelas</h2>
     <p class="text-muted mb-4">Album digital berisi momen-momen terbaik Kelas XI RPL 1 sepanjang tahun ajaran &mdash; dipisah jadi foto cewek, foto cowok, dan foto bersama/dokumentasi.</p>
 
-    <!-- COVER ALBUM (3 kotak) -->
     <div id="galeriCoverList" class="row g-4 justify-content-center">
       <div class="col-md-4">
         <div class="kartu galeri-cover-card" onclick="bukaGaleri('cewek')" role="button" tabindex="0">
@@ -731,7 +664,6 @@
       </div>
     </div>
 
-    <!-- DETAIL GALERI -->
     <div id="galeriDetail" class="d-none">
       <button type="button" class="btn-kembali mb-3" onclick="tutupGaleri()">
         <i class="bi bi-arrow-left"></i> Kembali ke Galeri
@@ -741,43 +673,17 @@
       <div class="text-muted small mb-3 font-mono">
         <i class="bi bi-images"></i> <span id="galeriDetailCount">0</span> foto &middot; klik untuk memperbesar
       </div>
-      <div class="row g-3" id="galeriIsi"><!-- diisi oleh JavaScript --></div>
+      <div class="row g-3" id="galeriIsi"></div>
     </div>
   </div>
 </section>
 
-<!-- LIGHTBOX GALERI -->
 <div class="modal fade" id="modalLightbox" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content lightbox-content border-0">
       <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal" aria-label="Tutup"></button>
       <img id="lightboxImg" src="" class="w-100 rounded" alt="">
       <div class="text-center text-muted small mt-2 mb-3 font-mono" id="lightboxCaption"></div>
-    </div>
-  </div>
-</div>
-
-<!-- QR CODE MODAL -->
-<div class="modal fade" id="modalQR" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content qr-modal-content border-0 text-center p-4">
-      <button type="button" class="btn-close btn-close-white ms-auto mb-2" data-bs-dismiss="modal" aria-label="Tutup"></button>
-      <div class="comment mb-2">scan-untuk-buka-web-kelas</div>
-      <h5 class="mb-3">QR Code Web Kelas</h5>
-      <div class="d-flex justify-content-center mb-3">
-        <div class="qr-box">
-          <canvas id="qrCanvas"></canvas>
-        </div>
-      </div>
-      <div class="qr-link mb-3" id="qrLink">&nbsp;</div>
-      <div class="d-flex justify-content-center gap-2">
-        <button type="button" class="btn-download-qr" onclick="unduhQR()">
-          <i class="bi bi-download"></i> Unduh QR
-        </button>
-      </div>
-      <div class="text-muted small mt-3 font-mono" style="font-size:.7rem;">
-        Tunjukkan layar ini &mdash; teman sekelas tinggal scan pakai kamera HP.
-      </div>
     </div>
   </div>
 </div>
@@ -791,10 +697,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script>
-/* ================= DATA — silakan ganti sesuai data kelas Anda ================= */
-
 const anggotaKelas = [
   "ABD. RAUF",
   "Aini Resky Ramadhan",
@@ -829,15 +732,6 @@ const anggotaKelas = [
   "ZAHRATUN NISA"
 ];
 
-/* =============================================================
-   GANTI FOTO SISWA DI SINI
-   -------------------------------------------------------------
-   1. Buat folder "assets/siswa/" di sebelah file HTML ini.
-   2. Simpan foto tiap siswa di folder itu, misal: assets/siswa/abd-rauf.jpg
-   3. Isi path-nya di object di bawah, PAS dengan nama di anggotaKelas.
-   4. Yang belum diisi (dikosongkan "") otomatis pakai foto default
-      (pravatar) supaya tampilan tidak rusak.
-   ============================================================= */
 const fotoOverride = {
   "ABD. RAUF": "",
   "Aini Resky Ramadhan": "assets/aini.png",
@@ -919,7 +813,6 @@ const jadwalPelajaran = {
   ]
 };
 
-// Album galeri dipisah 3 kotak: cewek, cowok, bersama/dokumentasi
 const albumFoto = {
   cewek: {
     judul: "Foto Cewek",
@@ -956,11 +849,6 @@ const albumFoto = {
   }
 };
 
-/* ================= RENDER ================= */
-
-// Memetakan setiap nama ke salah satu dari 70 foto stok (i.pravatar.cc),
-// sehingga tiap siswa selalu dapat foto yang sama tiap kali halaman dibuka.
-// Kalau nama sudah punya foto sendiri di fotoOverride, itu yang dipakai.
 function fotoSiswa(nama){
   if(fotoOverride[nama] && fotoOverride[nama].trim() !== ""){
     return fotoOverride[nama];
@@ -1032,21 +920,12 @@ function tampilkanJadwal(hari, btn){
   const tbody = document.querySelector("#tabelJadwal tbody");
   tbody.innerHTML = jadwalPelajaran[hari].map(([jam,mapel,guru]) => `
     <tr>
-      <td class="font-mono small" style="color:var(--muted);">${jam}</td>
-      <td class="fw-semibold">${mapel}</td>
-      <td class="text-muted">${guru || "-"}</td>
+      <td class="font-mono small jam-cell">${jam}</td>
+      <td class="fw-semibold mapel-cell">${mapel}</td>
+      <td class="guru-cell">${guru || "-"}</td>
     </tr>`).join("");
 }
 
-// Isi angka jumlah foto di tiap kotak cover album
-// ===== LIKE FOTO & PENONTON ALBUM (disimpan ONLINE, jadi sama di semua HP) =====
-//
-// Pakai CountAPI (https://countapi.mileshilliard.com) — gratis, tanpa
-// perlu daftar/API key. Tiap foto/album punya "key" unik di server mereka
-// buat nyimpen total like/view-nya secara global (bukan cuma di 1 HP).
-//
-// PENTING: key ini bersifat PUBLIK (siapa saja yg tahu key-nya bisa lihat/ubah).
-// Makanya dikasih prefix unik biar gak ketabrak sama punya web lain.
 const LIKE_NAMESPACE = "xirpl1-smk-webkelas-2026-";
 const LIKE_API = "https://countapi.mileshilliard.com/api/v1";
 
@@ -1071,9 +950,6 @@ function idFoto(file){
   return "like-" + file.replace(/[^a-zA-Z0-9]/g, "_");
 }
 
-// Album mana saja yang sudah "dihitung" penontonnya di HP/laptop ini —
-// supaya 1 perangkat cuma nambah +1 penonton sekali per album, bukan
-// setiap kali album dibuka ulang.
 let viewedAlbums = new Set();
 function loadViewedAlbums(){
   try{
@@ -1085,7 +961,6 @@ function saveViewedAlbums(){
   try{ localStorage.setItem("rpl1-viewed-albums", JSON.stringify([...viewedAlbums])); }catch(e){}
 }
 
-// Ambil jumlah like saat ini dari server (tanpa menambah)
 async function ambilJumlahLike(file){
   try{
     const res = await fetch(`${LIKE_API}/get/${likeKey(file)}`);
@@ -1093,12 +968,10 @@ async function ambilJumlahLike(file){
     const data = await res.json();
     return parseInt(data.value, 10) || 0;
   }catch(e){
-    return null; // gagal ambil (mis. offline)
+    return null;
   }
 }
 
-// Tambah +1 like di server. HP yang sama tidak akan pernah manggil ini dua kali
-// untuk foto yang sama, karena toggleLike() sudah dicegah oleh likedPhotos/localStorage.
 async function tambahJumlahLike(file){
   try{
     const res = await fetch(`${LIKE_API}/hit/${likeKey(file)}`);
@@ -1109,7 +982,6 @@ async function tambahJumlahLike(file){
   }
 }
 
-// Ambil jumlah penonton (views) album saat ini dari server, tanpa menambah
 async function ambilJumlahView(album){
   try{
     const res = await fetch(`${LIKE_API}/get/${viewKey(album)}`);
@@ -1121,7 +993,6 @@ async function ambilJumlahView(album){
   }
 }
 
-// Tambah +1 penonton di server tiap kali album dibuka
 async function tambahJumlahView(album){
   try{
     const res = await fetch(`${LIKE_API}/hit/${viewKey(album)}`);
@@ -1132,7 +1003,6 @@ async function tambahJumlahView(album){
   }
 }
 
-// Total like semua foto di dalam satu album, buat ditampilkan di card cover
 async function totalLikeAlbum(album){
   const data = albumFoto[album];
   if(!data) return 0;
@@ -1140,7 +1010,6 @@ async function totalLikeAlbum(album){
   return hasil.reduce((a,b) => a + (b || 0), 0);
 }
 
-// Update angka penonton & like di card cover album (tanpa menambah view)
 async function updateStatCover(album){
   const wrap = document.getElementById(`stats-${album}`);
   if(!wrap) return;
@@ -1152,14 +1021,11 @@ async function updateStatCover(album){
 }
 
 async function toggleLike(file){
-  // Satu perangkat (HP/laptop) hanya boleh like 1x per foto — tidak bisa dibatalkan
   if(likedPhotos.has(file)) return;
 
   const btn = document.getElementById(idFoto(file));
   if(!btn || btn.disabled) return;
 
-  // Kunci tombol dulu (optimistic) supaya tidak bisa diklik berkali-kali
-  // sebelum request ke server selesai.
   btn.disabled = true;
   btn.classList.add("liked");
   btn.querySelector("i").className = "bi bi-heart-fill";
@@ -1167,15 +1033,12 @@ async function toggleLike(file){
   const hasilBaru = await tambahJumlahLike(file);
 
   if(hasilBaru === null){
-    // Gagal konek ke server like — jangan kunci status like-nya,
-    // supaya siswa bisa coba lagi nanti.
     btn.disabled = false;
     btn.classList.remove("liked");
     btn.querySelector("i").className = "bi bi-heart";
     return;
   }
 
-  // Sukses: baru dianggap "sudah like" & disimpan permanen di HP ini
   likedPhotos.add(file);
   saveLikedPhotos();
   btn.querySelector(".like-count").textContent = hasilBaru;
@@ -1189,7 +1052,6 @@ function renderAlbumCovers(){
   });
 }
 
-// Buka salah satu album ('cewek' | 'cowok' | 'bersama')
 function bukaGaleri(kategori){
   const data = albumFoto[kategori];
   if(!data) return;
@@ -1216,7 +1078,6 @@ function bukaGaleri(kategori){
       <div class="small text-muted mt-1 font-mono" style="font-size:.7rem;">${item.file}</div>
     </div>`).join("");
 
-  // Ambil jumlah like sebenarnya dari server untuk tiap foto di album ini
   data.foto.forEach(async item => {
     const btn = document.getElementById(idFoto(item.file));
     if(!btn) return;
@@ -1225,9 +1086,6 @@ function bukaGaleri(kategori){
     if(span) span.textContent = (jumlah === null) ? "?" : jumlah;
   });
 
-  // Penonton cuma dihitung +1 sekali per HP/laptop untuk tiap album.
-  // Kalau perangkat ini sudah pernah buka album tsb, cukup tampilkan
-  // angka yang sudah ada (tidak menambah lagi).
   const wrapStat = document.getElementById(`stats-${kategori}`);
   if(viewedAlbums.has(kategori)){
     ambilJumlahView(kategori).then(jumlah => {
@@ -1262,43 +1120,7 @@ function bukaLightbox(src, caption){
   modal.show();
 }
 
-/* ================= QR CODE ================= */
-// QR code otomatis dibuat dari link halaman ini (window.location.href),
-// jadi begitu web-nya sudah online (misal di Vercel), QR-nya langsung
-// mengarah ke link yang benar tanpa perlu diatur manual.
-function bukaQR(){
-  const url = window.location.href;
-  const canvas = document.getElementById("qrCanvas");
-  const linkEl = document.getElementById("qrLink");
-  linkEl.textContent = url;
-
-  QRCode.toCanvas(canvas, url, {
-    width: 220,
-    margin: 1,
-    color: { dark: "#0A0E17", light: "#FFFFFF" }
-  }, function(error){
-    if(error) console.error(error);
-  });
-
-  const modal = new bootstrap.Modal(document.getElementById("modalQR"));
-  modal.show();
-}
-
-function unduhQR(){
-  const canvas = document.getElementById("qrCanvas");
-  if(!canvas) return;
-  const link = document.createElement("a");
-  link.download = "qr-web-xirpl1.png";
-  link.href = canvas.toDataURL("image/png");
-  link.click();
-}
-
-/* ================= REMINDER PIKET HARI INI =================
-   Mode testing: isi HARI_OVERRIDE dengan salah satu dari
-   "Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu" untuk
-   lihat pratinjau hari tertentu. Kosongkan jadi null untuk kembali
-   otomatis mengikuti hari sebenarnya. */
-const HARI_OVERRIDE = "Jumat";
+const HARI_OVERRIDE = null;
 
 function tampilkanPiketHariIni(){
   const wrap = document.getElementById("piketHariIni");
@@ -1309,7 +1131,6 @@ function tampilkanPiketHariIni(){
   const data = piketPerHari[hariIni];
 
   if(!data){
-    // Sabtu / Minggu — tidak ada jadwal piket
     wrap.innerHTML = `
       <span class="status-dot" style="background:var(--muted); box-shadow:none;"></span>
       <div>
@@ -1329,8 +1150,78 @@ function tampilkanPiketHariIni(){
     </div>`;
 }
 
-/* ================= COUNTDOWN KELULUSAN =================
-   GANTI tanggal di bawah ini sesuai jadwal kelulusan kelas kamu. */
+const JAM_MULAI_PIKET = { jam: 7, menit: 30 };
+
+function cariPiketBerikutnya(){
+  const namaHariJS = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const now = new Date();
+
+  const hariIniNama = HARI_OVERRIDE || namaHariJS[now.getDay()];
+  const dataHariIni = piketPerHari[hariIniNama];
+  if(dataHariIni){
+    const mulaiHariIni = new Date(now);
+    mulaiHariIni.setHours(JAM_MULAI_PIKET.jam, JAM_MULAI_PIKET.menit, 0, 0);
+    if(mulaiHariIni.getTime() > now.getTime()){
+      return { tanggal: mulaiHariIni, hari: hariIniNama, data: dataHariIni };
+    }
+  }
+
+  for(let tambah = 1; tambah <= 14; tambah++){
+    const d = new Date(now);
+    d.setDate(d.getDate() + tambah);
+    const namaHari = namaHariJS[d.getDay()];
+    const data = piketPerHari[namaHari];
+    if(data){
+      d.setHours(JAM_MULAI_PIKET.jam, JAM_MULAI_PIKET.menit, 0, 0);
+      return { tanggal: d, hari: namaHari, data: data };
+    }
+  }
+  return null;
+}
+
+function tampilkanCountdownPiket(){
+  const wrap = document.getElementById("countdownPiketBerikutnya");
+  const label = document.getElementById("labelCountdownPiket");
+  if(!wrap) return;
+
+  const target = cariPiketBerikutnya();
+  if(!target){
+    wrap.innerHTML = `<div class="text-muted font-mono small">Tidak ada jadwal piket ditemukan</div>`;
+    return;
+  }
+
+  if(label){
+    label.textContent = `piket_berikutnya · ${target.hari} · ${target.data.kelompok}`;
+  }
+
+  const waktuTarget = target.tanggal.getTime();
+
+  function update(){
+    const now = Date.now();
+    const sisa = waktuTarget - now;
+
+    if(sisa <= 0){
+      tampilkanCountdownPiket();
+      return;
+    }
+
+    const hari = Math.floor(sisa / (1000*60*60*24));
+    const jam = Math.floor((sisa / (1000*60*60)) % 24);
+    const menit = Math.floor((sisa / (1000*60)) % 60);
+    const detik = Math.floor((sisa / 1000) % 60);
+
+    wrap.innerHTML = `
+      <div class="kotak"><div class="num">${hari}</div><div class="unit">Hari</div></div>
+      <div class="kotak"><div class="num">${String(jam).padStart(2,"0")}</div><div class="unit">Jam</div></div>
+      <div class="kotak"><div class="num">${String(menit).padStart(2,"0")}</div><div class="unit">Menit</div></div>
+      <div class="kotak"><div class="num">${String(detik).padStart(2,"0")}</div><div class="unit">Detik</div></div>
+    `;
+  }
+  update();
+  if(window._piketCountdownInterval) clearInterval(window._piketCountdownInterval);
+  window._piketCountdownInterval = setInterval(update, 1000);
+}
+
 const TANGGAL_KELULUSAN = "2027-06-05T08:00:00";
 
 function tampilkanCountdown(){
@@ -1371,9 +1262,9 @@ renderPiketTabs();
 renderJadwalTabs();
 renderAlbumCovers();
 tampilkanPiketHariIni();
+tampilkanCountdownPiket();
 tampilkanCountdown();
 
-/* ================= LOADING SCREEN ================= */
 (function(){
   const namaKelas = "XI RPL 1";
   const target = document.getElementById("loaderNama");
@@ -1410,14 +1301,12 @@ tampilkanCountdown();
   setTimeout(() => { document.body.style.overflow = ""; }, 3000);
 })();
 
-/* ================= SCROLL PROGRESS BAR ================= */
 window.addEventListener("scroll", () => {
   const h = document.documentElement;
   const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
   document.getElementById("scrollProgress").style.width = scrolled + "%";
 });
 
-/* ================= REVEAL ON SCROLL ================= */
 document.querySelectorAll("section .comment, section h2, section p.text-muted, .kartu, .terminal, .chip-stat")
   .forEach(el => el.classList.add("reveal"));
 
