@@ -906,6 +906,20 @@ function idFoto(file){
   return "like-" + file.replace(/[^a-zA-Z0-9]/g, "_");
 }
 
+// Album mana saja yang sudah "dihitung" penontonnya di HP/laptop ini —
+// supaya 1 perangkat cuma nambah +1 penonton sekali per album, bukan
+// setiap kali album dibuka ulang.
+let viewedAlbums = new Set();
+function loadViewedAlbums(){
+  try{
+    const raw = localStorage.getItem("rpl1-viewed-albums");
+    viewedAlbums = new Set(raw ? JSON.parse(raw) : []);
+  }catch(e){ viewedAlbums = new Set(); }
+}
+function saveViewedAlbums(){
+  try{ localStorage.setItem("rpl1-viewed-albums", JSON.stringify([...viewedAlbums])); }catch(e){}
+}
+
 // Ambil jumlah like saat ini dari server (tanpa menambah)
 async function ambilJumlahLike(file){
   try{
@@ -1046,14 +1060,29 @@ function bukaGaleri(kategori){
     if(span) span.textContent = (jumlah === null) ? "?" : jumlah;
   });
 
-  // Tambah +1 penonton untuk album ini, lalu perbarui angka di card cover
-  tambahJumlahView(kategori).then(hasilBaru => {
-    const wrapStat = document.getElementById(`stats-${kategori}`);
-    if(wrapStat && hasilBaru !== null){
-      const viewEl = wrapStat.querySelector(".view-count");
-      if(viewEl) viewEl.textContent = hasilBaru;
-    }
-  });
+  // Penonton cuma dihitung +1 sekali per HP/laptop untuk tiap album.
+  // Kalau perangkat ini sudah pernah buka album tsb, cukup tampilkan
+  // angka yang sudah ada (tidak menambah lagi).
+  const wrapStat = document.getElementById(`stats-${kategori}`);
+  if(viewedAlbums.has(kategori)){
+    ambilJumlahView(kategori).then(jumlah => {
+      if(wrapStat && jumlah !== null){
+        const viewEl = wrapStat.querySelector(".view-count");
+        if(viewEl) viewEl.textContent = jumlah;
+      }
+    });
+  }else{
+    tambahJumlahView(kategori).then(hasilBaru => {
+      if(hasilBaru !== null){
+        viewedAlbums.add(kategori);
+        saveViewedAlbums();
+        if(wrapStat){
+          const viewEl = wrapStat.querySelector(".view-count");
+          if(viewEl) viewEl.textContent = hasilBaru;
+        }
+      }
+    });
+  }
 }
 function tutupGaleri(){
   document.getElementById("galeriDetail").classList.add("d-none");
@@ -1069,6 +1098,7 @@ function bukaLightbox(src, caption){
 }
 
 loadLikedPhotos();
+loadViewedAlbums();
 renderAnggota();
 renderPiketTabs();
 renderJadwalTabs();
