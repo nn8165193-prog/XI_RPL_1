@@ -394,6 +394,48 @@
     .reveal{opacity:1; transform:none; transition:none;}
     #loader{transition:none;}
   }
+
+  /* ==== audio galeri ==== */
+  .musik-galeri-bar{
+    display:flex; align-items:center; gap:.6rem;
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.55rem .85rem;
+    margin-bottom:1rem;
+    font-family:var(--font-mono); font-size:.78rem;
+    color:var(--muted);
+  }
+  .musik-galeri-bar .btn-musik{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--cyan);
+    width:34px; height:34px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .musik-galeri-bar .btn-musik:hover{border-color:var(--cyan); background:rgba(45,212,191,.08);}
+  .musik-galeri-bar .judul-lagu{color:var(--text); font-weight:600;}
+  .musik-galeri-bar .bars{
+    display:flex; align-items:flex-end; gap:2px; height:16px; margin-left:auto;
+  }
+  .musik-galeri-bar .bars span{
+    width:3px; background:var(--cyan); border-radius:2px;
+    animation:bar-bounce 1s ease-in-out infinite;
+    opacity:.35;
+  }
+  .musik-galeri-bar.playing .bars span{opacity:1;}
+  .musik-galeri-bar .bars span:nth-child(1){height:40%; animation-delay:0s;}
+  .musik-galeri-bar .bars span:nth-child(2){height:100%; animation-delay:.15s;}
+  .musik-galeri-bar .bars span:nth-child(3){height:65%; animation-delay:.3s;}
+  .musik-galeri-bar .bars span:nth-child(4){height:85%; animation-delay:.45s;}
+  @keyframes bar-bounce{
+    0%,100%{transform:scaleY(.4);}
+    50%{transform:scaleY(1);}
+  }
 </style>
 </head>
 <body>
@@ -656,6 +698,18 @@
       <button type="button" class="btn-kembali mb-3" onclick="tutupGaleri()">
         <i class="bi bi-arrow-left"></i> Kembali ke Galeri
       </button>
+
+      <div class="musik-galeri-bar" id="musikGaleriBar">
+        <button type="button" class="btn-musik" id="btnMusikGaleri" onclick="toggleMusikGaleri()">
+          <i class="bi bi-play-fill" id="iconMusikGaleri"></i>
+        </button>
+        <div>
+          <div class="judul-lagu" id="judulLaguGaleri">&nbsp;</div>
+          <div style="font-size:.7rem;">musik latar album</div>
+        </div>
+        <div class="bars"><span></span><span></span><span></span><span></span></div>
+      </div>
+
       <h3 class="mb-1" id="galeriDetailTitle">&nbsp;</h3>
       <p class="text-muted mb-2" id="galeriDetailDesc">&nbsp;</p>
       <div class="text-muted small mb-3 font-mono">
@@ -675,6 +729,8 @@
     </div>
   </div>
 </div>
+
+<audio id="audioGaleri" preload="none" loop></audio>
 
 <footer class="py-4 text-center">
   <div class="container">
@@ -835,6 +891,15 @@ const albumFoto = {
 
     ]
   }
+};
+
+/* ==== musik per album galeri ====
+   Ganti "src" di bawah dengan file mp3 milikmu sendiri di folder assets/
+   (pastikan itu musik bebas royalti / memang milikmu, biar aman secara hak cipta) */
+const musikGaleri = {
+  cewek:   { src: "assets/musik-cewek.mp3",   judul: "Musik Album Cewek" },
+  cowok:   { src: "assets/musik-cowok.mp3",   judul: "Musik Album Cowok" },
+  bersama: { src: "assets/audio-cewek-cowok.mp3", judul: "Musik Album Bersama" }
 };
 
 function fotoSiswa(nama){
@@ -1040,6 +1105,64 @@ function renderAlbumCovers(){
   });
 }
 
+/* ==== kontrol audio galeri ==== */
+const audioGaleri = document.getElementById("audioGaleri");
+let kategoriAudioAktif = null;
+
+function putarMusikGaleri(kategori){
+  const info = musikGaleri[kategori];
+  const bar = document.getElementById("musikGaleriBar");
+  const judulEl = document.getElementById("judulLaguGaleri");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(!info){
+    if(bar) bar.style.display = "none";
+    return;
+  }
+  if(bar) bar.style.display = "flex";
+  if(judulEl) judulEl.textContent = info.judul;
+
+  kategoriAudioAktif = kategori;
+
+  if(!audioGaleri.src.endsWith(info.src)){
+    audioGaleri.src = info.src;
+  }
+  audioGaleri.currentTime = 0;
+
+  audioGaleri.play().then(() => {
+    if(bar) bar.classList.add("playing");
+    if(iconEl) iconEl.className = "bi bi-pause-fill";
+  }).catch(() => {
+    // autoplay diblokir browser, tunggu klik tombol play manual
+    if(bar) bar.classList.remove("playing");
+    if(iconEl) iconEl.className = "bi bi-play-fill";
+  });
+}
+
+function hentikanMusikGaleri(){
+  audioGaleri.pause();
+  audioGaleri.currentTime = 0;
+  kategoriAudioAktif = null;
+  const bar = document.getElementById("musikGaleriBar");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(bar) bar.classList.remove("playing");
+  if(iconEl) iconEl.className = "bi bi-play-fill";
+}
+
+function toggleMusikGaleri(){
+  const bar = document.getElementById("musikGaleriBar");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(audioGaleri.paused){
+    audioGaleri.play().then(() => {
+      if(bar) bar.classList.add("playing");
+      if(iconEl) iconEl.className = "bi bi-pause-fill";
+    }).catch(()=>{});
+  }else{
+    audioGaleri.pause();
+    if(bar) bar.classList.remove("playing");
+    if(iconEl) iconEl.className = "bi bi-play-fill";
+  }
+}
+
 function bukaGaleri(kategori){
   const data = albumFoto[kategori];
   if(!data) return;
@@ -1048,6 +1171,9 @@ function bukaGaleri(kategori){
   document.getElementById("galeriDetailTitle").textContent = data.judul;
   document.getElementById("galeriDetailDesc").textContent = data.deskripsi;
   document.getElementById("galeriDetailCount").textContent = data.foto.length;
+
+  // putar lagu sesuai album yang dibuka
+  putarMusikGaleri(kategori);
 
   const wrap = document.getElementById("galeriIsi");
   wrap.innerHTML = data.foto.map(item => `
@@ -1098,6 +1224,9 @@ function bukaGaleri(kategori){
 function tutupGaleri(){
   document.getElementById("galeriDetail").classList.add("d-none");
   document.getElementById("galeriCoverList").classList.remove("d-none");
+
+  // hentikan musik saat kembali ke daftar galeri
+  hentikanMusikGaleri();
 }
 
 function bukaLightbox(src, caption){
