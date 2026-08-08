@@ -222,6 +222,16 @@
     padding:.32rem .65rem; border-radius:7px; border:1px solid var(--line);
   }
 
+  .galeri-stats{
+    display:flex; align-items:center; gap:1rem;
+    margin-top:.55rem;
+    font-family:var(--font-mono); font-size:.74rem; color:var(--muted);
+  }
+  .galeri-stats span{display:inline-flex; align-items:center; gap:.3rem;}
+  .galeri-stats i{font-size:.85rem;}
+  .galeri-stats .bi-eye{color:var(--cyan);}
+  .galeri-stats .bi-heart-fill{color:var(--pink);}
+
   .btn-kembali{
     background:transparent; border:1px solid var(--line); color:var(--muted);
     font-family:var(--font-mono); font-size:.82rem;
@@ -541,6 +551,10 @@
           <div class="p-3">
             <div class="fw-semibold">Foto Cewek</div>
             <div class="text-muted small">Momen kebersamaan siswi XI RPL 1</div>
+            <div class="galeri-stats" id="stats-cewek">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
           </div>
         </div>
       </div>
@@ -553,6 +567,10 @@
           <div class="p-3">
             <div class="fw-semibold">Foto Cowok</div>
             <div class="text-muted small">Momen kebersamaan siswa XI RPL 1</div>
+            <div class="galeri-stats" id="stats-cowok">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
           </div>
         </div>
       </div>
@@ -565,6 +583,10 @@
           <div class="p-3">
             <div class="fw-semibold">Foto Bersama &middot; Dokumentasi</div>
             <div class="text-muted small">Momen kebersamaan XI RPL 1 &middot; Tahun Ajaran 2026/2027</div>
+            <div class="galeri-stats" id="stats-bersama">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
           </div>
         </div>
       </div>
@@ -852,11 +874,11 @@ function tampilkanJadwal(hari, btn){
 }
 
 // Isi angka jumlah foto di tiap kotak cover album
-// ===== LIKE FOTO (angka like tersimpan ONLINE, jadi sama di semua HP) =====
+// ===== LIKE FOTO & PENONTON ALBUM (disimpan ONLINE, jadi sama di semua HP) =====
 //
 // Pakai CountAPI (https://countapi.mileshilliard.com) — gratis, tanpa
-// perlu daftar/API key. Tiap foto punya "key" unik di server mereka
-// buat nyimpen total like-nya secara global (bukan cuma di 1 HP).
+// perlu daftar/API key. Tiap foto/album punya "key" unik di server mereka
+// buat nyimpen total like/view-nya secara global (bukan cuma di 1 HP).
 //
 // PENTING: key ini bersifat PUBLIK (siapa saja yg tahu key-nya bisa lihat/ubah).
 // Makanya dikasih prefix unik biar gak ketabrak sama punya web lain.
@@ -865,6 +887,9 @@ const LIKE_API = "https://countapi.mileshilliard.com/api/v1";
 
 function likeKey(file){
   return LIKE_NAMESPACE + file.replace(/[^a-zA-Z0-9]/g, "_");
+}
+function viewKey(album){
+  return LIKE_NAMESPACE + "views_" + album;
 }
 
 let likedPhotos = new Set();
@@ -905,6 +930,48 @@ async function tambahJumlahLike(file){
   }
 }
 
+// Ambil jumlah penonton (views) album saat ini dari server, tanpa menambah
+async function ambilJumlahView(album){
+  try{
+    const res = await fetch(`${LIKE_API}/get/${viewKey(album)}`);
+    if(res.status === 404) return 0;
+    const data = await res.json();
+    return parseInt(data.value, 10) || 0;
+  }catch(e){
+    return null;
+  }
+}
+
+// Tambah +1 penonton di server tiap kali album dibuka
+async function tambahJumlahView(album){
+  try{
+    const res = await fetch(`${LIKE_API}/hit/${viewKey(album)}`);
+    const data = await res.json();
+    return parseInt(data.value, 10) || null;
+  }catch(e){
+    return null;
+  }
+}
+
+// Total like semua foto di dalam satu album, buat ditampilkan di card cover
+async function totalLikeAlbum(album){
+  const data = albumFoto[album];
+  if(!data) return 0;
+  const hasil = await Promise.all(data.foto.map(item => ambilJumlahLike(item.file)));
+  return hasil.reduce((a,b) => a + (b || 0), 0);
+}
+
+// Update angka penonton & like di card cover album (tanpa menambah view)
+async function updateStatCover(album){
+  const wrap = document.getElementById(`stats-${album}`);
+  if(!wrap) return;
+  const viewEl = wrap.querySelector(".view-count");
+  const likeEl = wrap.querySelector(".like-count-total");
+  const [views, likes] = await Promise.all([ambilJumlahView(album), totalLikeAlbum(album)]);
+  if(viewEl) viewEl.textContent = (views === null) ? "?" : views;
+  if(likeEl) likeEl.textContent = likes;
+}
+
 async function toggleLike(file){
   // Satu perangkat (HP/laptop) hanya boleh like 1x per foto — tidak bisa dibatalkan
   if(likedPhotos.has(file)) return;
@@ -939,6 +1006,7 @@ function renderAlbumCovers(){
   Object.keys(albumFoto).forEach(key => {
     const el = document.getElementById(`countCover-${key}`);
     if(el) el.textContent = albumFoto[key].foto.length;
+    updateStatCover(key);
   });
 }
 
@@ -976,6 +1044,15 @@ function bukaGaleri(kategori){
     const jumlah = await ambilJumlahLike(item.file);
     const span = btn.querySelector(".like-count");
     if(span) span.textContent = (jumlah === null) ? "?" : jumlah;
+  });
+
+  // Tambah +1 penonton untuk album ini, lalu perbarui angka di card cover
+  tambahJumlahView(kategori).then(hasilBaru => {
+    const wrapStat = document.getElementById(`stats-${kategori}`);
+    if(wrapStat && hasilBaru !== null){
+      const viewEl = wrapStat.querySelector(".view-count");
+      if(viewEl) viewEl.textContent = hasilBaru;
+    }
   });
 }
 function tutupGaleri(){

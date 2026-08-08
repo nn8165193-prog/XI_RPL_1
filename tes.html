@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XI RPL 1 &middot; class.init()</title>
+<title>XI RPL 1 &middot; syntaxone</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -222,6 +222,16 @@
     padding:.32rem .65rem; border-radius:7px; border:1px solid var(--line);
   }
 
+  .galeri-stats{
+    display:flex; align-items:center; gap:1rem;
+    margin-top:.55rem;
+    font-family:var(--font-mono); font-size:.74rem; color:var(--muted);
+  }
+  .galeri-stats span{display:inline-flex; align-items:center; gap:.3rem;}
+  .galeri-stats i{font-size:.85rem;}
+  .galeri-stats .bi-eye{color:var(--cyan);}
+  .galeri-stats .bi-heart-fill{color:var(--pink);}
+
   .btn-kembali{
     background:transparent; border:1px solid var(--line); color:var(--muted);
     font-family:var(--font-mono); font-size:.82rem;
@@ -347,11 +357,6 @@
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
-<!-- STATUS BAR ala VS Code -->
-<div class="status-bar text-center py-1">
-  <i class="bi bi-git"></i> main &nbsp;|&nbsp; <i class="bi bi-check2-circle"></i> build passing &nbsp;|&nbsp; XI RPL 1 &middot; SMK &middot; T.A. 2026/2027
-</div>
-
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg sticky-top py-2">
   <div class="container">
@@ -377,7 +382,7 @@
     <div class="terminal mx-auto">
       <div class="terminal-bar">
         <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-        <span class="terminal-title">kelas@rpl1: ~/tahun-ajaran-2026</span>
+        <span class="terminal-title">ig: @syntaxone: ~/tahun-ajaran-2026</span>
       </div>
       <div class="terminal-body">
         <div><span class="prompt">$</span> whoami</div>
@@ -416,15 +421,15 @@
   <div class="container">
     <div class="comment">01_wali-kelas-dan-pengurus</div>
     <h2 class="mb-1">Wali Kelas &amp; Pengurus Kelas</h2>
-    <p class="text-muted mb-4">Struktur organisasi Kelas XI RPL 1, tersusun berjenjang dari wali kelas hingga seksi-seksi.</p>
+    <p class="text-muted mb-4">Struktur Kelas XI RPL 1, tersusun berjenjang dari wali kelas hingga anggota-anggota.</p>
 
     <!-- TINGKAT 1 — WALI KELAS -->
     <div class="row justify-content-center mb-3">
       <div class="col-md-5">
         <div class="kartu kartu-anggota p-4 text-center">
-          <img src="https://i.pravatar.cc/300?img=12" class="foto-pengurus mb-3" alt="Wali Kelas">
+          <img src="assets/ibu.png" class="foto-pengurus mb-3" alt="Wali Kelas">
           <span class="badge badge-jabatan mb-2">WALI KELAS</span>
-          <h5 class="mb-0">Ibu daruqtni </h5>
+          <h5 class="mb-0">daruqtni S.Pd.</h5>
           <div class="text-muted small">Guru Bahasa inggris</div>
         </div>
       </div>
@@ -434,9 +439,9 @@
       <i class="bi bi-arrow-down"></i>
     </div>
 
-    <!-- TINGKAT 2 — KETUA, WAKIL, SEKRETARIS & BENDAHARA -->
+    <!-- TINGKAT 2 — KETUA, WAKIL, SEKRETARIS & BENDAHARA (digabung jadi satu baris) -->
     <div class="row g-3">
-      <div class="col-6 col-md-4 col-lg-2">
+      <div class="col-6 col-md-3">
         <div class="kartu kartu-anggota p-4 text-center h-100">
           <img src="assets/izman.png" class="foto-pengurus mb-3" alt="Ketua Kelas">
           <span class="badge badge-jabatan mb-2">KETUA KELAS &middot; ADMIN</span>
@@ -444,31 +449,32 @@
           <div class="text-muted small">No. Absen 15</div>
         </div>
       </div>
-      <div class="col-6 col-md-4 col-lg-2">
+      <div class="col-6 col-md-3">
         <div class="kartu kartu-anggota p-4 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=47" class="foto-pengurus mb-3" alt="Wakil Ketua">
-          <span class="badge badge-jabatan mb-2">WAKIL KETUA &middot; CO-ADMIN</span>
+          <img src="assets/azraf.png" class="foto-pengurus mb-3" alt="Wakil Ketua">
+          <span class="badge badge-jabatan mb-2">WAKIL KETUA &middot;</span>
           <h5 class="mb-0">Asyraf Zhahir Syulfa</h5>
           <div class="text-muted small">No. Absen 06</div>
         </div>
       </div>
-      <div class="col-6 col-md-4 col-lg-2">
+      <div class="col-6 col-md-3">
         <div class="kartu kartu-anggota p-4 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=25" class="foto-pengurus mb-3" alt="Sekretaris I">
+          <img src="assets/usnul.png" class="foto-pengurus mb-3" alt="Sekretaris II">
           <span class="badge badge-jabatan mb-2">SEKRETARIS I</span>
-          <h5 class="mb-0">Nama Sekretaris I</h5>
+          <h5 class="mb-0">KHUSNUL KHATIMAH SN</h5>
+          <div class="text-muted small">No. Absen 14</div>
           <div class="text-muted small">&nbsp;</div>
         </div>
       </div>
-      <div class="col-6 col-md-4 col-lg-2">
+      <div class="col-6 col-md-3">
         <div class="kartu kartu-anggota p-4 text-center h-100">
-          <img src="https://i.pravatar.cc/300?img=9" class="foto-pengurus mb-3" alt="Sekretaris II">
-          <span class="badge badge-jabatan mb-2">SEKRETARIS II</span>
-          <h5 class="mb-0">Dewi Anggraini</h5>
+          <img src="assets/pisa.png" class="foto-pengurus mb-3" alt="Bendahara">
+          <span class="badge badge-jabatan mb-2">BENDAHARA I</span>
+          <h5 class="mb-0">NUR HAFIZAH</h5>
+          <div class="text-muted small">No. Absen 22</div>
           <div class="text-muted small">&nbsp;</div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -545,30 +551,42 @@
           <div class="p-3">
             <div class="fw-semibold">Foto Cewek</div>
             <div class="text-muted small">Momen kebersamaan siswi XI RPL 1</div>
+            <div class="galeri-stats" id="stats-cewek">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="kartu galeri-cover-card" onclick="bukaGaleri('cowok')" role="button" tabindex="0">
           <div class="galeri-cover-img-wrap">
-            <img src="https://picsum.photos/seed/cowok0/800/520" class="galeri-cover-img" alt="Foto Cowok">
+            <img src="assets/cwok.png" class="galeri-cover-img" alt="Foto Cowok">
             <span class="galeri-badge"><i class="bi bi-images"></i> <span id="countCover-cowok">3</span> foto</span>
           </div>
           <div class="p-3">
             <div class="fw-semibold">Foto Cowok</div>
             <div class="text-muted small">Momen kebersamaan siswa XI RPL 1</div>
+            <div class="galeri-stats" id="stats-cowok">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="kartu galeri-cover-card" onclick="bukaGaleri('bersama')" role="button" tabindex="0">
           <div class="galeri-cover-img-wrap">
-            <img src="https://picsum.photos/seed/rpl1/800/520" class="galeri-cover-img" alt="Foto Bersama / Dokumentasi">
+            <img src="assets/cwek--cwok.png" class="galeri-cover-img" alt="Foto Bersama / Dokumentasi">
             <span class="galeri-badge"><i class="bi bi-images"></i> <span id="countCover-bersama">10</span> foto</span>
           </div>
           <div class="p-3">
             <div class="fw-semibold">Foto Bersama &middot; Dokumentasi</div>
             <div class="text-muted small">Momen kebersamaan XI RPL 1 &middot; Tahun Ajaran 2026/2027</div>
+            <div class="galeri-stats" id="stats-bersama">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
           </div>
         </div>
       </div>
@@ -604,7 +622,7 @@
   <div class="container">
     <div class="small font-mono">WEB KELAS RPL 1</div>
     <div class="small mt-1">WEB KELAS RPL 1 &middot; XI RPL 1 &middot; Tahun Ajaran 2025/2027</div>
-    <div class="small font-mono" style="color:var(--muted);">apa di isikan ini?????????</div>
+    <div class="small font-mono" style="color:var(--muted);">syntaxone</div>
   </div>
 </footer>
 
@@ -657,36 +675,36 @@ const anggotaKelas = [
    ============================================================= */
 const fotoOverride = {
   "ABD. RAUF": "",
-  "Aini Resky Ramadhan": "",
+  "Aini Resky Ramadhan": "assets/aini.png",
   "AKRAM JASIR HAERI": "",
-  "AMELIA": "",
-  "Arif Purnama": "",
-  "ASYRAF ZHAHIR SYULFA": "",
-  "AYUNING SUARDI": "",
-  "FADEL MUHAMMAD": "",
+  "AMELIA": "assets/amel.png",
+  "Arif Purnama": "assets/arif p.png",
+  "ASYRAF ZHAHIR SYULFA": "assets/azraf.png",
+  "AYUNING SUARDI": "assets/ayu.png",
+  "FADEL MUHAMMAD": "assets/padel.png",
   "FAIQAH KALTSUM RUDI": "assets/paika.png",
-  "HASBIA": "",
-  "IBRAHIM": "",
-  "JASINDA IRIANI SATTI": "",
-  "JUSRIADI": "",
+  "HASBIA": "assets/hasbia.png",
+  "IBRAHIM": "assets/ibrahim.png",
+  "JASINDA IRIANI SATTI": "assets/jasinda.png",
+  "JUSRIADI": "assets/jus.png",
   "KHUSNUL KHATIMAH SN": "assets/usnul.png",
   "MOHD IZMAN BIN YUDING": "assets/izman.png",
   "MUH. RIDWAN BIN ABDULLAH": "",
   "MUH.SYAUQI ANDRI": "assets/delon.png",
-  "Muhammad Arif Gifari": "",
+  "Muhammad Arif Gifari": "assets/arif gifari.png",
   "MUHAMMAD IHSAAN ABDILLAH. MK": "",
   "MUHAMMAD LUTFI": "assets/luppi.png",
   "NATASYA": "",
-  "Nur Hafizah": "",
-  "NUR SYAFIKHA": "",
-  "Nurul Halisa": "",
-  "Rahmawati": "",
-  "RESKY AHMAD YANI": "",
+  "Nur Hafizah": "assets/pisa.png",
+  "NUR SYAFIKHA": "assets/pika.png",
+  "Nurul Halisa": "assets/lisa.png",
+  "Rahmawati": "assets/amma.png",
+  "RESKY AHMAD YANI": "assets/ambon.png",
   "RISKY SAPUTRA": "assets/risky.png",
-  "SRI WAHIDAH": "",
+  "SRI WAHIDAH": "assets/sri.png",
   "WIWI ANGRENI": "",
-  "YUSRAN SAPUTRA SALAM": "",
-  "ZAHRATUN NISA": ""
+  "YUSRAN SAPUTRA SALAM": "assets/yusran1.png",
+  "ZAHRATUN NISA": "assets/zaratun.png"
 };
 
 const piketPerHari = {
@@ -697,47 +715,42 @@ const piketPerHari = {
   "Jumat":   { kelompok:"Squad 5", tugas:"Menyapu lantai, membuang sampah, mengunci jendela" }
 };
 const anggotaPiket = {
-  "Squad 1": ["Ahmad Fauzan","Nabila Putri","Ratna Sari","Dewi Anggraini","Rizky Ramadhan"],
-  "Squad 2": ["Siti Aisyah","Budi Santoso","Fajar Nugroho","Aulia Rahman","Galih Pratama"],
-  "Squad 3": ["Putri Wulandari","Bagas Setiawan","Intan Permata","Yusuf Maulana","Salsabila Zahra"],
-  "Squad 4": ["Reza Firmansyah","Anisa Fitri","Dimas Prakoso","Wulan Sari","Farhan Hidayat"],
-  "Squad 5": ["Larasati Dewi","Adit Kurniawan","Nadia Safitri","Ilham Ramadhan","Cahyani Putri"]
+  "Squad 1": ["Abd Rauf","Arif Purnama","Muhammad Arif Gifari","Muhammad Ihsan Abdillah","Hasbia","Nur Hafizah","Rahmawati"],
+  "Squad 2": ["Fadel Muhammad","Fadel Muhammad","Risky Saputra","Khusnul Khatimah","Sri Wahidah","Wiwi Angreni"],
+  "Squad 3": ["Akram Jasir Haeri","Jusriadi","Muhammad Lutfi","Faiqah Kaltsum","Natasya","Nur Syafikha"],
+  "Squad 4": ["Ibrahim","Resky Ahmad Yani","Yusran Saputra Salam","Amelia","Jasinda Iriani Satti","Nurul Halisa"],
+  "Squad 5": ["Asyraf Zhahir Syulfa","Muh. Syauqi Andri","Mohd Izman","Aini Resky Ramadhan","Ayuning Suardi","Zahratun Nisa"]
 };
 
 const jadwalPelajaran = {
-  "Senin": [
-    ["07.00 - 08.20","Upacara & Pemrograman Web","Bpk. Teguh Wicaksono, S.Kom."],
-    ["08.20 - 09.40","Pemrograman Web","Bpk. Teguh Wicaksono, S.Kom."],
-    ["09.40 - 10.00","Istirahat",""],
-    ["10.00 - 11.20","Basis Data","Ibu Anisa Kurnia, S.Kom."],
-    ["11.20 - 12.40","Matematika","Bpk. Hendra, S.Pd."]
+ "Senin": [
+    ["07.30 - 08.10", "Upacara", ""],
+    ["08.50 - 10.40", "Kejuruan", "Asriyani, S.Kom., M.M."],
+    ["11.20 - 13.40", "PKK", "Suriani, S.Pd., M.M."],
+    ["14.20 - 15.40", "PJOK", "Andi Cella, S.Pd., M.Pd."]
   ],
   "Selasa": [
-    ["07.00 - 08.20","Pemrograman Berorientasi Objek","Bpk. Rian Saputra, S.Kom."],
-    ["08.20 - 09.40","Bahasa Inggris","Ibu Melinda, S.Pd."],
-    ["09.40 - 10.00","Istirahat",""],
-    ["10.00 - 11.20","Pendidikan Agama","Bpk. Wahid, S.Ag."],
-    ["11.20 - 12.40","Desain Antarmuka (UI/UX)","Ibu Anisa Kurnia, S.Kom."]
+    ["07.30 - 08.50", "Sejarah", "Dahlia Pago, S.Pd."],
+    ["08.50 - 12.00", "Kejuruan", "Arwinsyah, S.Kom."],
+    ["12.00 - 13.40", "Pendidikan Pancasila", "Ida Gusti Putu Ardja, S.Pd., M.M."],
+    ["14.20 - 15.40", "PKK", "Suriani, S.Pd., M.M."]
   ],
   "Rabu": [
-    ["07.00 - 08.20","Basis Data","Ibu Anisa Kurnia, S.Kom."],
-    ["08.20 - 09.40","Jaringan Dasar","Bpk. Rian Saputra, S.Kom."],
-    ["09.40 - 10.00","Istirahat",""],
-    ["10.00 - 11.20","PJOK","Bpk. Fikri, S.Pd."],
-    ["11.20 - 12.40","Bahasa Indonesia","Ibu Sri Wahyuni, S.Pd."]
+    ["07.30 - 08.50", "Bahasa Indonesia", "Ernawati, S.S."],
+    ["10.00 - 14.20", "Kejuruan", "Muh. Taufiq Rustan, S.Kom."],
+    ["14.20 - 15.40", "Bahasa Inggris", "Daruqti, S.Pd."]
   ],
-  "Kamis": [
-    ["07.00 - 08.20","Pemrograman Web","Bpk. Teguh Wicaksono, S.Kom."],
-    ["08.20 - 09.40","Pemrograman Berorientasi Objek","Bpk. Rian Saputra, S.Kom."],
-    ["09.40 - 10.00","Istirahat",""],
-    ["10.00 - 11.20","Kewirausahaan","Ibu Fitriani, S.Pd."],
-    ["11.20 - 12.40","Matematika","Bpk. Hendra, S.Pd."]
+   "Kamis": [
+    ["07.30 - 08.50", "Kimia", "Ekawati, S.Si., M.Pd."],
+    ["08.50 - 10.00", "Bahasa Inggris", "Daruqti, S.Pd."],
+    ["10.00 - 12.00", "Pendidikan Agama Islam", "Muh. Afdzal N., S.Ag., M.Pd."],
+    ["13.40 - 15.40", "Matematika", "Juliana Mashar, S.Pd."]
   ],
+
   "Jumat": [
-    ["07.00 - 08.20","Pendidikan Agama","Bpk. Wahid, S.Ag."],
-    ["08.20 - 09.40","PPKn","Ibu Fitriani, S.Pd."],
-    ["09.40 - 10.00","Istirahat",""],
-    ["10.00 - 11.00","Proyek Kreatif & Kewirausahaan","Bpk. Teguh Wicaksono, S.Kom."]
+    ["07.30 - 08.10", "Yasinan", ""],
+    ["08.10 - 10.00", "Kimia", "Ekawati, S.Si., M.Pd."],
+    ["10.00 - 14.20", "Kejuruan", "Nur Fitriah Mukhlis, S.Pd."]
   ]
 };
 
@@ -747,34 +760,33 @@ const albumFoto = {
     judul: "Foto Cewek",
     deskripsi: "Momen kebersamaan siswi XI RPL 1",
     foto: [
-      { file:"siswi_1.jpg", seed:"cewek1" },
-      { file:"siswi_2.jpg", seed:"cewek2" },
-      { file:"siswi_3.jpg", seed:"cewek3" }
+    { file:"assets/cewek2.png", seed:"cewek1" },
+      { file:"assets/cewek1.jpg", seed:"cewek2" },
+      { file:"assets/cewek3.png", seed:"cewek3" }
     ]
   },
   cowok: {
     judul: "Foto Cowok",
     deskripsi: "Momen kebersamaan siswa XI RPL 1",
     foto: [
-      { file:"siswa_1.jpg", seed:"cowok1" },
-      { file:"siswa_2.jpg", seed:"cowok2" },
-      { file:"siswa_3.jpg", seed:"cowok3" }
+      { file:"assets/cowok2.png", seed:"cowok1" },
+      { file:"assets/cwok.png", seed:"cowok2" },
+      { file:"assets/cowok1.png", seed:"cowok3" }
     ]
   },
   bersama: {
     judul: "Foto Bersama \u00b7 Dokumentasi",
     deskripsi: "Momen kebersamaan XI RPL 1 \u00b7 Tahun Ajaran 2026/2027",
     foto: [
-      { file:"hackathon_kelas.jpg", seed:"rpl1" },
-      { file:"study_tour_bandung.jpg", seed:"rpl2" },
-      { file:"workshop_ui_ux.jpg", seed:"rpl3" },
-      { file:"demo_day_project.jpg", seed:"rpl4" },
-      { file:"lomba_lkbb_regional.jpg", seed:"rpl5" },
-      { file:"foto_bareng_wali_kelas.jpg", seed:"rpl6" },
-      { file:"praktik_lab_jaringan.jpg", seed:"rpl7" },
-      { file:"class_meeting_futsal.jpg", seed:"rpl8" },
-      { file:"perpisahan_liburan_semester.jpg", seed:"rpl9" },
-      { file:"upacara_hut_sekolah.jpg", seed:"rpl10" }
+      { file:"assets/ce co.png", seed:"rpl1" },
+      { file:"assets/cwek-cwok.png", seed:"rpl2" },
+      { file:"assets/cewk_cwok1.jpg", seed:"rpl3" },
+      { file:"assets/cwok-dan-cowok.jpg", seed:"rpl4" },
+      { file:"assets/cwek--cwok.png", seed:"rpl5" },
+      { file:"assets/cowk-cewek1.png", seed:"rpl6" },
+      { file:"assets/cewek-cowok.png", seed:"rpl7" },
+      { file:"assets/cwek-cowk.png", seed:"rpl8" },
+
     ]
   }
 };
@@ -862,7 +874,24 @@ function tampilkanJadwal(hari, btn){
 }
 
 // Isi angka jumlah foto di tiap kotak cover album
-// ===== LIKE FOTO =====
+// ===== LIKE FOTO & PENONTON ALBUM (disimpan ONLINE, jadi sama di semua HP) =====
+//
+// Pakai CountAPI (https://countapi.mileshilliard.com) — gratis, tanpa
+// perlu daftar/API key. Tiap foto/album punya "key" unik di server mereka
+// buat nyimpen total like/view-nya secara global (bukan cuma di 1 HP).
+//
+// PENTING: key ini bersifat PUBLIK (siapa saja yg tahu key-nya bisa lihat/ubah).
+// Makanya dikasih prefix unik biar gak ketabrak sama punya web lain.
+const LIKE_NAMESPACE = "xirpl1-smk-webkelas-2026-";
+const LIKE_API = "https://countapi.mileshilliard.com/api/v1";
+
+function likeKey(file){
+  return LIKE_NAMESPACE + file.replace(/[^a-zA-Z0-9]/g, "_");
+}
+function viewKey(album){
+  return LIKE_NAMESPACE + "views_" + album;
+}
+
 let likedPhotos = new Set();
 function loadLikedPhotos(){
   try{
@@ -873,30 +902,111 @@ function loadLikedPhotos(){
 function saveLikedPhotos(){
   try{ localStorage.setItem("rpl1-liked-photos", JSON.stringify([...likedPhotos])); }catch(e){}
 }
-// Angka like dasar dibuat tetap per foto (dari hash nama file) supaya tidak berubah-ubah tiap dibuka
-function baseLikeCount(file){
-  return 0;
-}
 function idFoto(file){
   return "like-" + file.replace(/[^a-zA-Z0-9]/g, "_");
 }
-function toggleLike(file){
+
+// Ambil jumlah like saat ini dari server (tanpa menambah)
+async function ambilJumlahLike(file){
+  try{
+    const res = await fetch(`${LIKE_API}/get/${likeKey(file)}`);
+    if(res.status === 404) return 0;
+    const data = await res.json();
+    return parseInt(data.value, 10) || 0;
+  }catch(e){
+    return null; // gagal ambil (mis. offline)
+  }
+}
+
+// Tambah +1 like di server. HP yang sama tidak akan pernah manggil ini dua kali
+// untuk foto yang sama, karena toggleLike() sudah dicegah oleh likedPhotos/localStorage.
+async function tambahJumlahLike(file){
+  try{
+    const res = await fetch(`${LIKE_API}/hit/${likeKey(file)}`);
+    const data = await res.json();
+    return parseInt(data.value, 10) || null;
+  }catch(e){
+    return null;
+  }
+}
+
+// Ambil jumlah penonton (views) album saat ini dari server, tanpa menambah
+async function ambilJumlahView(album){
+  try{
+    const res = await fetch(`${LIKE_API}/get/${viewKey(album)}`);
+    if(res.status === 404) return 0;
+    const data = await res.json();
+    return parseInt(data.value, 10) || 0;
+  }catch(e){
+    return null;
+  }
+}
+
+// Tambah +1 penonton di server tiap kali album dibuka
+async function tambahJumlahView(album){
+  try{
+    const res = await fetch(`${LIKE_API}/hit/${viewKey(album)}`);
+    const data = await res.json();
+    return parseInt(data.value, 10) || null;
+  }catch(e){
+    return null;
+  }
+}
+
+// Total like semua foto di dalam satu album, buat ditampilkan di card cover
+async function totalLikeAlbum(album){
+  const data = albumFoto[album];
+  if(!data) return 0;
+  const hasil = await Promise.all(data.foto.map(item => ambilJumlahLike(item.file)));
+  return hasil.reduce((a,b) => a + (b || 0), 0);
+}
+
+// Update angka penonton & like di card cover album (tanpa menambah view)
+async function updateStatCover(album){
+  const wrap = document.getElementById(`stats-${album}`);
+  if(!wrap) return;
+  const viewEl = wrap.querySelector(".view-count");
+  const likeEl = wrap.querySelector(".like-count-total");
+  const [views, likes] = await Promise.all([ambilJumlahView(album), totalLikeAlbum(album)]);
+  if(viewEl) viewEl.textContent = (views === null) ? "?" : views;
+  if(likeEl) likeEl.textContent = likes;
+}
+
+async function toggleLike(file){
   // Satu perangkat (HP/laptop) hanya boleh like 1x per foto — tidak bisa dibatalkan
   if(likedPhotos.has(file)) return;
+
+  const btn = document.getElementById(idFoto(file));
+  if(!btn || btn.disabled) return;
+
+  // Kunci tombol dulu (optimistic) supaya tidak bisa diklik berkali-kali
+  // sebelum request ke server selesai.
+  btn.disabled = true;
+  btn.classList.add("liked");
+  btn.querySelector("i").className = "bi bi-heart-fill";
+
+  const hasilBaru = await tambahJumlahLike(file);
+
+  if(hasilBaru === null){
+    // Gagal konek ke server like — jangan kunci status like-nya,
+    // supaya siswa bisa coba lagi nanti.
+    btn.disabled = false;
+    btn.classList.remove("liked");
+    btn.querySelector("i").className = "bi bi-heart";
+    return;
+  }
+
+  // Sukses: baru dianggap "sudah like" & disimpan permanen di HP ini
   likedPhotos.add(file);
   saveLikedPhotos();
-  const btn = document.getElementById(idFoto(file));
-  if(!btn) return;
-  btn.classList.add("liked");
-  btn.disabled = true;
-  btn.querySelector("i").className = "bi bi-heart-fill";
-  btn.querySelector(".like-count").textContent = baseLikeCount(file) + 1;
+  btn.querySelector(".like-count").textContent = hasilBaru;
 }
 
 function renderAlbumCovers(){
   Object.keys(albumFoto).forEach(key => {
     const el = document.getElementById(`countCover-${key}`);
     if(el) el.textContent = albumFoto[key].foto.length;
+    updateStatCover(key);
   });
 }
 
@@ -914,17 +1024,36 @@ function bukaGaleri(kategori){
   wrap.innerHTML = data.foto.map(item => `
     <div class="col-6 col-md-4 col-lg-3">
       <div class="foto-wrap">
-        <img src="https://picsum.photos/seed/${item.seed}/500/380"
+        <img src="${item.file}"
              class="foto-kenangan galeri-thumb w-100"
              alt="${item.file}"
-             onclick="bukaLightbox('https://picsum.photos/seed/${item.seed}/1200/900','${item.file}')">
+             onerror="this.onerror=null;this.src='https://picsum.photos/seed/${item.seed}/500/380';"
+             onclick="bukaLightbox('${item.file}','${item.file}')">
         <button type="button" class="like-btn ${likedPhotos.has(item.file) ? 'liked' : ''}" id="${idFoto(item.file)}" ${likedPhotos.has(item.file) ? 'disabled' : ''} onclick="event.stopPropagation(); toggleLike('${item.file}')">
           <i class="bi ${likedPhotos.has(item.file) ? 'bi-heart-fill' : 'bi-heart'}"></i>
-          <span class="like-count">${baseLikeCount(item.file) + (likedPhotos.has(item.file) ? 1 : 0)}</span>
+          <span class="like-count">&hellip;</span>
         </button>
       </div>
       <div class="small text-muted mt-1 font-mono" style="font-size:.7rem;">${item.file}</div>
     </div>`).join("");
+
+  // Ambil jumlah like sebenarnya dari server untuk tiap foto di album ini
+  data.foto.forEach(async item => {
+    const btn = document.getElementById(idFoto(item.file));
+    if(!btn) return;
+    const jumlah = await ambilJumlahLike(item.file);
+    const span = btn.querySelector(".like-count");
+    if(span) span.textContent = (jumlah === null) ? "?" : jumlah;
+  });
+
+  // Tambah +1 penonton untuk album ini, lalu perbarui angka di card cover
+  tambahJumlahView(kategori).then(hasilBaru => {
+    const wrapStat = document.getElementById(`stats-${kategori}`);
+    if(wrapStat && hasilBaru !== null){
+      const viewEl = wrapStat.querySelector(".view-count");
+      if(viewEl) viewEl.textContent = hasilBaru;
+    }
+  });
 }
 function tutupGaleri(){
   document.getElementById("galeriDetail").classList.add("d-none");
