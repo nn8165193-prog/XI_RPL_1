@@ -4,6 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XI RPL 1 &middot; syntaxone</title>
+
+<!-- ===== SEO / SOCIAL PREVIEW (Open Graph & Twitter Card) =====
+     PENTING: ganti GANTI_DENGAN_LINK_WEB_KAMU di bawah dengan alamat
+     web kamu yang sudah online (misal: https://xirpl1.vercel.app/).
+     og:image WAJIB pakai URL lengkap (https://...), tidak bisa pakai
+     path relatif seperti "assets/foto.png", karena WhatsApp/Instagram/
+     Telegram ambil gambarnya langsung dari internet, bukan dari file
+     lokal kamu. -->
+<meta property="og:title" content="XI RPL 1 &middot; syntaxone">
+<meta property="og:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
+<meta property="og:image" content="GANTI_DENGAN_LINK_WEB_KAMU/assets/cwek--cwok.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:url" content="GANTI_DENGAN_LINK_WEB_KAMU/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XI RPL 1">
+<meta property="og:locale" content="id_ID">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="XI RPL 1 &middot; syntaxone">
+<meta name="twitter:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
+<meta name="twitter:image" content="GANTI_DENGAN_LINK_WEB_KAMU/assets/cwek--cwok.png">
+
+<meta name="description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
+<!-- ============================================================ -->
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -232,6 +258,46 @@
   .galeri-stats .bi-eye{color:var(--cyan);}
   .galeri-stats .bi-heart-fill{color:var(--pink);}
 
+  .piket-hari-ini{
+    display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+  }
+  .piket-hari-ini .status-dot{
+    width:10px; height:10px; border-radius:50%;
+    background:#4ADE80; box-shadow:0 0 8px rgba(74,222,128,.7);
+    flex-shrink:0;
+  }
+  .piket-hari-ini .lbl-hari{
+    font-family:var(--font-mono); font-size:.72rem; color:var(--cyan);
+    letter-spacing:.05em; text-transform:uppercase;
+  }
+  .piket-hari-ini .nama-squad{
+    font-family:var(--font-mono); font-weight:700; font-size:1.05rem; color:var(--text);
+  }
+  .piket-hari-ini .tugas-txt{
+    color:var(--muted); font-size:.85rem;
+  }
+
+  .countdown-card{ text-align:left; }
+  .countdown-grid{
+    display:flex; gap:.9rem; flex-wrap:wrap; justify-content:center;
+  }
+  .countdown-grid .kotak{
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.7rem 1rem;
+    min-width:74px;
+    text-align:center;
+  }
+  .countdown-grid .kotak .num{
+    font-family:var(--font-mono); font-weight:800; font-size:1.5rem; color:var(--cyan);
+    line-height:1;
+  }
+  .countdown-grid .kotak .unit{
+    font-family:var(--font-mono); font-size:.66rem; color:var(--muted);
+    letter-spacing:.05em; text-transform:uppercase; margin-top:.3rem;
+  }
+
   .btn-kembali{
     background:transparent; border:1px solid var(--line); color:var(--muted);
     font-family:var(--font-mono); font-size:.82rem;
@@ -348,7 +414,7 @@
 <div id="loader">
   <div class="loader-glow"></div>
   <div class="loader-box text-center position-relative">
-    <div class="lbl">Syntaxone</div>
+    <div class="lbl">// booting classroom-os v1.0</div>
     <div class="nama-kelas" id="loaderNama"></div>
     <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
     <div class="loader-pct" id="loaderPct">0%</div>
@@ -365,7 +431,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navMenu">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link file-tab" href="#pengurus">pengurus<span class="ext"></span></a></li>
         <li class="nav-item"><a class="nav-link file-tab" href="#anggota">anggota<span class="ext"></span></a></li>
         <li class="nav-item"><a class="nav-link file-tab" href="#piket">piket<span class="ext"></span></a></li>
@@ -410,6 +476,27 @@
         <div class="chip-stat p-3">
           <div class="angka">10+</div>
           <div class="lbl">MAPEL/MINGGU</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REMINDER PIKET HARI INI -->
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-8">
+        <div class="kartu piket-hari-ini p-3 p-md-4 text-start" id="piketHariIni">
+          <!-- diisi oleh JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN KELULUSAN -->
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-8">
+        <div class="kartu countdown-card p-3 p-md-4">
+          <div class="comment mb-2">countdown_kelulusan</div>
+          <div class="countdown-grid" id="countdownKelulusan">
+            <!-- diisi oleh JavaScript -->
+          </div>
         </div>
       </div>
     </div>
@@ -1097,12 +1184,85 @@ function bukaLightbox(src, caption){
   modal.show();
 }
 
+/* ================= REMINDER PIKET HARI INI =================
+   Mode testing: isi HARI_OVERRIDE dengan salah satu dari
+   "Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu" untuk
+   lihat pratinjau hari tertentu. Kosongkan jadi null untuk kembali
+   otomatis mengikuti hari sebenarnya. */
+const HARI_OVERRIDE = null;
+
+function tampilkanPiketHariIni(){
+  const wrap = document.getElementById("piketHariIni");
+  if(!wrap) return;
+
+  const namaHariJS = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const hariIni = HARI_OVERRIDE || namaHariJS[new Date().getDay()];
+  const data = piketPerHari[hariIni];
+
+  if(!data){
+    // Sabtu / Minggu — tidak ada jadwal piket
+    wrap.innerHTML = `
+      <span class="status-dot" style="background:var(--muted); box-shadow:none;"></span>
+      <div>
+        <div class="lbl-hari">Hari ini &middot; ${hariIni}</div>
+        <div class="nama-squad">Libur, tidak ada piket</div>
+      </div>`;
+    return;
+  }
+
+  const anggota = anggotaPiket[data.kelompok] || [];
+  wrap.innerHTML = `
+    <span class="status-dot"></span>
+    <div>
+      <div class="lbl-hari">Piket hari ini &middot; ${hariIni}</div>
+      <div class="nama-squad">${data.kelompok} &mdash; ${anggota.join(", ")}</div>
+      <div class="tugas-txt">${data.tugas}</div>
+    </div>`;
+}
+
+/* ================= COUNTDOWN KELULUSAN =================
+   GANTI tanggal di bawah ini sesuai jadwal kelulusan kelas kamu. */
+const TANGGAL_KELULUSAN = "2027-06-05T08:00:00";
+
+function tampilkanCountdown(){
+  const wrap = document.getElementById("countdownKelulusan");
+  if(!wrap) return;
+
+  const target = new Date(TANGGAL_KELULUSAN).getTime();
+
+  function update(){
+    const now = Date.now();
+    const sisa = target - now;
+
+    if(sisa <= 0){
+      wrap.innerHTML = `<div class="text-center font-mono" style="color:var(--cyan);">🎓 Selamat, waktunya lulus!</div>`;
+      return;
+    }
+
+    const hari = Math.floor(sisa / (1000*60*60*24));
+    const jam = Math.floor((sisa / (1000*60*60)) % 24);
+    const menit = Math.floor((sisa / (1000*60)) % 60);
+    const detik = Math.floor((sisa / 1000) % 60);
+
+    wrap.innerHTML = `
+      <div class="kotak"><div class="num">${hari}</div><div class="unit">Hari</div></div>
+      <div class="kotak"><div class="num">${String(jam).padStart(2,"0")}</div><div class="unit">Jam</div></div>
+      <div class="kotak"><div class="num">${String(menit).padStart(2,"0")}</div><div class="unit">Menit</div></div>
+      <div class="kotak"><div class="num">${String(detik).padStart(2,"0")}</div><div class="unit">Detik</div></div>
+    `;
+  }
+  update();
+  setInterval(update, 1000);
+}
+
 loadLikedPhotos();
 loadViewedAlbums();
 renderAnggota();
 renderPiketTabs();
 renderJadwalTabs();
 renderAlbumCovers();
+tampilkanPiketHariIni();
+tampilkanCountdown();
 
 /* ================= LOADING SCREEN ================= */
 (function(){

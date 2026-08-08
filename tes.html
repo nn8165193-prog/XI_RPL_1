@@ -4,6 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XI RPL 1 &middot; syntaxone</title>
+
+<!-- ===== SEO / SOCIAL PREVIEW (Open Graph & Twitter Card) =====
+     PENTING: ganti GANTI_DENGAN_LINK_WEB_KAMU di bawah dengan alamat
+     web kamu yang sudah online (misal: https://xirpl1.vercel.app/).
+     og:image WAJIB pakai URL lengkap (https://...), tidak bisa pakai
+     path relatif seperti "assets/foto.png", karena WhatsApp/Instagram/
+     Telegram ambil gambarnya langsung dari internet, bukan dari file
+     lokal kamu. -->
+<meta property="og:title" content="XI RPL 1 &middot; syntaxone">
+<meta property="og:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
+<meta property="og:image" content="GANTI_DENGAN_LINK_WEB_KAMU/assets/cwek--cwok.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:url" content="GANTI_DENGAN_LINK_WEB_KAMU/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XI RPL 1">
+<meta property="og:locale" content="id_ID">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="XI RPL 1 &middot; syntaxone">
+<meta name="twitter:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
+<meta name="twitter:image" content="GANTI_DENGAN_LINK_WEB_KAMU/assets/cwek--cwok.png">
+
+<meta name="description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
+<!-- ============================================================ -->
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -232,6 +258,90 @@
   .galeri-stats .bi-eye{color:var(--cyan);}
   .galeri-stats .bi-heart-fill{color:var(--pink);}
 
+  .piket-hari-ini{
+    display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+  }
+  .piket-hari-ini .status-dot{
+    width:10px; height:10px; border-radius:50%;
+    background:#4ADE80; box-shadow:0 0 8px rgba(74,222,128,.7);
+    flex-shrink:0;
+  }
+  .piket-hari-ini .lbl-hari{
+    font-family:var(--font-mono); font-size:.72rem; color:var(--cyan);
+    letter-spacing:.05em; text-transform:uppercase;
+  }
+  .piket-hari-ini .nama-squad{
+    font-family:var(--font-mono); font-weight:700; font-size:1.05rem; color:var(--text);
+  }
+  .piket-hari-ini .tugas-txt{
+    color:var(--muted); font-size:.85rem;
+  }
+
+  .countdown-card{ text-align:left; }
+  .countdown-grid{
+    display:flex; gap:.9rem; flex-wrap:wrap; justify-content:center;
+  }
+  .countdown-grid .kotak{
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.7rem 1rem;
+    min-width:74px;
+    text-align:center;
+  }
+  .countdown-grid .kotak .num{
+    font-family:var(--font-mono); font-weight:800; font-size:1.5rem; color:var(--cyan);
+    line-height:1;
+  }
+  .countdown-grid .kotak .unit{
+    font-family:var(--font-mono); font-size:.66rem; color:var(--muted);
+    letter-spacing:.05em; text-transform:uppercase; margin-top:.3rem;
+  }
+
+  .btn-qr{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:38px; height:38px;
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    color:var(--cyan);
+    border-radius:8px;
+    font-size:1.1rem;
+    transition:border-color .15s ease, color .15s ease, transform .12s ease;
+  }
+  .btn-qr:hover{border-color:var(--cyan); color:var(--text); transform:translateY(-1px);}
+  .btn-qr:active{transform:scale(.92);}
+
+  .qr-modal-content{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+  }
+  .qr-box{
+    background:#FFFFFF;
+    border-radius:10px;
+    padding:1rem;
+    display:inline-block;
+    line-height:0;
+  }
+  .qr-link{
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    color:var(--cyan);
+    word-break:break-all;
+  }
+  .btn-download-qr{
+    background:var(--cyan);
+    color:#04211D;
+    border:none;
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:.82rem;
+    border-radius:8px;
+    padding:.5rem 1.1rem;
+    transition:opacity .15s ease;
+  }
+  .btn-download-qr:hover{opacity:.85; color:#04211D;}
+
   .btn-kembali{
     background:transparent; border:1px solid var(--line); color:var(--muted);
     font-family:var(--font-mono); font-size:.82rem;
@@ -361,16 +471,24 @@
 <nav class="navbar navbar-expand-lg sticky-top py-2">
   <div class="container">
     <a class="navbar-brand" href="#beranda"><span class="bracket">&lt;</span>XI-RPL-1<span class="bracket">/&gt;</span></a>
+    <button type="button" class="btn-qr d-lg-none order-1" onclick="bukaQR()" title="Tampilkan QR Code" aria-label="Tampilkan QR Code">
+      <i class="bi bi-qr-code"></i>
+    </button>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="border-color:var(--line)">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navMenu">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link file-tab" href="#pengurus">pengurus<span class="ext">.json</span></a></li>
         <li class="nav-item"><a class="nav-link file-tab" href="#anggota">anggota<span class="ext">.csv</span></a></li>
         <li class="nav-item"><a class="nav-link file-tab" href="#piket">piket<span class="ext">.sh</span></a></li>
         <li class="nav-item"><a class="nav-link file-tab" href="#jadwal">jadwal<span class="ext">.yaml</span></a></li>
         <li class="nav-item"><a class="nav-link file-tab" href="#kenangan">galeri<span class="ext">.png</span></a></li>
+        <li class="nav-item ms-lg-2">
+          <button type="button" class="btn-qr d-none d-lg-inline-flex" onclick="bukaQR()" title="Tampilkan QR Code" aria-label="Tampilkan QR Code">
+            <i class="bi bi-qr-code"></i>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
@@ -410,6 +528,27 @@
         <div class="chip-stat p-3">
           <div class="angka">10+</div>
           <div class="lbl">MAPEL/MINGGU</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REMINDER PIKET HARI INI -->
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-8">
+        <div class="kartu piket-hari-ini p-3 p-md-4 text-start" id="piketHariIni">
+          <!-- diisi oleh JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN KELULUSAN -->
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-8">
+        <div class="kartu countdown-card p-3 p-md-4">
+          <div class="comment mb-2">countdown_kelulusan.js</div>
+          <div class="countdown-grid" id="countdownKelulusan">
+            <!-- diisi oleh JavaScript -->
+          </div>
         </div>
       </div>
     </div>
@@ -618,6 +757,31 @@
   </div>
 </div>
 
+<!-- QR CODE MODAL -->
+<div class="modal fade" id="modalQR" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content qr-modal-content border-0 text-center p-4">
+      <button type="button" class="btn-close btn-close-white ms-auto mb-2" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      <div class="comment mb-2">scan-untuk-buka-web-kelas</div>
+      <h5 class="mb-3">QR Code Web Kelas</h5>
+      <div class="d-flex justify-content-center mb-3">
+        <div class="qr-box">
+          <canvas id="qrCanvas"></canvas>
+        </div>
+      </div>
+      <div class="qr-link mb-3" id="qrLink">&nbsp;</div>
+      <div class="d-flex justify-content-center gap-2">
+        <button type="button" class="btn-download-qr" onclick="unduhQR()">
+          <i class="bi bi-download"></i> Unduh QR
+        </button>
+      </div>
+      <div class="text-muted small mt-3 font-mono" style="font-size:.7rem;">
+        Tunjukkan layar ini &mdash; teman sekelas tinggal scan pakai kamera HP.
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="py-4 text-center">
   <div class="container">
     <div class="small font-mono">WEB KELAS RPL 1</div>
@@ -627,6 +791,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script>
 /* ================= DATA — silakan ganti sesuai data kelas Anda ================= */
 
@@ -906,6 +1071,20 @@ function idFoto(file){
   return "like-" + file.replace(/[^a-zA-Z0-9]/g, "_");
 }
 
+// Album mana saja yang sudah "dihitung" penontonnya di HP/laptop ini —
+// supaya 1 perangkat cuma nambah +1 penonton sekali per album, bukan
+// setiap kali album dibuka ulang.
+let viewedAlbums = new Set();
+function loadViewedAlbums(){
+  try{
+    const raw = localStorage.getItem("rpl1-viewed-albums");
+    viewedAlbums = new Set(raw ? JSON.parse(raw) : []);
+  }catch(e){ viewedAlbums = new Set(); }
+}
+function saveViewedAlbums(){
+  try{ localStorage.setItem("rpl1-viewed-albums", JSON.stringify([...viewedAlbums])); }catch(e){}
+}
+
 // Ambil jumlah like saat ini dari server (tanpa menambah)
 async function ambilJumlahLike(file){
   try{
@@ -1046,14 +1225,29 @@ function bukaGaleri(kategori){
     if(span) span.textContent = (jumlah === null) ? "?" : jumlah;
   });
 
-  // Tambah +1 penonton untuk album ini, lalu perbarui angka di card cover
-  tambahJumlahView(kategori).then(hasilBaru => {
-    const wrapStat = document.getElementById(`stats-${kategori}`);
-    if(wrapStat && hasilBaru !== null){
-      const viewEl = wrapStat.querySelector(".view-count");
-      if(viewEl) viewEl.textContent = hasilBaru;
-    }
-  });
+  // Penonton cuma dihitung +1 sekali per HP/laptop untuk tiap album.
+  // Kalau perangkat ini sudah pernah buka album tsb, cukup tampilkan
+  // angka yang sudah ada (tidak menambah lagi).
+  const wrapStat = document.getElementById(`stats-${kategori}`);
+  if(viewedAlbums.has(kategori)){
+    ambilJumlahView(kategori).then(jumlah => {
+      if(wrapStat && jumlah !== null){
+        const viewEl = wrapStat.querySelector(".view-count");
+        if(viewEl) viewEl.textContent = jumlah;
+      }
+    });
+  }else{
+    tambahJumlahView(kategori).then(hasilBaru => {
+      if(hasilBaru !== null){
+        viewedAlbums.add(kategori);
+        saveViewedAlbums();
+        if(wrapStat){
+          const viewEl = wrapStat.querySelector(".view-count");
+          if(viewEl) viewEl.textContent = hasilBaru;
+        }
+      }
+    });
+  }
 }
 function tutupGaleri(){
   document.getElementById("galeriDetail").classList.add("d-none");
@@ -1068,11 +1262,116 @@ function bukaLightbox(src, caption){
   modal.show();
 }
 
+/* ================= QR CODE ================= */
+// QR code otomatis dibuat dari link halaman ini (window.location.href),
+// jadi begitu web-nya sudah online (misal di Vercel), QR-nya langsung
+// mengarah ke link yang benar tanpa perlu diatur manual.
+function bukaQR(){
+  const url = window.location.href;
+  const canvas = document.getElementById("qrCanvas");
+  const linkEl = document.getElementById("qrLink");
+  linkEl.textContent = url;
+
+  QRCode.toCanvas(canvas, url, {
+    width: 220,
+    margin: 1,
+    color: { dark: "#0A0E17", light: "#FFFFFF" }
+  }, function(error){
+    if(error) console.error(error);
+  });
+
+  const modal = new bootstrap.Modal(document.getElementById("modalQR"));
+  modal.show();
+}
+
+function unduhQR(){
+  const canvas = document.getElementById("qrCanvas");
+  if(!canvas) return;
+  const link = document.createElement("a");
+  link.download = "qr-web-xirpl1.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+
+/* ================= REMINDER PIKET HARI INI =================
+   Mode testing: isi HARI_OVERRIDE dengan salah satu dari
+   "Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu" untuk
+   lihat pratinjau hari tertentu. Kosongkan jadi null untuk kembali
+   otomatis mengikuti hari sebenarnya. */
+const HARI_OVERRIDE = "Jumat";
+
+function tampilkanPiketHariIni(){
+  const wrap = document.getElementById("piketHariIni");
+  if(!wrap) return;
+
+  const namaHariJS = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const hariIni = HARI_OVERRIDE || namaHariJS[new Date().getDay()];
+  const data = piketPerHari[hariIni];
+
+  if(!data){
+    // Sabtu / Minggu — tidak ada jadwal piket
+    wrap.innerHTML = `
+      <span class="status-dot" style="background:var(--muted); box-shadow:none;"></span>
+      <div>
+        <div class="lbl-hari">Hari ini &middot; ${hariIni}</div>
+        <div class="nama-squad">Libur, tidak ada piket</div>
+      </div>`;
+    return;
+  }
+
+  const anggota = anggotaPiket[data.kelompok] || [];
+  wrap.innerHTML = `
+    <span class="status-dot"></span>
+    <div>
+      <div class="lbl-hari">Piket hari ini &middot; ${hariIni}</div>
+      <div class="nama-squad">${data.kelompok} &mdash; ${anggota.join(", ")}</div>
+      <div class="tugas-txt">${data.tugas}</div>
+    </div>`;
+}
+
+/* ================= COUNTDOWN KELULUSAN =================
+   GANTI tanggal di bawah ini sesuai jadwal kelulusan kelas kamu. */
+const TANGGAL_KELULUSAN = "2027-06-05T08:00:00";
+
+function tampilkanCountdown(){
+  const wrap = document.getElementById("countdownKelulusan");
+  if(!wrap) return;
+
+  const target = new Date(TANGGAL_KELULUSAN).getTime();
+
+  function update(){
+    const now = Date.now();
+    const sisa = target - now;
+
+    if(sisa <= 0){
+      wrap.innerHTML = `<div class="text-center font-mono" style="color:var(--cyan);">🎓 Selamat, waktunya lulus!</div>`;
+      return;
+    }
+
+    const hari = Math.floor(sisa / (1000*60*60*24));
+    const jam = Math.floor((sisa / (1000*60*60)) % 24);
+    const menit = Math.floor((sisa / (1000*60)) % 60);
+    const detik = Math.floor((sisa / 1000) % 60);
+
+    wrap.innerHTML = `
+      <div class="kotak"><div class="num">${hari}</div><div class="unit">Hari</div></div>
+      <div class="kotak"><div class="num">${String(jam).padStart(2,"0")}</div><div class="unit">Jam</div></div>
+      <div class="kotak"><div class="num">${String(menit).padStart(2,"0")}</div><div class="unit">Menit</div></div>
+      <div class="kotak"><div class="num">${String(detik).padStart(2,"0")}</div><div class="unit">Detik</div></div>
+    `;
+  }
+  update();
+  setInterval(update, 1000);
+}
+
 loadLikedPhotos();
+loadViewedAlbums();
 renderAnggota();
 renderPiketTabs();
 renderJadwalTabs();
 renderAlbumCovers();
+tampilkanPiketHariIni();
+tampilkanCountdown();
 
 /* ================= LOADING SCREEN ================= */
 (function(){
