@@ -489,6 +489,18 @@
       </div>
     </div>
 
+    <!-- COUNTDOWN PIKET BERIKUTNYA -->
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-8">
+        <div class="kartu countdown-card p-3 p-md-4">
+          <div class="comment mb-2" id="labelCountdownPiket">piket_berikutnya</div>
+          <div class="countdown-grid" id="countdownPiketBerikutnya">
+            <!-- diisi oleh JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- COUNTDOWN KELULUSAN -->
     <div class="row justify-content-center mt-3">
       <div class="col-md-8">
@@ -1220,6 +1232,84 @@ function tampilkanPiketHariIni(){
     </div>`;
 }
 
+/* ================= COUNTDOWN PIKET BERIKUTNYA =================
+   Menghitung mundur ke jadwal piket terdekat (Senin–Jumat).
+   Jam mulai piket berikutnya bisa diatur di JAM_MULAI_PIKET. */
+const JAM_MULAI_PIKET = { jam: 7, menit: 30 };
+
+function cariPiketBerikutnya(){
+  const namaHariJS = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const now = new Date();
+
+  // Cek dulu apakah piket hari ini masih akan datang (belum lewat jam mulainya)
+  const hariIniNama = HARI_OVERRIDE || namaHariJS[now.getDay()];
+  const dataHariIni = piketPerHari[hariIniNama];
+  if(dataHariIni){
+    const mulaiHariIni = new Date(now);
+    mulaiHariIni.setHours(JAM_MULAI_PIKET.jam, JAM_MULAI_PIKET.menit, 0, 0);
+    if(mulaiHariIni.getTime() > now.getTime()){
+      return { tanggal: mulaiHariIni, hari: hariIniNama, data: dataHariIni };
+    }
+  }
+
+  // Kalau tidak, cari hari berikutnya (maju sampai 14 hari) yang punya jadwal piket
+  for(let tambah = 1; tambah <= 14; tambah++){
+    const d = new Date(now);
+    d.setDate(d.getDate() + tambah);
+    const namaHari = namaHariJS[d.getDay()];
+    const data = piketPerHari[namaHari];
+    if(data){
+      d.setHours(JAM_MULAI_PIKET.jam, JAM_MULAI_PIKET.menit, 0, 0);
+      return { tanggal: d, hari: namaHari, data: data };
+    }
+  }
+  return null;
+}
+
+function tampilkanCountdownPiket(){
+  const wrap = document.getElementById("countdownPiketBerikutnya");
+  const label = document.getElementById("labelCountdownPiket");
+  if(!wrap) return;
+
+  const target = cariPiketBerikutnya();
+  if(!target){
+    wrap.innerHTML = `<div class="text-muted font-mono small">Tidak ada jadwal piket ditemukan</div>`;
+    return;
+  }
+
+  if(label){
+    label.textContent = `piket_berikutnya · ${target.hari} · ${target.data.kelompok}`;
+  }
+
+  const waktuTarget = target.tanggal.getTime();
+
+  function update(){
+    const now = Date.now();
+    const sisa = waktuTarget - now;
+
+    if(sisa <= 0){
+      // Waktunya sudah tiba — cari ulang jadwal berikutnya
+      tampilkanCountdownPiket();
+      return;
+    }
+
+    const hari = Math.floor(sisa / (1000*60*60*24));
+    const jam = Math.floor((sisa / (1000*60*60)) % 24);
+    const menit = Math.floor((sisa / (1000*60)) % 60);
+    const detik = Math.floor((sisa / 1000) % 60);
+
+    wrap.innerHTML = `
+      <div class="kotak"><div class="num">${hari}</div><div class="unit">Hari</div></div>
+      <div class="kotak"><div class="num">${String(jam).padStart(2,"0")}</div><div class="unit">Jam</div></div>
+      <div class="kotak"><div class="num">${String(menit).padStart(2,"0")}</div><div class="unit">Menit</div></div>
+      <div class="kotak"><div class="num">${String(detik).padStart(2,"0")}</div><div class="unit">Detik</div></div>
+    `;
+  }
+  update();
+  if(window._piketCountdownInterval) clearInterval(window._piketCountdownInterval);
+  window._piketCountdownInterval = setInterval(update, 1000);
+}
+
 /* ================= COUNTDOWN KELULUSAN =================
    GANTI tanggal di bawah ini sesuai jadwal kelulusan kelas kamu. */
 const TANGGAL_KELULUSAN = "2027-06-05T08:00:00";
@@ -1262,6 +1352,7 @@ renderPiketTabs();
 renderJadwalTabs();
 renderAlbumCovers();
 tampilkanPiketHariIni();
+tampilkanCountdownPiket();
 tampilkanCountdown();
 
 /* ================= LOADING SCREEN ================= */
