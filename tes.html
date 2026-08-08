@@ -7,10 +7,10 @@
 
 <meta property="og:title" content="XI RPL 1 &middot; syntaxone">
 <meta property="og:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
-<meta property="og:image" content="GANTI_DENGAN_LINK_WEB_KAMU/assets/cwek--cwok.png">
+<meta property="og:image" content="https://syntaxone.vercel.app/assets/cwek--cwok.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="750">
-<meta property="og:url" content="GANTI_DENGAN_LINK_WEB_KAMU/">
+<meta property="og:url" content="https://syntaxone.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="XI RPL 1">
 <meta property="og:locale" content="id_ID">
@@ -18,9 +18,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="XI RPL 1 &middot; syntaxone">
 <meta name="twitter:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
-<meta name="twitter:image" content="GANTI_DENGAN_LINK_WEB_KAMU/assets/cwek--cwok.png">
+<meta name="twitter:image" content="https://syntaxone.vercel.app/assets/cwek--cwok.png">
 
-<meta name="description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -170,11 +169,10 @@
   }
   .table > :not(caption) > * > *{background:transparent; border-color:var(--line);}
   .table-piket td, .table-jadwal td{vertical-align:middle;}
-  .table-jadwal td.jam-cell{color:#FFFFFF;}
-  .table-jadwal td.mapel-cell{color:#FFFFFF;}
-  .table-jadwal td.guru-cell{color:#FFFFFF;}
+  .table-jadwal td.jam-cell{color:var(--cyan);}
+  .table-jadwal td.mapel-cell{color: #fafaf9;}
+  .table-jadwal td.guru-cell{color:var(--muted);}
 
-  /* ===== PIKET — teks putih ===== */
   #piket, #piket h2, #piket p, #piket .nav-link, #piket .table, #piket .table td, #piket .table th{
     color: #FFFFFF !important;
   }
@@ -396,6 +394,48 @@
     .reveal{opacity:1; transform:none; transition:none;}
     #loader{transition:none;}
   }
+
+  /* ==== audio galeri ==== */
+  .musik-galeri-bar{
+    display:flex; align-items:center; gap:.6rem;
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.55rem .85rem;
+    margin-bottom:1rem;
+    font-family:var(--font-mono); font-size:.78rem;
+    color:var(--muted);
+  }
+  .musik-galeri-bar .btn-musik{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--cyan);
+    width:34px; height:34px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .musik-galeri-bar .btn-musik:hover{border-color:var(--cyan); background:rgba(45,212,191,.08);}
+  .musik-galeri-bar .judul-lagu{color:var(--text); font-weight:600;}
+  .musik-galeri-bar .bars{
+    display:flex; align-items:flex-end; gap:2px; height:16px; margin-left:auto;
+  }
+  .musik-galeri-bar .bars span{
+    width:3px; background:var(--cyan); border-radius:2px;
+    animation:bar-bounce 1s ease-in-out infinite;
+    opacity:.35;
+  }
+  .musik-galeri-bar.playing .bars span{opacity:1;}
+  .musik-galeri-bar .bars span:nth-child(1){height:40%; animation-delay:0s;}
+  .musik-galeri-bar .bars span:nth-child(2){height:100%; animation-delay:.15s;}
+  .musik-galeri-bar .bars span:nth-child(3){height:65%; animation-delay:.3s;}
+  .musik-galeri-bar .bars span:nth-child(4){height:85%; animation-delay:.45s;}
+  @keyframes bar-bounce{
+    0%,100%{transform:scaleY(.4);}
+    50%{transform:scaleY(1);}
+  }
 </style>
 </head>
 <body>
@@ -435,7 +475,7 @@
     <div class="terminal mx-auto">
       <div class="terminal-bar">
         <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-        <span class="terminal-title">ig: @syntaxone: ~/tahun-ajaran-2026</span>
+        <span class="terminal-title">ig: @syntaxone: ~/tahun-ajaran-2025</span>
       </div>
       <div class="terminal-body">
         <div><span class="prompt">$</span> whoami</div>
@@ -483,16 +523,6 @@
         </div>
       </div>
     </div>
-
-    <div class="row justify-content-center mt-3">
-      <div class="col-md-8">
-        <div class="kartu countdown-card p-3 p-md-4">
-          <div class="comment mb-2">countdown_kelulusan</div>
-          <div class="countdown-grid" id="countdownKelulusan">
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </header>
 
@@ -508,7 +538,7 @@
           <img src="assets/ibu.png" class="foto-pengurus mb-3" alt="Wali Kelas">
           <span class="badge badge-jabatan mb-2">WALI KELAS</span>
           <h5 class="mb-0">Daruqti, S.Pd.</h5>
-          <div class="text-muted small">Guru Bahasa inggris</div>
+          <div class="text-muted small">Wali kelas XI RPL 1</div>
         </div>
       </div>
     </div>
@@ -595,7 +625,7 @@
   <div class="container">
     <div class="comment">04_jadwal-pelajaran</div>
     <h2 class="mb-1">Jadwal Pelajaran</h2>
-    <p class="text-muted mb-4">Jadwal mata pelajaran &amp; mata pelajaran kejuruan RPL, Senin&ndash;Jumat.</p>
+    <p class="text-muted mb-4">Jadwal mata pelajaran IX RPL 1&ndash;Syntaxone.</p>
 
     <ul class="nav nav-pills mb-3" id="tabJadwal" role="tablist"></ul>
     <div class="table-responsive kartu p-3 p-md-4">
@@ -654,7 +684,7 @@
           </div>
           <div class="p-3">
             <div class="fw-semibold">Foto Bersama &middot; Dokumentasi</div>
-            <div class="text-muted small">Momen kebersamaan XI RPL 1 &middot; Tahun Ajaran 2026/2027</div>
+            <div class="text-muted small">Momen kebersamaan XI RPL 1 &middot; Tahun Ajaran 2025/2027</div>
             <div class="galeri-stats" id="stats-bersama">
               <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
               <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
@@ -668,6 +698,18 @@
       <button type="button" class="btn-kembali mb-3" onclick="tutupGaleri()">
         <i class="bi bi-arrow-left"></i> Kembali ke Galeri
       </button>
+
+      <div class="musik-galeri-bar" id="musikGaleriBar">
+        <button type="button" class="btn-musik" id="btnMusikGaleri" onclick="toggleMusikGaleri()">
+          <i class="bi bi-play-fill" id="iconMusikGaleri"></i>
+        </button>
+        <div>
+          <div class="judul-lagu" id="judulLaguGaleri">&nbsp;</div>
+          <div style="font-size:.7rem;">musik latar album</div>
+        </div>
+        <div class="bars"><span></span><span></span><span></span><span></span></div>
+      </div>
+
       <h3 class="mb-1" id="galeriDetailTitle">&nbsp;</h3>
       <p class="text-muted mb-2" id="galeriDetailDesc">&nbsp;</p>
       <div class="text-muted small mb-3 font-mono">
@@ -687,6 +729,8 @@
     </div>
   </div>
 </div>
+
+<audio id="audioGaleri" preload="none" loop></audio>
 
 <footer class="py-4 text-center">
   <div class="container">
@@ -834,7 +878,7 @@ const albumFoto = {
   },
   bersama: {
     judul: "Foto Bersama \u00b7 Dokumentasi",
-    deskripsi: "Momen kebersamaan XI RPL 1 \u00b7 Tahun Ajaran 2026/2027",
+    deskripsi: "Momen kebersamaan XI RPL 1 \u00b7 Tahun Ajaran 2025/2027",
     foto: [
       { file:"assets/ce co.png", seed:"rpl1" },
       { file:"assets/cwek-cwok.png", seed:"rpl2" },
@@ -847,6 +891,15 @@ const albumFoto = {
 
     ]
   }
+};
+
+/* ==== musik per album galeri ====
+   Ganti "src" di bawah dengan file mp3 milikmu sendiri di folder assets/
+   (pastikan itu musik bebas royalti / memang milikmu, biar aman secara hak cipta) */
+const musikGaleri = {
+  cewek:   { src: "assets/musik-cewek.mp3",   judul: "Musik Album Cewek" },
+  cowok:   { src: "assets/musik-cowok.mp3",   judul: "Musik Album Cowok" },
+  bersama: { src: "audio-cewek-cowok.mp3", judul: "Musik Album Bersama" }
 };
 
 function fotoSiswa(nama){
@@ -922,7 +975,7 @@ function tampilkanJadwal(hari, btn){
     <tr>
       <td class="font-mono small jam-cell">${jam}</td>
       <td class="fw-semibold mapel-cell">${mapel}</td>
-      <td class="guru-cell">${guru || "-"}</td>
+      <td class="text-muted guru-cell">${guru || "-"}</td>
     </tr>`).join("");
 }
 
@@ -1052,6 +1105,64 @@ function renderAlbumCovers(){
   });
 }
 
+/* ==== kontrol audio galeri ==== */
+const audioGaleri = document.getElementById("audioGaleri");
+let kategoriAudioAktif = null;
+
+function putarMusikGaleri(kategori){
+  const info = musikGaleri[kategori];
+  const bar = document.getElementById("musikGaleriBar");
+  const judulEl = document.getElementById("judulLaguGaleri");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(!info){
+    if(bar) bar.style.display = "none";
+    return;
+  }
+  if(bar) bar.style.display = "flex";
+  if(judulEl) judulEl.textContent = info.judul;
+
+  kategoriAudioAktif = kategori;
+
+  if(!audioGaleri.src.endsWith(info.src)){
+    audioGaleri.src = info.src;
+  }
+  audioGaleri.currentTime = 0;
+
+  audioGaleri.play().then(() => {
+    if(bar) bar.classList.add("playing");
+    if(iconEl) iconEl.className = "bi bi-pause-fill";
+  }).catch(() => {
+    // autoplay diblokir browser, tunggu klik tombol play manual
+    if(bar) bar.classList.remove("playing");
+    if(iconEl) iconEl.className = "bi bi-play-fill";
+  });
+}
+
+function hentikanMusikGaleri(){
+  audioGaleri.pause();
+  audioGaleri.currentTime = 0;
+  kategoriAudioAktif = null;
+  const bar = document.getElementById("musikGaleriBar");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(bar) bar.classList.remove("playing");
+  if(iconEl) iconEl.className = "bi bi-play-fill";
+}
+
+function toggleMusikGaleri(){
+  const bar = document.getElementById("musikGaleriBar");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(audioGaleri.paused){
+    audioGaleri.play().then(() => {
+      if(bar) bar.classList.add("playing");
+      if(iconEl) iconEl.className = "bi bi-pause-fill";
+    }).catch(()=>{});
+  }else{
+    audioGaleri.pause();
+    if(bar) bar.classList.remove("playing");
+    if(iconEl) iconEl.className = "bi bi-play-fill";
+  }
+}
+
 function bukaGaleri(kategori){
   const data = albumFoto[kategori];
   if(!data) return;
@@ -1060,6 +1171,9 @@ function bukaGaleri(kategori){
   document.getElementById("galeriDetailTitle").textContent = data.judul;
   document.getElementById("galeriDetailDesc").textContent = data.deskripsi;
   document.getElementById("galeriDetailCount").textContent = data.foto.length;
+
+  // putar lagu sesuai album yang dibuka
+  putarMusikGaleri(kategori);
 
   const wrap = document.getElementById("galeriIsi");
   wrap.innerHTML = data.foto.map(item => `
@@ -1110,6 +1224,9 @@ function bukaGaleri(kategori){
 function tutupGaleri(){
   document.getElementById("galeriDetail").classList.add("d-none");
   document.getElementById("galeriCoverList").classList.remove("d-none");
+
+  // hentikan musik saat kembali ke daftar galeri
+  hentikanMusikGaleri();
 }
 
 function bukaLightbox(src, caption){
@@ -1222,39 +1339,6 @@ function tampilkanCountdownPiket(){
   window._piketCountdownInterval = setInterval(update, 1000);
 }
 
-const TANGGAL_KELULUSAN = "2027-06-05T08:00:00";
-
-function tampilkanCountdown(){
-  const wrap = document.getElementById("countdownKelulusan");
-  if(!wrap) return;
-
-  const target = new Date(TANGGAL_KELULUSAN).getTime();
-
-  function update(){
-    const now = Date.now();
-    const sisa = target - now;
-
-    if(sisa <= 0){
-      wrap.innerHTML = `<div class="text-center font-mono" style="color:var(--cyan);">🎓 Selamat, waktunya lulus!</div>`;
-      return;
-    }
-
-    const hari = Math.floor(sisa / (1000*60*60*24));
-    const jam = Math.floor((sisa / (1000*60*60)) % 24);
-    const menit = Math.floor((sisa / (1000*60)) % 60);
-    const detik = Math.floor((sisa / 1000) % 60);
-
-    wrap.innerHTML = `
-      <div class="kotak"><div class="num">${hari}</div><div class="unit">Hari</div></div>
-      <div class="kotak"><div class="num">${String(jam).padStart(2,"0")}</div><div class="unit">Jam</div></div>
-      <div class="kotak"><div class="num">${String(menit).padStart(2,"0")}</div><div class="unit">Menit</div></div>
-      <div class="kotak"><div class="num">${String(detik).padStart(2,"0")}</div><div class="unit">Detik</div></div>
-    `;
-  }
-  update();
-  setInterval(update, 1000);
-}
-
 loadLikedPhotos();
 loadViewedAlbums();
 renderAnggota();
@@ -1263,7 +1347,6 @@ renderJadwalTabs();
 renderAlbumCovers();
 tampilkanPiketHariIni();
 tampilkanCountdownPiket();
-tampilkanCountdown();
 
 (function(){
   const namaKelas = "XI RPL 1";
