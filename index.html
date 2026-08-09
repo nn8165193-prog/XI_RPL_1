@@ -1163,7 +1163,7 @@ function toggleMusikGaleri(){
   }
 }
 
-function bukaGaleri(kategori){
+async function bukaGaleri(kategori){
   const data = albumFoto[kategori];
   if(!data) return;
   document.getElementById("galeriCoverList").classList.add("d-none");
@@ -1176,7 +1176,18 @@ function bukaGaleri(kategori){
   putarMusikGaleri(kategori);
 
   const wrap = document.getElementById("galeriIsi");
-  wrap.innerHTML = data.foto.map(item => `
+  wrap.innerHTML = `<div class="col-12 text-center text-muted py-4 font-mono"><i class="bi bi-terminal"></i> $ mengurutkan berdasarkan like...</div>`;
+
+  // ambil jumlah like semua foto dulu, baru urutkan dari yang terbanyak
+  const fotoDenganLike = await Promise.all(
+    data.foto.map(async item => {
+      const jumlah = await ambilJumlahLike(item.file);
+      return { ...item, jumlahLike: jumlah || 0 };
+    })
+  );
+  fotoDenganLike.sort((a, b) => b.jumlahLike - a.jumlahLike);
+
+  wrap.innerHTML = fotoDenganLike.map(item => `
     <div class="col-6 col-md-4 col-lg-3">
       <div class="foto-wrap">
         <img src="${item.file}"
@@ -1186,19 +1197,11 @@ function bukaGaleri(kategori){
              onclick="bukaLightbox('${item.file}','${item.file}')">
         <button type="button" class="like-btn ${likedPhotos.has(item.file) ? 'liked' : ''}" id="${idFoto(item.file)}" ${likedPhotos.has(item.file) ? 'disabled' : ''} onclick="event.stopPropagation(); toggleLike('${item.file}')">
           <i class="bi ${likedPhotos.has(item.file) ? 'bi-heart-fill' : 'bi-heart'}"></i>
-          <span class="like-count">&hellip;</span>
+          <span class="like-count">${item.jumlahLike}</span>
         </button>
       </div>
       <div class="small text-muted mt-1 font-mono" style="font-size:.7rem;">${item.file}</div>
     </div>`).join("");
-
-  data.foto.forEach(async item => {
-    const btn = document.getElementById(idFoto(item.file));
-    if(!btn) return;
-    const jumlah = await ambilJumlahLike(item.file);
-    const span = btn.querySelector(".like-count");
-    if(span) span.textContent = (jumlah === null) ? "?" : jumlah;
-  });
 
   const wrapStat = document.getElementById(`stats-${kategori}`);
   if(viewedAlbums.has(kategori)){
