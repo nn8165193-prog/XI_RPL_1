@@ -436,6 +436,80 @@
     0%,100%{transform:scaleY(.4);}
     50%{transform:scaleY(1);}
   }
+
+  /* ==== confetti hati saat like ==== */
+  .heart-burst{
+    position:fixed;
+    pointer-events:none;
+    z-index:4000;
+    font-size:1rem;
+    color:var(--pink);
+    animation: heart-fly 900ms ease-out forwards;
+  }
+  @keyframes heart-fly{
+    0%{ transform:translate(0,0) scale(.6) rotate(0deg); opacity:1; }
+    100%{ transform:translate(var(--dx), var(--dy)) scale(1.1) rotate(var(--rot)); opacity:0; }
+  }
+
+  /* ==== papan peringkat foto favorit ==== */
+  .leaderboard-wrap{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:1.25rem 1.25rem 1.4rem;
+    margin-bottom:2rem;
+  }
+  .leaderboard-wrap .lb-title{
+    display:flex; align-items:center; gap:.5rem;
+    font-family:var(--font-mono); font-weight:700; font-size:1rem;
+    color:var(--text); margin-bottom:.9rem;
+  }
+  .leaderboard-wrap .lb-title i{color:var(--amber);}
+  .lb-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:.9rem;
+  }
+  @media (max-width:576px){
+    .lb-grid{grid-template-columns:1fr;}
+  }
+  .lb-item{
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--panel-alt);
+    cursor:pointer;
+    transition:border-color .18s ease, transform .18s ease;
+  }
+  .lb-item:hover{border-color:var(--cyan); transform:translateY(-2px);}
+  .lb-item img{
+    width:100%; aspect-ratio:4/3; object-fit:cover; display:block;
+    filter:saturate(.92);
+  }
+  .lb-rank{
+    position:absolute; top:8px; left:8px;
+    width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-weight:800; font-size:.78rem;
+    background:rgba(10,14,23,.8); border:1px solid var(--line);
+    color:var(--text);
+  }
+  .lb-item:nth-child(1) .lb-rank{color:#04211D; background:var(--amber); border-color:var(--amber);}
+  .lb-item:nth-child(2) .lb-rank{color:#04211D; background:#C7D2E0; border-color:#C7D2E0;}
+  .lb-item:nth-child(3) .lb-rank{color:#fff; background:#B8722F; border-color:#B8722F;}
+  .lb-like{
+    position:absolute; bottom:8px; right:8px;
+    display:flex; align-items:center; gap:.25rem;
+    background:rgba(10,14,23,.75); backdrop-filter:blur(4px);
+    border:1px solid var(--line); border-radius:20px;
+    padding:.2rem .55rem;
+    font-family:var(--font-mono); font-size:.72rem; color:var(--pink);
+  }
+  .lb-empty{
+    font-family:var(--font-mono); font-size:.8rem; color:var(--muted);
+    text-align:center; padding:1rem 0;
+  }
 </style>
 </head>
 <body>
@@ -642,6 +716,13 @@
     <div class="comment">05_kenangan-kelas</div>
     <h2 class="mb-1">Kenangan Kelas</h2>
     <p class="text-muted mb-4">Album digital berisi momen-momen terbaik Kelas XI RPL 1 sepanjang tahun ajaran &mdash; dipisah jadi foto cewek, foto cowok, dan foto bersama/dokumentasi.</p>
+
+    <div class="leaderboard-wrap" id="leaderboardWrap">
+      <div class="lb-title"><i class="bi bi-trophy-fill"></i> Papan Peringkat &middot; Foto Favorit</div>
+      <div class="lb-grid" id="leaderboardGrid">
+        <div class="lb-empty">$ menghitung foto terfavorit...</div>
+      </div>
+    </div>
 
     <div id="galeriCoverList" class="row g-4 justify-content-center">
       <div class="col-md-4">
@@ -1073,6 +1154,30 @@ async function updateStatCover(album){
   if(likeEl) likeEl.textContent = likes;
 }
 
+function ledakkanHati(originEl){
+  if(!originEl) return;
+  const rect = originEl.getBoundingClientRect();
+  const originX = rect.left + rect.width / 2;
+  const originY = rect.top + rect.height / 2;
+  const jumlah = 10;
+  for(let i = 0; i < jumlah; i++){
+    const heart = document.createElement("span");
+    heart.className = "heart-burst";
+    heart.innerHTML = '<i class="bi bi-heart-fill"></i>';
+    const sudut = (Math.PI * 2 * i) / jumlah + Math.random() * 0.5;
+    const jarak = 40 + Math.random() * 50;
+    const dx = Math.cos(sudut) * jarak;
+    const dy = Math.sin(sudut) * jarak - 20;
+    heart.style.left = originX + "px";
+    heart.style.top = originY + "px";
+    heart.style.setProperty("--dx", dx + "px");
+    heart.style.setProperty("--dy", dy + "px");
+    heart.style.setProperty("--rot", (Math.random() * 60 - 30) + "deg");
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 950);
+  }
+}
+
 async function toggleLike(file){
   if(likedPhotos.has(file)) return;
 
@@ -1082,6 +1187,7 @@ async function toggleLike(file){
   btn.disabled = true;
   btn.classList.add("liked");
   btn.querySelector("i").className = "bi bi-heart-fill";
+  ledakkanHati(btn);
 
   const hasilBaru = await tambahJumlahLike(file);
 
@@ -1095,6 +1201,45 @@ async function toggleLike(file){
   likedPhotos.add(file);
   saveLikedPhotos();
   btn.querySelector(".like-count").textContent = hasilBaru;
+
+  renderLeaderboard();
+}
+
+async function renderLeaderboard(){
+  const grid = document.getElementById("leaderboardGrid");
+  if(!grid) return;
+
+  const semuaFoto = [];
+  Object.keys(albumFoto).forEach(kategori => {
+    albumFoto[kategori].foto.forEach(item => {
+      semuaFoto.push({ ...item, kategori });
+    });
+  });
+
+  const dengannLike = await Promise.all(
+    semuaFoto.map(async item => {
+      const jumlah = await ambilJumlahLike(item.file);
+      return { ...item, jumlahLike: jumlah || 0 };
+    })
+  );
+
+  const top3 = dengannLike
+    .filter(item => item.jumlahLike > 0)
+    .sort((a, b) => b.jumlahLike - a.jumlahLike)
+    .slice(0, 3);
+
+  if(top3.length === 0){
+    grid.innerHTML = `<div class="lb-empty">$ belum ada foto yang di-like &mdash; jadi yang pertama!</div>`;
+    return;
+  }
+
+  grid.innerHTML = top3.map((item, i) => `
+    <div class="lb-item" onclick="bukaGaleri('${item.kategori}')">
+      <span class="lb-rank">${i + 1}</span>
+      <img src="${item.file}" alt="${item.file}"
+           onerror="this.onerror=null;this.src='https://picsum.photos/seed/${item.seed}/500/380';">
+      <span class="lb-like"><i class="bi bi-heart-fill"></i> ${item.jumlahLike}</span>
+    </div>`).join("");
 }
 
 function renderAlbumCovers(){
@@ -1348,6 +1493,7 @@ renderAnggota();
 renderPiketTabs();
 renderJadwalTabs();
 renderAlbumCovers();
+renderLeaderboard();
 tampilkanPiketHariIni();
 tampilkanCountdownPiket();
 
