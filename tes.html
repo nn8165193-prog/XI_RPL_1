@@ -490,6 +490,20 @@
   }
   .toast-admin.show{opacity:1; transform:translateY(0);}
   .dashboard-pane{max-height:60vh; overflow-y:auto; padding-right:.3rem;}
+
+  /* ==== status sinkronisasi Firebase ==== */
+  .sync-status{
+    position:fixed; bottom:16px; left:16px; z-index:4400;
+    display:flex; align-items:center; gap:.4rem;
+    background:var(--panel); border:1px solid var(--line);
+    padding:.35rem .7rem; border-radius:20px;
+    font-family:var(--font-mono); font-size:.68rem; color:var(--muted);
+    opacity:.85;
+  }
+  .sync-status .dot{width:7px; height:7px; border-radius:50%; background:var(--muted);}
+  .sync-status.ok .dot{background:#4ADE80; box-shadow:0 0 6px rgba(74,222,128,.7);}
+  .sync-status.error .dot{background:#F87171; box-shadow:0 0 6px rgba(248,113,113,.7);}
+  .sync-status.loading .dot{background:var(--amber); box-shadow:0 0 6px rgba(251,191,36,.7);}
 </style>
 </head>
 <body>
@@ -505,6 +519,7 @@
 </div>
 
 <div class="scroll-progress" id="scrollProgress"></div>
+<div class="sync-status loading" id="syncStatus"><span class="dot"></span><span id="syncStatusText">menyambungkan...</span></div>
 
 <nav class="navbar navbar-expand-lg sticky-top py-2">
   <div class="container">
@@ -829,7 +844,7 @@
         </div>
 
         <div class="dashboard-pane admin-form d-none" id="pane-data">
-          <p class="text-muted small">Website ini <b>tanpa database server</b> &mdash; semua perubahan hanya tersimpan di <code>localStorage</code> browser ini. Gunakan Export/Import untuk memindahkan data ke perangkat atau browser lain, atau sebagai cadangan.</p>
+          <p class="text-muted small">Website ini menyimpan data di <b>Firebase Realtime Database</b> &mdash; semua perubahan langsung tersinkron ke semua perangkat/pengunjung. Gunakan Export/Import untuk cadangan manual.</p>
           <div class="d-flex flex-wrap gap-2">
             <button type="button" class="btn btn-admin-outline btn-sm" onclick="exportData()"><i class="bi bi-download"></i> Export JSON</button>
             <label class="btn btn-admin-outline btn-sm mb-0">
@@ -855,6 +870,25 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ===== FIREBASE (agar perubahan admin tersinkron di semua perangkat) ===== -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBzRDHhRrnPLfE2z11qhfh5aTYoETKrq8",
+    authDomain: "web-rpl1-1e465.firebaseapp.com",
+    databaseURL: "https://web-rpl1-1e465-default-rtdb.firebaseio.com",
+    projectId: "web-rpl1-1e465",
+    storageBucket: "web-rpl1-1e465.firebasestorage.app",
+    messagingSenderId: "164166266573",
+    appId: "1:164166266573:web:e8b6ba44d162e5bf88c384"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const dbRealtime = firebase.database();
+  const refSiteData = dbRealtime.ref("site-data");
+</script>
+
 <script>
 const anggotaKelasDefault = [
   "ABD. RAUF",
@@ -1017,12 +1051,13 @@ const musikGaleri = {
 };
 
 /* ==================================================================
-   ADMIN: LOGIN & DASHBOARD (tanpa database — pakai localStorage)
+   ADMIN: LOGIN & DASHBOARD (data disimpan di Firebase Realtime Database
+   supaya semua perangkat/pengunjung melihat perubahan yang sama)
    ================================================================== */
 // GANTI PASSWORD INI sebelum website dipublikasikan!
 const ADMIN_PASSWORD = "rpl1admin2026";
-const STORAGE_KEY = "rpl1-site-data-v1";
 const SESSION_KEY = "rpl1-admin-session";
+const LOCAL_CACHE_KEY = "rpl1-site-data-cache-v1"; // hanya sebagai cache offline, bukan sumber utama
 
 const DEFAULT_DATA = {
   motto: "Debug bareng, deploy bareng, lulus bareng.",
@@ -1039,28 +1074,78 @@ const DEFAULT_DATA = {
   jadwalPelajaran: JSON.parse(JSON.stringify(jadwalPelajaranDefault))
 };
 
-function muatData(){
+function lengkapiData(parsed){
+  if(!parsed) return JSON.parse(JSON.stringify(DEFAULT_DATA));
+  return {
+    motto: parsed.motto ?? DEFAULT_DATA.motto,
+    waliKelas: parsed.waliKelas ?? DEFAULT_DATA.waliKelas,
+    pengurus: parsed.pengurus ?? DEFAULT_DATA.pengurus,
+    anggota: parsed.anggota ?? DEFAULT_DATA.anggota,
+    piketPerHari: parsed.piketPerHari ?? DEFAULT_DATA.piketPerHari,
+    anggotaPiket: parsed.anggotaPiket ?? DEFAULT_DATA.anggotaPiket,
+    jadwalPelajaran: parsed.jadwalPelajaran ?? DEFAULT_DATA.jadwalPelajaran
+  };
+}
+
+function muatCacheLokal(){
   try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw){
-      const parsed = JSON.parse(raw);
-      return {
-        motto: parsed.motto ?? DEFAULT_DATA.motto,
-        waliKelas: parsed.waliKelas ?? DEFAULT_DATA.waliKelas,
-        pengurus: parsed.pengurus ?? DEFAULT_DATA.pengurus,
-        anggota: parsed.anggota ?? DEFAULT_DATA.anggota,
-        piketPerHari: parsed.piketPerHari ?? DEFAULT_DATA.piketPerHari,
-        anggotaPiket: parsed.anggotaPiket ?? DEFAULT_DATA.anggotaPiket,
-        jadwalPelajaran: parsed.jadwalPelajaran ?? DEFAULT_DATA.jadwalPelajaran
-      };
-    }
+    const raw = localStorage.getItem(LOCAL_CACHE_KEY);
+    if(raw) return lengkapiData(JSON.parse(raw));
   }catch(e){}
   return JSON.parse(JSON.stringify(DEFAULT_DATA));
 }
-let DATA = muatData();
-function simpanData(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA)); }catch(e){}
+function simpanCacheLokal(){
+  try{ localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(DATA)); }catch(e){}
 }
+
+// DATA dimulai dari cache lokal (biar langsung tampil), lalu ditimpa begitu Firebase merespons
+let DATA = muatCacheLokal();
+
+function setSyncStatus(mode, teks){
+  const el = document.getElementById("syncStatus");
+  const txt = document.getElementById("syncStatusText");
+  if(!el || !txt) return;
+  el.classList.remove("ok","error","loading");
+  el.classList.add(mode);
+  txt.textContent = teks;
+}
+
+// Simpan data terbaru ke Firebase (dipanggil oleh semua fungsi simpanXxx())
+function simpanData(){
+  simpanCacheLokal();
+  setSyncStatus("loading", "menyimpan...");
+  refSiteData.set(DATA)
+    .then(() => setSyncStatus("ok", "tersimpan \u00b7 tersinkron"))
+    .catch((err) => {
+      console.error("Gagal menyimpan ke Firebase:", err);
+      setSyncStatus("error", "gagal sinkron, cek koneksi");
+      tampilkanToast("Gagal menyimpan ke server, perubahan hanya tersimpan lokal");
+    });
+}
+
+// Dengarkan perubahan data secara real-time dari Firebase
+// (begitu admin menyimpan dari perangkat manapun, semua pengunjung lain ikut ter-update otomatis)
+refSiteData.on("value", (snapshot) => {
+  const val = snapshot.val();
+  if(val){
+    DATA = lengkapiData(val);
+    simpanCacheLokal();
+    setSyncStatus("ok", "tersinkron");
+  }else{
+    // Belum ada data di Firebase sama sekali -> isi dengan default
+    DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    refSiteData.set(DATA);
+    setSyncStatus("ok", "data awal dibuat");
+  }
+  renderSemua();
+  // kalau dashboard admin sedang terbuka, refresh juga form-nya
+  if(document.getElementById("modalDashboard").classList.contains("show")){
+    isiFormUmum(); isiFormAnggota(); isiFormPiket(); isiFormJadwal();
+  }
+}, (err) => {
+  console.error("Gagal membaca dari Firebase:", err);
+  setSyncStatus("error", "offline \u00b7 pakai data lokal");
+});
 
 function isAdmin(){ return sessionStorage.getItem(SESSION_KEY) === "1"; }
 
@@ -1161,7 +1246,7 @@ function isiFormUmum(){
     </div>`).join("");
 }
 
-/* ---- upload foto (kompres jadi kecil, disimpan sbg base64 di localStorage) ---- */
+/* ---- upload foto (kompres jadi kecil, disimpan sbg base64 di Firebase) ---- */
 function bacaFotoUpload(file, callback){
   const reader = new FileReader();
   reader.onload = function(e){
@@ -1351,11 +1436,11 @@ function importDataFile(event){
   reader.onload = function(e){
     try{
       const parsed = JSON.parse(e.target.result);
-      DATA = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), parsed);
+      DATA = lengkapiData(parsed);
       simpanData();
       renderSemua();
       isiFormUmum(); isiFormAnggota(); isiFormPiket(); isiFormJadwal();
-      tampilkanToast("Data berhasil diimpor");
+      tampilkanToast("Data berhasil diimpor & disinkronkan");
     }catch(err){
       tampilkanToast("Gagal membaca file JSON");
     }
@@ -1364,7 +1449,7 @@ function importDataFile(event){
   event.target.value = "";
 }
 function resetDataDefault(){
-  if(!confirm("Kembalikan semua data ke pengaturan awal? Perubahan tersimpan akan hilang.")) return;
+  if(!confirm("Kembalikan semua data ke pengaturan awal? Perubahan tersimpan di semua perangkat akan hilang.")) return;
   DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
   simpanData();
   renderSemua();
@@ -1851,6 +1936,8 @@ function tampilkanCountdownPiket(){
 
 loadLikedPhotos();
 loadViewedAlbums();
+// Render awal pakai cache lokal (biar langsung ada tampilan),
+// lalu refSiteData.on("value", ...) di atas akan menimpanya begitu Firebase merespons.
 tampilkanMotto();
 renderPengurus();
 renderAnggota();
