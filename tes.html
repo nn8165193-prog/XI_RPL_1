@@ -491,6 +491,50 @@
   .toast-admin.show{opacity:1; transform:translateY(0);}
   .dashboard-pane{max-height:60vh; overflow-y:auto; padding-right:.3rem;}
 
+  /* ==== polish tampilan dashboard admin (mirip mockup terminal) ==== */
+  .modal-dashboard .modal-content{
+    border-radius:14px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6), 0 0 0 1px rgba(45,212,191,.04);
+    overflow:hidden;
+  }
+  .modal-dashboard .modal-header{
+    background:linear-gradient(180deg, var(--panel-alt) 0%, var(--panel) 100%);
+    padding:1.1rem 1.5rem;
+  }
+  .dashboard-nav .nav-link{
+    border-radius:8px 8px 0 0;
+    border-bottom:2px solid transparent;
+    padding:.55rem 1rem;
+    font-weight:600;
+    letter-spacing:.2px;
+  }
+  .dashboard-nav .nav-link.active{ border-bottom-color:var(--cyan); }
+  .pengurus-block-admin{ position:relative; }
+  .pengurus-block-admin .btn-hapus-pengurus{
+    position:absolute; top:10px; right:10px;
+    background:transparent; border:none; color:var(--muted);
+    font-size:.85rem; cursor:pointer; transition:color .15s ease;
+  }
+  .pengurus-block-admin .btn-hapus-pengurus:hover{ color:#F87171; }
+  .btn-tambah-dashed{
+    width:100%;
+    background:transparent;
+    border:1px dashed var(--line);
+    color:var(--muted);
+    border-radius:10px;
+    padding:.6rem;
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    font-weight:600;
+    letter-spacing:.4px;
+    transition:.15s;
+  }
+  .btn-tambah-dashed:hover{
+    border-color:var(--cyan);
+    color:var(--cyan);
+    background:rgba(45,212,191,.08);
+  }
+
   /* ==== status sinkronisasi Firebase ==== */
   .sync-status{
     position:fixed; bottom:16px; left:16px; z-index:4400;
@@ -818,6 +862,7 @@
 
           <div class="comment mt-3 mb-1">pengurus_kelas</div>
           <div id="dbPengurusWrap"></div>
+          <button type="button" class="btn-tambah-dashed mb-3" onclick="tambahPengurusForm()">+ Tambah Pengurus</button>
 
           <button type="button" class="btn btn-admin-primary btn-sm mt-2" onclick="simpanUmum()"><i class="bi bi-save"></i> Simpan Umum &amp; Pengurus</button>
         </div>
@@ -1219,15 +1264,21 @@ function pindahTabDashboard(tab, btn){
 }
 
 /* ---- tab: Umum & Pengurus ---- */
+let tempPengurus = [];
 function isiFormUmum(){
   document.getElementById("dbMotto").value = DATA.motto;
   document.getElementById("dbWaliNama").value = DATA.waliKelas.nama;
   document.getElementById("dbWaliFoto").value = DATA.waliKelas.foto;
   document.getElementById("dbWaliFotoPreview").src = DATA.waliKelas.foto;
   document.getElementById("dbWaliDesc").value = DATA.waliKelas.desc;
+  tempPengurus = JSON.parse(JSON.stringify(DATA.pengurus));
+  gambarFormPengurus();
+}
+function gambarFormPengurus(){
   const wrap = document.getElementById("dbPengurusWrap");
-  wrap.innerHTML = DATA.pengurus.map((p,i) => `
-    <div class="piket-hari-form">
+  wrap.innerHTML = tempPengurus.map((p,i) => `
+    <div class="piket-hari-form pengurus-block-admin">
+      <button type="button" class="btn-hapus-pengurus" title="Hapus pengurus" onclick="hapusPengurusForm(${i})"><i class="bi bi-x-lg"></i></button>
       <div class="comment mb-2">pengurus_${i+1}</div>
       <div class="row g-2">
         <div class="col-md-3"><label>Jabatan</label><input class="form-control form-control-sm" id="dbPJabatan${i}" value="${p.jabatan}"></div>
@@ -1244,6 +1295,25 @@ function isiFormUmum(){
         </div>
       </div>
     </div>`).join("");
+}
+function simpanNilaiPengurusForm(){
+  // simpan nilai form yg sedang diketik ke tempPengurus sebelum render ulang
+  tempPengurus = tempPengurus.map((p,i) => ({
+    jabatan: document.getElementById("dbPJabatan"+i) ? document.getElementById("dbPJabatan"+i).value : p.jabatan,
+    nama: document.getElementById("dbPNama"+i) ? document.getElementById("dbPNama"+i).value : p.nama,
+    absen: document.getElementById("dbPAbsen"+i) ? document.getElementById("dbPAbsen"+i).value : p.absen,
+    foto: document.getElementById("dbPFoto"+i) ? document.getElementById("dbPFoto"+i).value : p.foto
+  }));
+}
+function tambahPengurusForm(){
+  simpanNilaiPengurusForm();
+  tempPengurus.push({ jabatan:"", nama:"", absen:"", foto:"" });
+  gambarFormPengurus();
+}
+function hapusPengurusForm(i){
+  simpanNilaiPengurusForm();
+  tempPengurus.splice(i,1);
+  gambarFormPengurus();
 }
 
 /* ---- upload foto (kompres jadi kecil, disimpan sbg base64 di Firebase) ---- */
@@ -1286,12 +1356,15 @@ function simpanUmum(){
     foto: document.getElementById("dbWaliFoto").value.trim(),
     desc: document.getElementById("dbWaliDesc").value.trim()
   };
-  DATA.pengurus = DATA.pengurus.map((p,i) => ({
-    jabatan: document.getElementById("dbPJabatan"+i).value.trim(),
-    nama: document.getElementById("dbPNama"+i).value.trim(),
-    absen: document.getElementById("dbPAbsen"+i).value.trim(),
-    foto: document.getElementById("dbPFoto"+i).value.trim()
-  }));
+  simpanNilaiPengurusForm();
+  DATA.pengurus = tempPengurus
+    .map(p => ({
+      jabatan: (p.jabatan||"").trim(),
+      nama: (p.nama||"").trim(),
+      absen: (p.absen||"").trim(),
+      foto: (p.foto||"").trim()
+    }))
+    .filter(p => p.nama !== "");
   simpanData();
   tampilkanMotto();
   renderPengurus();
