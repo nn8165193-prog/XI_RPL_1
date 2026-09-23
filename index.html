@@ -438,59 +438,6 @@
     50%{transform:scaleY(1);}
   }
 
-  /* ==== admin: login & dashboard ==== */
-  .admin-form label{
-    font-family:var(--font-mono); font-size:.7rem; color:var(--muted);
-    text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:.2rem; margin-top:.4rem;
-  }
-  .admin-form .form-control, .admin-form textarea{
-    background:var(--panel-alt); color:var(--text); border:1px solid var(--line);
-  }
-  .admin-form .form-control:focus, .admin-form textarea:focus{
-    background:var(--panel-alt); color:var(--text);
-    border-color:var(--cyan); box-shadow:0 0 0 .2rem rgba(45,212,191,.15);
-  }
-  #modalLogin .form-control{
-    background:var(--panel-alt); color:var(--text); border:1px solid var(--line);
-  }
-  #modalLogin .form-control:focus{
-    border-color:var(--cyan); box-shadow:0 0 0 .2rem rgba(45,212,191,.15); background:var(--panel-alt); color:var(--text);
-  }
-  .anggota-row{display:flex; gap:.5rem; margin-bottom:.5rem; align-items:center;}
-  .anggota-thumb{width:36px; height:36px; border-radius:8px; object-fit:cover; border:1px solid var(--line); flex-shrink:0; background:var(--panel-alt);}
-  .foto-upload-label{font-size:.72rem; color:var(--cyan); font-family:var(--font-mono); white-space:nowrap; flex:2;}
-  .piket-hari-form{
-    border:1px solid var(--line); border-radius:10px; padding:1rem; margin-bottom:1rem; background:var(--panel-alt);
-  }
-  .dashboard-nav{display:flex; flex-wrap:wrap;}
-  .dashboard-nav .nav-link{
-    color:var(--text); font-family:var(--font-mono); font-size:.78rem;
-    border:1px solid var(--line); border-radius:8px; background:var(--panel);
-    margin-right:.35rem; margin-bottom:.5rem; padding:.4rem .7rem; cursor:pointer;
-  }
-  .dashboard-nav .nav-link.active{background:var(--cyan); color:#04211D; border-color:var(--cyan); font-weight:700;}
-  .modal-dashboard .modal-content, #modalLogin .modal-content{
-    background:var(--panel); border:1px solid var(--line); color:var(--text);
-  }
-  .modal-dashboard .modal-header, .modal-dashboard .modal-footer,
-  #modalLogin .modal-header, #modalLogin .modal-footer{border-color:var(--line);}
-  .btn-admin-primary{background:var(--cyan); color:#04211D!important; border:none; font-family:var(--font-mono); font-weight:700;}
-  .btn-admin-primary:hover{background:#25b8a5;}
-  .btn-admin-danger{background:transparent; border:1px solid #F87171; color:#F87171; font-family:var(--font-mono);}
-  .btn-admin-danger:hover{background:rgba(248,113,113,.1); color:#F87171;}
-  .btn-admin-outline{background:transparent; border:1px solid var(--line); color:var(--text)!important; font-family:var(--font-mono);}
-  .btn-admin-outline:hover{border-color:var(--cyan); color:var(--cyan)!important;}
-  .toast-admin{
-    position:fixed; bottom:20px; right:20px; z-index:4500;
-    background:var(--panel); border:1px solid var(--cyan); color:var(--text);
-    padding:.7rem 1.1rem; border-radius:8px; font-family:var(--font-mono); font-size:.8rem;
-    box-shadow:0 8px 26px rgba(0,0,0,.45);
-    opacity:0; transform:translateY(10px); transition:opacity .25s ease, transform .25s ease;
-    pointer-events:none; max-width:280px;
-  }
-  .toast-admin.show{opacity:1; transform:translateY(0);}
-  .dashboard-pane{max-height:60vh; overflow-y:auto; padding-right:.3rem;}
-
   /* ==== status sinkronisasi Firebase ==== */
   .sync-status{
     position:fixed; bottom:16px; left:16px; z-index:4400;
@@ -534,9 +481,6 @@
         <li class="nav-item"><a class="nav-link file-tab" href="#piket">piket<span class="ext"></span></a></li>
         <li class="nav-item"><a class="nav-link file-tab" href="#jadwal">jadwal<span class="ext"></span></a></li>
         <li class="nav-item"><a class="nav-link file-tab" href="#kenangan">galeri<span class="ext"></span></a></li>
-        <li class="nav-item"><button class="nav-link file-tab" id="navLogin" onclick="bukaLogin()"><i class="bi bi-box-arrow-in-right"></i> login<span class="ext"></span></button></li>
-        <li class="nav-item"><button class="nav-link file-tab" id="navDashboard" style="display:none" onclick="bukaDashboard()"><i class="bi bi-speedometer2"></i> dashboard<span class="ext"></span></button></li>
-        <li class="nav-item"><button class="nav-link file-tab" id="navLogout" style="display:none" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right"></i> logout<span class="ext"></span></button></li>
       </ul>
     </div>
   </div>
@@ -758,107 +702,6 @@
   </div>
 </div>
 
-<!-- ===== MODAL LOGIN ADMIN ===== -->
-<div class="modal fade" id="modalLogin" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content lightbox-content border-0 p-2">
-      <div class="modal-header border-0">
-        <h5 class="modal-title font-mono"><i class="bi bi-terminal"></i> Login Admin</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <form onsubmit="return prosesLogin(event)">
-        <div class="modal-body">
-          <label class="form-label font-mono small text-muted">Password Admin</label>
-          <input type="password" class="form-control" id="inputPasswordAdmin" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off" required>
-          <div class="text-danger small mt-2 d-none font-mono" id="loginError"><i class="bi bi-exclamation-triangle"></i> Password salah, coba lagi.</div>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="submit" class="btn btn-admin-primary btn-sm px-3">Masuk</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- ===== MODAL DASHBOARD ADMIN ===== -->
-<div class="modal fade" id="modalDashboard" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl modal-dashboard">
-    <div class="modal-content border-0">
-      <div class="modal-header border-0">
-        <h5 class="modal-title font-mono"><i class="bi bi-speedometer2"></i> Dashboard Admin &middot; Edit Halaman</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <ul class="nav dashboard-nav mb-3" id="dashboardTabs">
-          <li class="nav-item"><button type="button" class="nav-link active" onclick="pindahTabDashboard('umum', this)">Umum &amp; Pengurus</button></li>
-          <li class="nav-item"><button type="button" class="nav-link" onclick="pindahTabDashboard('anggota', this)">Anggota</button></li>
-          <li class="nav-item"><button type="button" class="nav-link" onclick="pindahTabDashboard('piket', this)">Piket</button></li>
-          <li class="nav-item"><button type="button" class="nav-link" onclick="pindahTabDashboard('jadwal', this)">Jadwal</button></li>
-          <li class="nav-item"><button type="button" class="nav-link" onclick="pindahTabDashboard('data', this)">Data &amp; Backup</button></li>
-        </ul>
-
-        <div class="dashboard-pane admin-form" id="pane-umum">
-          <label>Motto Kelas</label>
-          <textarea class="form-control mb-2" id="dbMotto" rows="2"></textarea>
-
-          <div class="comment mt-3 mb-1">wali_kelas</div>
-          <div class="row g-2">
-            <div class="col-md-4"><label>Nama Wali Kelas</label><input class="form-control" id="dbWaliNama"></div>
-            <div class="col-md-4">
-              <label>Foto</label>
-              <div class="d-flex align-items-center gap-2">
-                <img id="dbWaliFotoPreview" src="" class="anggota-thumb" alt="">
-                <input class="form-control form-control-sm" id="dbWaliFoto" placeholder="path/URL atau upload" oninput="document.getElementById('dbWaliFotoPreview').src=this.value">
-                <button type="button" class="btn btn-admin-outline btn-sm" onclick="document.getElementById('fileWaliFoto').click()"><i class="bi bi-upload"></i></button>
-                <input type="file" accept="image/*" id="fileWaliFoto" class="d-none" onchange="uploadFotoField(this,'dbWaliFoto')">
-              </div>
-            </div>
-            <div class="col-md-4"><label>Deskripsi</label><input class="form-control" id="dbWaliDesc"></div>
-          </div>
-
-          <div class="comment mt-3 mb-1">pengurus_kelas</div>
-          <div id="dbPengurusWrap"></div>
-
-          <button type="button" class="btn btn-admin-primary btn-sm mt-2" onclick="simpanUmum()"><i class="bi bi-save"></i> Simpan Umum &amp; Pengurus</button>
-        </div>
-
-        <div class="dashboard-pane admin-form d-none" id="pane-anggota">
-          <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
-            <div class="comment">total: <span id="dbAnggotaCount">0</span> anggota</div>
-            <button type="button" class="btn btn-admin-outline btn-sm" onclick="tambahAnggotaForm()"><i class="bi bi-plus-lg"></i> Tambah Anggota</button>
-          </div>
-          <div id="dbAnggotaWrap"></div>
-          <button type="button" class="btn btn-admin-primary btn-sm mt-3" onclick="simpanAnggota()"><i class="bi bi-save"></i> Simpan Anggota</button>
-        </div>
-
-        <div class="dashboard-pane admin-form d-none" id="pane-piket">
-          <p class="text-muted small">Anggota squad dipisahkan dengan tanda koma.</p>
-          <div id="dbPiketWrap"></div>
-          <button type="button" class="btn btn-admin-primary btn-sm" onclick="simpanPiket()"><i class="bi bi-save"></i> Simpan Piket</button>
-        </div>
-
-        <div class="dashboard-pane admin-form d-none" id="pane-jadwal">
-          <p class="text-muted small">Satu baris untuk satu jam pelajaran, format: <code>Jam | Mata Pelajaran | Guru</code></p>
-          <div id="dbJadwalWrap"></div>
-          <button type="button" class="btn btn-admin-primary btn-sm" onclick="simpanJadwal()"><i class="bi bi-save"></i> Simpan Jadwal</button>
-        </div>
-
-        <div class="dashboard-pane admin-form d-none" id="pane-data">
-          <p class="text-muted small">Website ini menyimpan data di <b>Firebase Realtime Database</b> &mdash; semua perubahan langsung tersinkron ke semua perangkat/pengunjung. Gunakan Export/Import untuk cadangan manual.</p>
-          <div class="d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-admin-outline btn-sm" onclick="exportData()"><i class="bi bi-download"></i> Export JSON</button>
-            <label class="btn btn-admin-outline btn-sm mb-0">
-              <i class="bi bi-upload"></i> Import JSON
-              <input type="file" accept="application/json" class="d-none" onchange="importDataFile(event)">
-            </label>
-            <button type="button" class="btn btn-admin-danger btn-sm" onclick="resetDataDefault()"><i class="bi bi-arrow-counterclockwise"></i> Reset ke Default</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <audio id="audioGaleri" preload="none" loop></audio>
 
 <footer class="py-4 text-center">
@@ -1050,12 +893,9 @@ const musikGaleri = {
 };
 
 /* ==================================================================
-   ADMIN: LOGIN & DASHBOARD (data disimpan di Firebase Realtime Database
-   supaya semua perangkat/pengunjung melihat perubahan yang sama)
+   DATA KELAS (disimpan di Firebase Realtime Database
+   supaya semua perangkat/pengunjung melihat data yang sama)
    ================================================================== */
-// GANTI PASSWORD INI sebelum website dipublikasikan!
-const ADMIN_PASSWORD = "rpl1admin2026";
-const SESSION_KEY = "rpl1-admin-session";
 const LOCAL_CACHE_KEY = "rpl1-site-data-cache-v1"; // hanya sebagai cache offline, bukan sumber utama
 
 const DEFAULT_DATA = {
@@ -1109,21 +949,7 @@ function setSyncStatus(mode, teks){
   txt.textContent = teks;
 }
 
-// Simpan data terbaru ke Firebase (dipanggil oleh semua fungsi simpanXxx())
-function simpanData(){
-  simpanCacheLokal();
-  setSyncStatus("loading", "menyimpan...");
-  refSiteData.set(DATA)
-    .then(() => setSyncStatus("ok", "tersimpan \u00b7 tersinkron"))
-    .catch((err) => {
-      console.error("Gagal menyimpan ke Firebase:", err);
-      setSyncStatus("error", "gagal sinkron, cek koneksi");
-      tampilkanToast("Gagal menyimpan ke server, perubahan hanya tersimpan lokal");
-    });
-}
-
 // Dengarkan perubahan data secara real-time dari Firebase
-// (begitu admin menyimpan dari perangkat manapun, semua pengunjung lain ikut ter-update otomatis)
 refSiteData.on("value", (snapshot) => {
   const val = snapshot.val();
   if(val){
@@ -1137,324 +963,11 @@ refSiteData.on("value", (snapshot) => {
     setSyncStatus("ok", "data awal dibuat");
   }
   renderSemua();
-  // kalau dashboard admin sedang terbuka, refresh juga form-nya
-  if(document.getElementById("modalDashboard").classList.contains("show")){
-    isiFormUmum(); isiFormAnggota(); isiFormPiket(); isiFormJadwal();
-  }
 }, (err) => {
   console.error("Gagal membaca dari Firebase:", err);
   setSyncStatus("error", "offline \u00b7 pakai data lokal");
 });
 
-function isAdmin(){ return sessionStorage.getItem(SESSION_KEY) === "1"; }
-
-function updateAdminUI(){
-  const login = isAdmin();
-  const btnLogin = document.getElementById("navLogin");
-  const btnDash = document.getElementById("navDashboard");
-  const btnLogout = document.getElementById("navLogout");
-  if(btnLogin) btnLogin.style.display = login ? "none" : "";
-  if(btnDash) btnDash.style.display = login ? "" : "none";
-  if(btnLogout) btnLogout.style.display = login ? "" : "none";
-}
-
-function bukaLogin(){
-  document.getElementById("loginError").classList.add("d-none");
-  document.getElementById("inputPasswordAdmin").value = "";
-  const modal = new bootstrap.Modal(document.getElementById("modalLogin"));
-  modal.show();
-}
-
-function prosesLogin(e){
-  if(e) e.preventDefault();
-  const pass = document.getElementById("inputPasswordAdmin").value;
-  if(pass === ADMIN_PASSWORD){
-    sessionStorage.setItem(SESSION_KEY, "1");
-    updateAdminUI();
-    const inst = bootstrap.Modal.getInstance(document.getElementById("modalLogin"));
-    if(inst) inst.hide();
-    tampilkanToast("Berhasil masuk sebagai admin");
-  }else{
-    document.getElementById("loginError").classList.remove("d-none");
-  }
-  return false;
-}
-
-function logoutAdmin(){
-  sessionStorage.removeItem(SESSION_KEY);
-  updateAdminUI();
-  tampilkanToast("Berhasil keluar dari mode admin");
-}
-
-function tampilkanToast(pesan){
-  let toast = document.getElementById("toastAdmin");
-  if(!toast){
-    toast = document.createElement("div");
-    toast.id = "toastAdmin";
-    toast.className = "toast-admin";
-    document.body.appendChild(toast);
-  }
-  toast.textContent = pesan;
-  toast.classList.add("show");
-  clearTimeout(window._toastTimeout);
-  window._toastTimeout = setTimeout(() => toast.classList.remove("show"), 2600);
-}
-
-function bukaDashboard(){
-  if(!isAdmin()){ bukaLogin(); return; }
-  isiFormUmum();
-  isiFormAnggota();
-  isiFormPiket();
-  isiFormJadwal();
-  const modal = new bootstrap.Modal(document.getElementById("modalDashboard"));
-  modal.show();
-}
-
-function pindahTabDashboard(tab, btn){
-  document.querySelectorAll("#dashboardTabs .nav-link").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  document.querySelectorAll(".dashboard-pane").forEach(p => p.classList.add("d-none"));
-  document.getElementById("pane-"+tab).classList.remove("d-none");
-}
-
-/* ---- tab: Umum & Pengurus ---- */
-function isiFormUmum(){
-  document.getElementById("dbMotto").value = DATA.motto;
-  document.getElementById("dbWaliNama").value = DATA.waliKelas.nama;
-  document.getElementById("dbWaliFoto").value = DATA.waliKelas.foto;
-  document.getElementById("dbWaliFotoPreview").src = DATA.waliKelas.foto;
-  document.getElementById("dbWaliDesc").value = DATA.waliKelas.desc;
-  const wrap = document.getElementById("dbPengurusWrap");
-  wrap.innerHTML = DATA.pengurus.map((p,i) => `
-    <div class="piket-hari-form">
-      <div class="comment mb-2">pengurus_${i+1}</div>
-      <div class="row g-2">
-        <div class="col-md-3"><label>Jabatan</label><input class="form-control form-control-sm" id="dbPJabatan${i}" value="${p.jabatan}"></div>
-        <div class="col-md-3"><label>Nama</label><input class="form-control form-control-sm" id="dbPNama${i}" value="${p.nama}"></div>
-        <div class="col-md-2"><label>No. Absen</label><input class="form-control form-control-sm" id="dbPAbsen${i}" value="${p.absen}"></div>
-        <div class="col-md-4">
-          <label>Foto</label>
-          <div class="d-flex align-items-center gap-2">
-            <img id="dbPFoto${i}Preview" src="${p.foto}" class="anggota-thumb" alt="">
-            <input class="form-control form-control-sm" id="dbPFoto${i}" value="${p.foto}" placeholder="path/URL atau upload" oninput="document.getElementById('dbPFoto${i}Preview').src=this.value">
-            <button type="button" class="btn btn-admin-outline btn-sm" onclick="document.getElementById('filePFoto${i}').click()"><i class="bi bi-upload"></i></button>
-            <input type="file" accept="image/*" id="filePFoto${i}" class="d-none" onchange="uploadFotoField(this,'dbPFoto${i}')">
-          </div>
-        </div>
-      </div>
-    </div>`).join("");
-}
-
-/* ---- upload foto (kompres jadi kecil, disimpan sbg base64 di Firebase) ---- */
-function bacaFotoUpload(file, callback){
-  const reader = new FileReader();
-  reader.onload = function(e){
-    const img = new Image();
-    img.onload = function(){
-      const maxW = 400;
-      let w = img.width, h = img.height;
-      if(w > maxW){ h = Math.round(h * (maxW / w)); w = maxW; }
-      const canvas = document.createElement("canvas");
-      canvas.width = w; canvas.height = h;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, w, h);
-      callback(canvas.toDataURL("image/jpeg", 0.82));
-    };
-    img.onerror = function(){ tampilkanToast("Gagal membaca gambar"); };
-    img.src = e.target.result;
-  };
-  reader.onerror = function(){ tampilkanToast("Gagal membaca file"); };
-  reader.readAsDataURL(file);
-}
-function uploadFotoField(inputFile, targetId){
-  const file = inputFile.files[0];
-  if(!file) return;
-  bacaFotoUpload(file, (dataUrl) => {
-    const target = document.getElementById(targetId);
-    if(target) target.value = dataUrl;
-    const preview = document.getElementById(targetId + "Preview");
-    if(preview) preview.src = dataUrl;
-    tampilkanToast("Foto berhasil diupload");
-  });
-  inputFile.value = "";
-}
-function simpanUmum(){
-  DATA.motto = document.getElementById("dbMotto").value.trim();
-  DATA.waliKelas = {
-    nama: document.getElementById("dbWaliNama").value.trim(),
-    foto: document.getElementById("dbWaliFoto").value.trim(),
-    desc: document.getElementById("dbWaliDesc").value.trim()
-  };
-  DATA.pengurus = DATA.pengurus.map((p,i) => ({
-    jabatan: document.getElementById("dbPJabatan"+i).value.trim(),
-    nama: document.getElementById("dbPNama"+i).value.trim(),
-    absen: document.getElementById("dbPAbsen"+i).value.trim(),
-    foto: document.getElementById("dbPFoto"+i).value.trim()
-  }));
-  simpanData();
-  tampilkanMotto();
-  renderPengurus();
-  tampilkanToast("Data umum & pengurus tersimpan");
-}
-
-/* ---- tab: Anggota ---- */
-let tempAnggota = [];
-function isiFormAnggota(){
-  tempAnggota = JSON.parse(JSON.stringify(DATA.anggota));
-  gambarFormAnggota();
-}
-function gambarFormAnggota(){
-  const wrap = document.getElementById("dbAnggotaWrap");
-  wrap.innerHTML = tempAnggota.map((a,i) => {
-    const sudahUpload = a.foto && a.foto.startsWith("data:");
-    const thumb = (a.foto && a.foto.trim() !== "") ? a.foto : `https://i.pravatar.cc/60?u=${encodeURIComponent(a.nama)}`;
-    const tengah = sudahUpload
-      ? `<span class="foto-upload-label"><i class="bi bi-check-circle-fill"></i> Foto diupload dari perangkat</span>`
-      : `<input class="form-control form-control-sm" style="flex:2" placeholder="Path/URL foto (opsional)" value="${a.foto}" oninput="tempAnggota[${i}].foto=this.value; document.getElementById('thumb${i}').src=this.value || 'https://i.pravatar.cc/60?u='+encodeURIComponent(tempAnggota[${i}].nama)">`;
-    return `
-    <div class="anggota-row">
-      <img id="thumb${i}" src="${thumb}" class="anggota-thumb" alt="">
-      <input class="form-control form-control-sm" style="flex:1.4" placeholder="Nama" value="${a.nama}" oninput="tempAnggota[${i}].nama=this.value">
-      ${tengah}
-      <button type="button" class="btn btn-admin-outline btn-sm" title="Upload foto dari perangkat" onclick="document.getElementById('fileFoto${i}').click()"><i class="bi bi-upload"></i></button>
-      <input type="file" accept="image/*" id="fileFoto${i}" class="d-none" onchange="uploadFotoAnggota(${i}, this)">
-      ${sudahUpload ? `<button type="button" class="btn btn-admin-outline btn-sm" title="Hapus foto" onclick="hapusFotoAnggota(${i})"><i class="bi bi-x-lg"></i></button>` : ""}
-      <button type="button" class="btn btn-admin-danger btn-sm" title="Hapus anggota" onclick="hapusAnggotaForm(${i})"><i class="bi bi-trash"></i></button>
-    </div>`;
-  }).join("");
-  document.getElementById("dbAnggotaCount").textContent = tempAnggota.length;
-}
-function uploadFotoAnggota(i, inputFile){
-  const file = inputFile.files[0];
-  if(!file) return;
-  bacaFotoUpload(file, (dataUrl) => {
-    tempAnggota[i].foto = dataUrl;
-    gambarFormAnggota();
-    tampilkanToast("Foto berhasil diupload");
-  });
-  inputFile.value = "";
-}
-function hapusFotoAnggota(i){
-  tempAnggota[i].foto = "";
-  gambarFormAnggota();
-}
-function tambahAnggotaForm(){
-  tempAnggota.push({ nama: "Siswa Baru", foto: "" });
-  gambarFormAnggota();
-}
-function hapusAnggotaForm(i){
-  tempAnggota.splice(i,1);
-  gambarFormAnggota();
-}
-function simpanAnggota(){
-  DATA.anggota = tempAnggota.filter(a => a.nama.trim() !== "");
-  simpanData();
-  renderAnggota();
-  tampilkanToast("Daftar anggota tersimpan");
-}
-
-/* ---- tab: Piket ---- */
-function isiFormPiket(){
-  const wrap = document.getElementById("dbPiketWrap");
-  const hariList = Object.keys(DATA.piketPerHari);
-  wrap.innerHTML = hariList.map(hari => {
-    const d = DATA.piketPerHari[hari];
-    const anggota = (DATA.anggotaPiket[d.kelompok] || []).join(", ");
-    return `
-    <div class="piket-hari-form">
-      <div class="comment mb-2">${hari}</div>
-      <div class="row g-2">
-        <div class="col-md-4"><label>Nama Squad</label><input class="form-control form-control-sm" id="dbPiketSquad-${hari}" value="${d.kelompok}"></div>
-        <div class="col-md-8"><label>Tugas</label><input class="form-control form-control-sm" id="dbPiketTugas-${hari}" value="${d.tugas}"></div>
-        <div class="col-12"><label>Anggota (pisahkan dengan koma)</label><textarea class="form-control form-control-sm" rows="2" id="dbPiketAnggota-${hari}">${anggota}</textarea></div>
-      </div>
-    </div>`;
-  }).join("");
-}
-function simpanPiket(){
-  const hariList = Object.keys(DATA.piketPerHari);
-  const anggotaPiketBaru = {};
-  hariList.forEach(hari => {
-    const squad = document.getElementById(`dbPiketSquad-${hari}`).value.trim();
-    const tugas = document.getElementById(`dbPiketTugas-${hari}`).value.trim();
-    const anggotaStr = document.getElementById(`dbPiketAnggota-${hari}`).value.trim();
-    const anggotaArr = anggotaStr.split(",").map(s => s.trim()).filter(Boolean);
-    DATA.piketPerHari[hari] = { kelompok: squad, tugas: tugas };
-    anggotaPiketBaru[squad] = anggotaArr;
-  });
-  DATA.anggotaPiket = anggotaPiketBaru;
-  simpanData();
-  renderPiketTabs();
-  tampilkanPiketHariIni();
-  tampilkanCountdownPiket();
-  tampilkanToast("Jadwal piket tersimpan");
-}
-
-/* ---- tab: Jadwal ---- */
-function isiFormJadwal(){
-  const wrap = document.getElementById("dbJadwalWrap");
-  const hariList = Object.keys(DATA.jadwalPelajaran);
-  wrap.innerHTML = hariList.map(hari => {
-    const baris = DATA.jadwalPelajaran[hari].map(r => r.join(" | ")).join("\n");
-    return `
-    <div class="piket-hari-form">
-      <div class="comment mb-2">${hari}</div>
-      <textarea class="form-control form-control-sm font-mono" rows="5" id="dbJadwal-${hari}">${baris}</textarea>
-    </div>`;
-  }).join("");
-}
-function simpanJadwal(){
-  const hariList = Object.keys(DATA.jadwalPelajaran);
-  hariList.forEach(hari => {
-    const teks = document.getElementById(`dbJadwal-${hari}`).value.trim();
-    const baris = teks.split("\n").map(l => l.trim()).filter(Boolean);
-    DATA.jadwalPelajaran[hari] = baris.map(l => {
-      const bagian = l.split("|").map(s => s.trim());
-      return [bagian[0]||"", bagian[1]||"", bagian[2]||""];
-    });
-  });
-  simpanData();
-  renderJadwalTabs();
-  tampilkanToast("Jadwal pelajaran tersimpan");
-}
-
-/* ---- tab: Data & Backup ---- */
-function exportData(){
-  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "data-xirpl1-backup.json";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-function importDataFile(event){
-  const file = event.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e){
-    try{
-      const parsed = JSON.parse(e.target.result);
-      DATA = lengkapiData(parsed);
-      simpanData();
-      renderSemua();
-      isiFormUmum(); isiFormAnggota(); isiFormPiket(); isiFormJadwal();
-      tampilkanToast("Data berhasil diimpor & disinkronkan");
-    }catch(err){
-      tampilkanToast("Gagal membaca file JSON");
-    }
-  };
-  reader.readAsText(file);
-  event.target.value = "";
-}
-function resetDataDefault(){
-  if(!confirm("Kembalikan semua data ke pengaturan awal? Perubahan tersimpan di semua perangkat akan hilang.")) return;
-  DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
-  simpanData();
-  renderSemua();
-  isiFormUmum(); isiFormAnggota(); isiFormPiket(); isiFormJadwal();
-  tampilkanToast("Data dikembalikan ke pengaturan awal");
-}
 function renderSemua(){
   tampilkanMotto();
   renderPengurus();
@@ -1496,7 +1009,6 @@ function renderPengurus(){
       </div>`).join("");
   }
 }
-/* ================== akhir bagian admin ================== */
 
 function fotoSiswa(nama){
   let hash = 0;
@@ -1945,7 +1457,6 @@ renderJadwalTabs();
 renderAlbumCovers();
 tampilkanPiketHariIni();
 tampilkanCountdownPiket();
-updateAdminUI();
 
 (function(){
   const namaKelas = "XI RPL 1";
