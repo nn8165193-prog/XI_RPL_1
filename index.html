@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XI RPL 1 &middot; syntaxone</title>
+
+<meta property="og:title" content="XI RPL 1 &middot; syntaxone">
+<meta property="og:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
+<meta property="og:image" content="https://syntaxone.vercel.app/assets/cwek--cwok.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:url" content="https://syntaxone.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XI RPL 1">
+<meta property="og:locale" content="id_ID">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="XI RPL 1 &middot; syntaxone">
+<meta name="twitter:description" content="Website kelas XI RPL 1 — anggota, jadwal pelajaran, piket kebersihan, dan galeri kenangan.">
+<meta name="twitter:image" content="https://syntaxone.vercel.app/assets/cwek--cwok.png">
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E17;
+    --panel:#111826;
+    --panel-alt:#161F30;
+    --line:#233047;
+    --text:#E7ECF6;
+    --muted:#8B98B3;
+    --cyan:#2DD4BF;
+    --violet:#8B5CF6;
+    --amber:#FBBF24;
+    --pink:#F472B6;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+    --font-body:'Inter', system-ui, sans-serif;
+  }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    background-image:
+      linear-gradient(rgba(45,212,191,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45,212,191,.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+  h1,h2,h3,h4,.font-mono{font-family:var(--font-mono);}
+  a{color:var(--cyan); text-decoration:none;}
+  ::selection{background:var(--cyan); color:#04211D;}
+
+  .comment{
+    font-family:var(--font-mono);
+    color:var(--cyan);
+    font-size:.8rem;
+    letter-spacing:.03em;
+  }
+  .comment::before{content:"// ";opacity:.65;}
+
+  .navbar{
+    background:var(--panel)!important;
+    border-bottom:1px solid var(--line);
+  }
+  .navbar-brand{
+    font-family:var(--font-mono);
+    font-weight:700;
+    color:var(--text)!important;
+  }
+  .navbar-brand .bracket{color:var(--cyan);}
+  .file-tab{
+    font-family:var(--font-mono);
+    font-size:.82rem;
+    color:var(--muted)!important;
+    padding:.4rem .7rem!important;
+    border-radius:6px 6px 0 0;
+    border-bottom:2px solid transparent;
+  }
+  .file-tab:hover{color:var(--text)!important; background:var(--panel-alt);}
+  .file-tab.active-tab{color:var(--text)!important; border-bottom-color:var(--cyan); background:var(--panel-alt);}
+  .file-tab .ext{opacity:.55;}
+  .navbar-nav button.file-tab{background:none; border:none; cursor:pointer;}
+
+  .terminal{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    max-width:780px;
+    box-shadow: 0 0 60px rgba(45,212,191,.06), 0 20px 50px rgba(0,0,0,.4);
+    overflow:hidden;
+  }
+  .terminal-bar{
+    background:var(--panel-alt);
+    padding:.65rem 1rem;
+    display:flex; align-items:center; gap:.4rem;
+    border-bottom:1px solid var(--line);
+  }
+  .dot{width:11px;height:11px;border-radius:50%;}
+  .dot.red{background:#FF5F56;}
+  .dot.yellow{background:#FFBD2E;}
+  .dot.green{background:#27C93F;}
+  .terminal-title{font-family:var(--font-mono); font-size:.75rem; color:var(--muted); margin-left:.6rem;}
+  .terminal-body{padding:1.6rem; font-family:var(--font-mono); font-size:.92rem; text-align:left; line-height:1.9;}
+  .prompt{color:var(--cyan);}
+  .out-key{color:var(--violet);}
+  .out-str{color:var(--amber);}
+  .cursor{
+    display:inline-block; width:8px; height:1.05em; background:var(--cyan);
+    animation: blink 1s step-start infinite; vertical-align:text-bottom;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero-wrap{
+    padding: 4.5rem 0 3.5rem;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(139,92,246,.12), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(45,212,191,.1), transparent 70%);
+  }
+  .chip-stat{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+  }
+  .chip-stat .angka{font-family:var(--font-mono); font-weight:700; font-size:1.4rem; color:var(--cyan);}
+  .chip-stat .lbl{font-size:.72rem; color:var(--muted); font-family:var(--font-mono);}
+
+  section{padding:4rem 0;}
+  .section-alt{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+
+  .kartu{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  }
+  .kartu-anggota:hover{
+    transform: translateY(-3px);
+    border-color: var(--cyan);
+    box-shadow: 0 8px 26px rgba(45,212,191,.1);
+  }
+  .foto-bulat{
+    width:82px;height:82px;border-radius:10px;
+    object-fit:cover;
+    border:1px solid var(--line);
+  }
+  .foto-pengurus{
+    width:100px;height:100px;border-radius:14px;
+    object-fit:cover;
+    border:1px solid var(--line);
+  }
+  .badge-jabatan{
+    background:transparent;
+    color:var(--cyan);
+    border:1px solid rgba(45,212,191,.4);
+    font-family:var(--font-mono);
+    font-size:.66rem;
+    letter-spacing:.04em;
+  }
+  .table{color:var(--text);}
+  .table-piket thead, .table-jadwal thead{
+    background:var(--panel-alt);
+    color:var(--cyan);
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .table > :not(caption) > * > *{background:transparent; border-color:var(--line);}
+  .table-piket td, .table-jadwal td{vertical-align:middle;}
+  .table-jadwal td.jam-cell{color:var(--cyan);}
+  .table-jadwal td.mapel-cell{color: #fafaf9;}
+  .table-jadwal td.guru-cell{color:var(--muted);}
+
+  #piket, #piket h2, #piket p, #piket .nav-link, #piket .table, #piket .table td, #piket .table th{
+    color: #FFFFFF !important;
+  }
+
+  .nav-pills .nav-link{
+    color:var(--text);
+    font-weight:500;
+    font-family:var(--font-mono);
+    font-size:.82rem;
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-right:.35rem;
+    margin-bottom:.35rem;
+    background:var(--panel);
+  }
+  .nav-pills .nav-link.active{
+    background:var(--cyan);
+    color:#04211D;
+    border-color:var(--cyan);
+    font-weight:700;
+  }
+
+  .foto-kenangan{
+    aspect-ratio:4/3;
+    object-fit:cover;
+    border-radius:10px;
+    border:1px solid var(--line);
+    transition:transform .2s ease, border-color .2s ease;
+    filter:saturate(.92);
+  }
+  .foto-kenangan:hover{transform:scale(1.02); border-color:var(--cyan);}
+  .foto-kenangan.galeri-thumb{cursor:pointer;}
+
+  .foto-wrap{position:relative;}
+  .like-btn{
+    position:absolute; top:8px; right:8px;
+    display:flex; align-items:center; gap:.3rem;
+    background:rgba(10,14,23,.72); backdrop-filter:blur(4px);
+    border:1px solid var(--line); border-radius:20px;
+    padding:.28rem .6rem 0.28rem .55rem;
+    font-family:var(--font-mono); font-size:.72rem;
+    color:var(--text); cursor:pointer;
+    transition:border-color .15s ease, color .15s ease, transform .12s ease;
+    line-height:1;
+  }
+  .like-btn:hover{border-color:var(--pink); color:var(--pink);}
+  .like-btn.liked{color:var(--pink); border-color:var(--pink);}
+  .like-btn:active{transform:scale(.9);}
+  .like-btn:disabled{cursor:default; opacity:.9;}
+  .like-btn:disabled:hover{transform:none;}
+  .like-btn i{font-size:.85rem; vertical-align:-1px;}
+
+  .galeri-cover-card{overflow:hidden; cursor:pointer;}
+  .galeri-cover-card:hover{border-color:var(--cyan); box-shadow:0 8px 26px rgba(45,212,191,.1);}
+  .galeri-cover-img-wrap{position:relative;}
+  .galeri-cover-img{
+    width:100%; aspect-ratio:16/10; object-fit:cover; display:block;
+    filter:saturate(.92);
+  }
+  .galeri-badge{
+    position:absolute; left:.75rem; bottom:.75rem;
+    background:rgba(10,14,23,.72); backdrop-filter:blur(4px);
+    color:var(--text); font-family:var(--font-mono); font-size:.72rem;
+    padding:.32rem .65rem; border-radius:7px; border:1px solid var(--line);
+  }
+
+  .galeri-stats{
+    display:flex; align-items:center; gap:1rem;
+    margin-top:.55rem;
+    font-family:var(--font-mono); font-size:.74rem; color:var(--muted);
+  }
+  .galeri-stats span{display:inline-flex; align-items:center; gap:.3rem;}
+  .galeri-stats i{font-size:.85rem;}
+  .galeri-stats .bi-eye{color:var(--cyan);}
+  .galeri-stats .bi-heart-fill{color:var(--pink);}
+
+  .piket-hari-ini{
+    display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+  }
+  .piket-hari-ini .status-dot{
+    width:10px; height:10px; border-radius:50%;
+    background:#4ADE80; box-shadow:0 0 8px rgba(74,222,128,.7);
+    flex-shrink:0;
+  }
+  .piket-hari-ini .lbl-hari{
+    font-family:var(--font-mono); font-size:.72rem; color:var(--cyan);
+    letter-spacing:.05em; text-transform:uppercase;
+  }
+  .piket-hari-ini .nama-squad{
+    font-family:var(--font-mono); font-weight:700; font-size:1.05rem; color:var(--text);
+  }
+  .piket-hari-ini .tugas-txt{
+    color:var(--muted); font-size:.85rem;
+  }
+
+  .countdown-card{ text-align:left; }
+  .countdown-grid{
+    display:flex; gap:.9rem; flex-wrap:wrap; justify-content:center;
+  }
+  .countdown-grid .kotak{
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.7rem 1rem;
+    min-width:74px;
+    text-align:center;
+  }
+  .countdown-grid .kotak .num{
+    font-family:var(--font-mono); font-weight:800; font-size:1.5rem; color:var(--cyan);
+    line-height:1;
+  }
+  .countdown-grid .kotak .unit{
+    font-family:var(--font-mono); font-size:.66rem; color:var(--muted);
+    letter-spacing:.05em; text-transform:uppercase; margin-top:.3rem;
+  }
+
+  .btn-kembali{
+    background:transparent; border:1px solid var(--line); color:var(--muted);
+    font-family:var(--font-mono); font-size:.82rem;
+    border-radius:8px; padding:.4rem .85rem;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .btn-kembali:hover{border-color:var(--cyan); color:var(--cyan);}
+
+  .lightbox-content{background:var(--panel); border:1px solid var(--line); border-radius:12px;}
+  #lightboxImg{max-height:75vh; object-fit:contain; background:var(--bg);}
+
+  #cariAnggota{
+    background:var(--panel-alt); color:var(--text); border:1px solid var(--line);
+  }
+  #cariAnggota::placeholder{color:var(--muted);}
+  #cariAnggota:focus{
+    background:var(--panel-alt); color:var(--text);
+    border-color:var(--cyan); box-shadow:0 0 0 .2rem rgba(45,212,191,.15);
+  }
+  .input-group-text{background:var(--panel-alt); border-color:var(--line); color:var(--muted);}
+
+  .text-muted{color:var(--muted)!important;}
+  .kartu .fw-semibold{color:var(--text);}
+
+  footer{
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    color:var(--muted);
+  }
+  .status-bar{
+    background:var(--cyan);
+    color:#04211D;
+    font-family:var(--font-mono);
+    font-size:.72rem;
+    letter-spacing:.03em;
+  }
+
+  .scroll-progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--cyan), var(--violet));
+    z-index:2000;
+    transition:width .1s linear;
+  }
+
+  #loader{
+    position:fixed; inset:0; z-index:3000;
+    background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  #loader.hide{opacity:0; visibility:hidden; pointer-events:none;}
+  .loader-box{
+    width:min(420px, 88vw);
+    font-family:var(--font-mono);
+  }
+  .loader-box .lbl{
+    font-size:.78rem; color:var(--muted); letter-spacing:.06em;
+  }
+  .loader-box .nama-kelas{
+    font-size:clamp(1.6rem, 6vw, 2.4rem);
+    font-weight:700;
+    color:var(--text);
+    margin:.35rem 0 1.1rem;
+    min-height:1.3em;
+    border-right:2px solid var(--cyan);
+    white-space:nowrap;
+    overflow:hidden;
+    display:inline-block;
+  }
+  .loader-track{
+    height:6px; width:100%;
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .loader-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg, var(--cyan), var(--violet));
+    border-radius:99px;
+    transition:width .18s ease;
+    box-shadow:0 0 12px rgba(45,212,191,.5);
+  }
+  .loader-pct{
+    font-size:.78rem; color:var(--cyan); margin-top:.5rem; text-align:right;
+  }
+  .loader-glow{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 45% 35% at 50% 40%, rgba(45,212,191,.1), transparent 70%),
+      radial-gradient(ellipse 35% 30% at 70% 65%, rgba(139,92,246,.1), transparent 70%);
+    pointer-events:none;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .reveal.show{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    #loader{transition:none;}
+  }
+
+  /* ==== audio galeri ==== */
+  .musik-galeri-bar{
+    display:flex; align-items:center; gap:.6rem;
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.55rem .85rem;
+    margin-bottom:1rem;
+    font-family:var(--font-mono); font-size:.78rem;
+    color:var(--muted);
+  }
+  .musik-galeri-bar .btn-musik{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--cyan);
+    width:34px; height:34px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .musik-galeri-bar .btn-musik:hover{border-color:var(--cyan); background:rgba(45,212,191,.08);}
+  .musik-galeri-bar .judul-lagu{color:var(--text); font-weight:600;}
+  .musik-galeri-bar .bars{
+    display:flex; align-items:flex-end; gap:2px; height:16px; margin-left:auto;
+  }
+  .musik-galeri-bar .bars span{
+    width:3px; background:var(--cyan); border-radius:2px;
+    animation:bar-bounce 1s ease-in-out infinite;
+    opacity:.35;
+  }
+  .musik-galeri-bar.playing .bars span{opacity:1;}
+  .musik-galeri-bar .bars span:nth-child(1){height:40%; animation-delay:0s;}
+  .musik-galeri-bar .bars span:nth-child(2){height:100%; animation-delay:.15s;}
+  .musik-galeri-bar .bars span:nth-child(3){height:65%; animation-delay:.3s;}
+  .musik-galeri-bar .bars span:nth-child(4){height:85%; animation-delay:.45s;}
+  @keyframes bar-bounce{
+    0%,100%{transform:scaleY(.4);}
+    50%{transform:scaleY(1);}
+  }
+
+  /* ==== admin: login & dashboard ==== */
+  .admin-form label{
+    font-family:var(--font-mono); font-size:.7rem; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:.2rem; margin-top:.4rem;
+  }
+  .admin-form .form-control, .admin-form textarea{
+    background:var(--panel-alt); color:var(--text); border:1px solid var(--line);
+  }
+  .admin-form .form-control:focus, .admin-form textarea:focus{
+    background:var(--panel-alt); color:var(--text);
+    border-color:var(--cyan); box-shadow:0 0 0 .2rem rgba(45,212,191,.15);
+  }
+  #modalLogin .form-control{
+    background:var(--panel-alt); color:var(--text); border:1px solid var(--line);
+  }
+  #modalLogin .form-control:focus{
+    border-color:var(--cyan); box-shadow:0 0 0 .2rem rgba(45,212,191,.15); background:var(--panel-alt); color:var(--text);
+  }
+  .anggota-row{display:flex; gap:.5rem; margin-bottom:.5rem; align-items:center;}
+  .anggota-thumb{width:36px; height:36px; border-radius:8px; object-fit:cover; border:1px solid var(--line); flex-shrink:0; background:var(--panel-alt);}
+  .foto-upload-label{font-size:.72rem; color:var(--cyan); font-family:var(--font-mono); white-space:nowrap; flex:2;}
+  .piket-hari-form{
+    border:1px solid var(--line); border-radius:10px; padding:1rem; margin-bottom:1rem; background:var(--panel-alt);
+  }
+  .dashboard-nav{display:flex; flex-wrap:wrap;}
+  .dashboard-nav .nav-link{
+    color:var(--text); font-family:var(--font-mono); font-size:.78rem;
+    border:1px solid var(--line); border-radius:8px; background:var(--panel);
+    margin-right:.35rem; margin-bottom:.5rem; padding:.4rem .7rem; cursor:pointer;
+  }
+  .dashboard-nav .nav-link.active{background:var(--cyan); color:#04211D; border-color:var(--cyan); font-weight:700;}
+  .modal-dashboard .modal-content, #modalLogin .modal-content{
+    background:var(--panel); border:1px solid var(--line); color:var(--text);
+  }
+  .modal-dashboard .modal-header, .modal-dashboard .modal-footer,
+  #modalLogin .modal-header, #modalLogin .modal-footer{border-color:var(--line);}
+  .btn-admin-primary{background:var(--cyan); color:#04211D!important; border:none; font-family:var(--font-mono); font-weight:700;}
+  .btn-admin-primary:hover{background:#25b8a5;}
+  .btn-admin-danger{background:transparent; border:1px solid #F87171; color:#F87171; font-family:var(--font-mono);}
+  .btn-admin-danger:hover{background:rgba(248,113,113,.1); color:#F87171;}
+  .btn-admin-outline{background:transparent; border:1px solid var(--line); color:var(--text)!important; font-family:var(--font-mono);}
+  .btn-admin-outline:hover{border-color:var(--cyan); color:var(--cyan)!important;}
+  .toast-admin{
+    position:fixed; bottom:20px; right:20px; z-index:4500;
+    background:var(--panel); border:1px solid var(--cyan); color:var(--text);
+    padding:.7rem 1.1rem; border-radius:8px; font-family:var(--font-mono); font-size:.8rem;
+    box-shadow:0 8px 26px rgba(0,0,0,.45);
+    opacity:0; transform:translateY(10px); transition:opacity .25s ease, transform .25s ease;
+    pointer-events:none; max-width:280px;
+  }
+  .toast-admin.show{opacity:1; transform:translateY(0);}
+  .dashboard-pane{max-height:60vh; overflow-y:auto; padding-right:.3rem;}
+
+  /* ==== status sinkronisasi Firebase ==== */
+  .sync-status{
+    position:fixed; bottom:16px; left:16px; z-index:4400;
+    display:flex; align-items:center; gap:.4rem;
+    background:var(--panel); border:1px solid var(--line);
+    padding:.35rem .7rem; border-radius:20px;
+    font-family:var(--font-mono); font-size:.68rem; color:var(--muted);
+    opacity:.85;
+  }
+  .sync-status .dot{width:7px; height:7px; border-radius:50%; background:var(--muted);}
+  .sync-status.ok .dot{background:#4ADE80; box-shadow:0 0 6px rgba(74,222,128,.7);}
+  .sync-status.error .dot{background:#F87171; box-shadow:0 0 6px rgba(248,113,113,.7);}
+  .sync-status.loading .dot{background:var(--amber); box-shadow:0 0 6px rgba(251,191,36,.7);}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-glow"></div>
+  <div class="loader-box text-center position-relative">
+    <div class="lbl">// Syntaxone</div>
+    <div class="nama-kelas" id="loaderNama"></div>
+    <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
+    <div class="loader-pct" id="loaderPct">0%</div>
+  </div>
+</div>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="sync-status loading" id="syncStatus"><span class="dot"></span><span id="syncStatusText">menyambungkan...</span></div>
+
+<nav class="navbar navbar-expand-lg sticky-top py-2">
+  <div class="container">
+    <a class="navbar-brand" href="#beranda"><span class="bracket">&lt;</span>XI-RPL-1<span class="bracket">/&gt;</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="border-color:var(--line)">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link file-tab" href="#pengurus">pengurus<span class="ext"></span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#anggota">anggota<span class="ext"></span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#piket">piket<span class="ext"></span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#jadwal">jadwal<span class="ext"></span></a></li>
+        <li class="nav-item"><a class="nav-link file-tab" href="#kenangan">galeri<span class="ext"></span></a></li>
+        <li class="nav-item"><button class="nav-link file-tab" id="navLogin" onclick="bukaLogin()"><i class="bi bi-box-arrow-in-right"></i> login<span class="ext"></span></button></li>
+        <li class="nav-item"><button class="nav-link file-tab" id="navDashboard" style="display:none" onclick="bukaDashboard()"><i class="bi bi-speedometer2"></i> dashboard<span class="ext"></span></button></li>
+        <li class="nav-item"><button class="nav-link file-tab" id="navLogout" style="display:none" onclick="logoutAdmin()"><i class="bi bi-box-arrow-right"></i> logout<span class="ext"></span></button></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header id="beranda" class="hero-wrap text-center">
+  <div class="container">
+    <div class="terminal mx-auto">
+      <div class="terminal-bar">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="terminal-title">ig: @syntaxone: ~/tahun-ajaran-2025</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="prompt">$</span> whoami</div>
+        <div class="out-str">Kelas XI Rekayasa Perangkat Lunak 1</div>
+        <div class="mt-2"><span class="prompt">$</span> cat motto.txt</div>
+        <div class="out-str" id="mottoDisplay">"Debug bareng, deploy bareng, lulus bareng."</div>
+        <div class="mt-2"><span class="prompt">$</span> npm run status<span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center g-3 mt-4">
+      <div class="col-6 col-md-4">
+        <div class="chip-stat p-3">
+          <div class="angka" id="statAnggota">31</div>
+          <div class="lbl">ANGGOTA</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="chip-stat p-3">
+          <div class="angka">5</div>
+          <div class="lbl">SQUAD PIKET</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="chip-stat p-3">
+          <div class="angka">10+</div>
+          <div class="lbl">MAPEL/MINGGU</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-8">
+        <div class="kartu piket-hari-ini p-3 p-md-4 text-start" id="piketHariIni">
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-8">
+        <div class="kartu countdown-card p-3 p-md-4">
+          <div class="comment mb-2" id="labelCountdownPiket">piket_berikutnya</div>
+          <div class="countdown-grid" id="countdownPiketBerikutnya">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="pengurus">
+  <div class="container">
+    <div class="comment">01_wali-kelas-dan-pengurus</div>
+    <h2 class="mb-1">Wali Kelas &amp; Pengurus Kelas</h2>
+    <p class="text-muted mb-4">Struktur Kelas XI RPL 1, tersusun berjenjang dari wali kelas hingga anggota-anggota.</p>
+
+    <div class="row justify-content-center mb-3" id="waliKelasWrap"></div>
+
+    <div class="text-center text-muted mb-3" style="font-family:var(--font-mono); font-size:.75rem;">
+      <i class="bi bi-arrow-down"></i>
+    </div>
+
+    <div class="row g-3" id="pengurusWrap"></div>
+  </div>
+</section>
+
+<section id="anggota" class="section-alt">
+  <div class="container">
+    <div class="comment">02_anggota-kelas</div>
+    <h2 class="mb-1">Anggota Kelas</h2>
+    <p class="text-muted mb-4">Daftar lengkap siswa Kelas XI RPL 1. Ketik nama pada kolom pencarian untuk query cepat.</p>
+
+    <div class="row mb-4">
+      <div class="col-md-5">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-terminal"></i></span>
+          <input type="text" id="cariAnggota" class="form-control" placeholder="grep nama_siswa...">
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3" id="daftarAnggota"></div>
+  </div>
+</section>
+
+<section id="piket">
+  <div class="container">
+    <div class="comment">03_piket-kebersihan</div>
+    <h2 class="mb-1">Jadwal Piket Kebersihan</h2>
+    <p class="text-muted mb-4">Pilih hari untuk menjalankan (run) jadwal squad piket yang bertugas.</p>
+
+    <ul class="nav nav-pills mb-3" id="tabPiket" role="tablist"></ul>
+    <div class="tab-content kartu p-3 p-md-4">
+      <table class="table table-piket table-borderless mb-0" id="tabelPiket">
+        <thead><tr><th>#</th><th>Nama Siswa</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="jadwal" class="section-alt">
+  <div class="container">
+    <div class="comment">04_jadwal-pelajaran</div>
+    <h2 class="mb-1">Jadwal Pelajaran</h2>
+    <p class="text-muted mb-4">Jadwal mata pelajaran IX RPL 1&ndash;Syntaxone.</p>
+
+    <ul class="nav nav-pills mb-3" id="tabJadwal" role="tablist"></ul>
+    <div class="table-responsive kartu p-3 p-md-4">
+      <table class="table table-jadwal align-middle mb-0" id="tabelJadwal">
+        <thead><tr><th style="width:140px;">Jam</th><th>Mata Pelajaran</th><th>Guru Pengampu</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="kenangan" class="section-alt">
+  <div class="container">
+    <div class="comment">05_kenangan-kelas</div>
+    <h2 class="mb-1">Kenangan Kelas</h2>
+    <p class="text-muted mb-4">Album digital berisi momen-momen terbaik Kelas XI RPL 1 sepanjang tahun ajaran &mdash; dipisah jadi foto cewek, foto cowok, dan foto bersama/dokumentasi.</p>
+
+    <div id="galeriCoverList" class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <div class="kartu galeri-cover-card" onclick="bukaGaleri('cewek')" role="button" tabindex="0">
+          <div class="galeri-cover-img-wrap">
+            <img src="assets/cewek1.png" class="galeri-cover-img" alt="Foto Cewek">
+            <span class="galeri-badge"><i class="bi bi-images"></i> <span id="countCover-cewek">3</span> foto</span>
+          </div>
+          <div class="p-3">
+            <div class="fw-semibold">Foto Cewek</div>
+            <div class="text-muted small">Momen kebersamaan siswi XI RPL 1</div>
+            <div class="galeri-stats" id="stats-cewek">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kartu galeri-cover-card" onclick="bukaGaleri('cowok')" role="button" tabindex="0">
+          <div class="galeri-cover-img-wrap">
+            <img src="assets/cowok1.png" class="galeri-cover-img" alt="Foto Cowok">
+            <span class="galeri-badge"><i class="bi bi-images"></i> <span id="countCover-cowok">3</span> foto</span>
+          </div>
+          <div class="p-3">
+            <div class="fw-semibold">Foto Cowok</div>
+            <div class="text-muted small">Momen kebersamaan siswa XI RPL 1</div>
+            <div class="galeri-stats" id="stats-cowok">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="kartu galeri-cover-card" onclick="bukaGaleri('bersama')" role="button" tabindex="0">
+          <div class="galeri-cover-img-wrap">
+            <img src="assets/cewek-cowok1.png" class="galeri-cover-img" alt="Foto Bersama / Dokumentasi">
+            <span class="galeri-badge"><i class="bi bi-images"></i> <span id="countCover-bersama">10</span> foto</span>
+          </div>
+          <div class="p-3">
+            <div class="fw-semibold">Foto Bersama &middot; Dokumentasi</div>
+            <div class="text-muted small">Momen kebersamaan XI RPL 1 &middot; Tahun Ajaran 2025/2027</div>
+            <div class="galeri-stats" id="stats-bersama">
+              <span><i class="bi bi-eye"></i> <span class="view-count">&hellip;</span></span>
+              <span><i class="bi bi-heart-fill"></i> <span class="like-count-total">&hellip;</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="galeriDetail" class="d-none">
+      <button type="button" class="btn-kembali mb-3" onclick="tutupGaleri()">
+        <i class="bi bi-arrow-left"></i> Kembali ke Galeri
+      </button>
+
+      <div class="musik-galeri-bar" id="musikGaleriBar">
+        <button type="button" class="btn-musik" id="btnMusikGaleri" onclick="toggleMusikGaleri()">
+          <i class="bi bi-play-fill" id="iconMusikGaleri"></i>
+        </button>
+        <div>
+          <div class="judul-lagu" id="judulLaguGaleri">&nbsp;</div>
+          <div style="font-size:.7rem;">musik latar album</div>
+        </div>
+        <div class="bars"><span></span><span></span><span></span><span></span></div>
+      </div>
+
+      <h3 class="mb-1" id="galeriDetailTitle">&nbsp;</h3>
+      <p class="text-muted mb-2" id="galeriDetailDesc">&nbsp;</p>
+      <div class="text-muted small mb-3 font-mono">
+        <i class="bi bi-images"></i> <span id="galeriDetailCount">0</span> foto &middot; klik untuk memperbesar
+      </div>
+      <div class="row g-3" id="galeriIsi"></div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="modalLightbox" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content lightbox-content border-0">
+      <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      <img id="lightboxImg" src="" class="w-100 rounded" alt="">
+      <div class="text-center text-muted small mt-2 mb-3 font-mono" id="lightboxCaption"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL LOGIN ADMIN ===== -->
+<div class="modal fade" id="modalLogin" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content lightbox-content border-0 p-2">
+      <div class="modal-header border-0">
+        <h5 class="modal-title font-mono"><i class="bi bi-terminal"></i> Login Admin</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form onsubmit="return prosesLogin(event)">
+        <div class="modal-body">
+          <label class="form-label font-mono small text-muted">Password Admin</label>
+          <input type="password" class="form-control" id="inputPasswordAdmin" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off" required>
+          <div class="text-danger small mt-2 d-none font-mono" id="loginError"><i class="bi bi-exclamation-triangle"></i> Password salah, coba lagi.</div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="submit" class="btn btn-admin-primary btn-sm px-3">Masuk</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL DASHBOARD ADMIN ===== -->
+<div class="modal fade" id="modalDashboard" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-dashboard">
+    <div class="modal-content border-0">
+      <div class="modal-header border-0">
+        <h5 class="modal-title font-mono"><i class="bi bi-speedometer2"></i> Dashboard Admin &middot; Edit Halaman</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav dashboard-nav mb-3" id="dashboardTabs">
+          <li class="nav-item"><button type="button" class="nav-link active" onclick="pindahTabDashboard('umum', this)">Umum &amp; Pengurus</button></li>
+          <li class="nav-item"><button type="button" class="nav-link" onclick="pindahTabDashboard('anggota', this)">Anggota</button></li>
+          <li class="nav-item"><button type="button" class="nav-link" onclick="pindahTabDashboard('piket', this)">Piket</button></li>
+          <li class="nav-item"><button type="button" class="nav-link" onclick="pindahTabDashboard('jadwal', this)">Jadwal</button></li>
+          <li class="nav-item"><button type="button" class="nav-link" onclick="pindahTabDashboard('data', this)">Data &amp; Backup</button></li>
+        </ul>
+
+        <div class="dashboard-pane admin-form" id="pane-umum">
+          <label>Motto Kelas</label>
+          <textarea class="form-control mb-2" id="dbMotto" rows="2"></textarea>
+
+          <div class="comment mt-3 mb-1">wali_kelas</div>
+          <div class="row g-2">
+            <div class="col-md-4"><label>Nama Wali Kelas</label><input class="form-control" id="dbWaliNama"></div>
+            <div class="col-md-4">
+              <label>Foto</label>
+              <div class="d-flex align-items-center gap-2">
+                <img id="dbWaliFotoPreview" src="" class="anggota-thumb" alt="">
+                <input class="form-control form-control-sm" id="dbWaliFoto" placeholder="path/URL atau upload" oninput="document.getElementById('dbWaliFotoPreview').src=this.value">
+                <button type="button" class="btn btn-admin-outline btn-sm" onclick="document.getElementById('fileWaliFoto').click()"><i class="bi bi-upload"></i></button>
+                <input type="file" accept="image/*" id="fileWaliFoto" class="d-none" onchange="uploadFotoField(this,'dbWaliFoto')">
+              </div>
+            </div>
+            <div class="col-md-4"><label>Deskripsi</label><input class="form-control" id="dbWaliDesc"></div>
+          </div>
+
+          <div class="comment mt-3 mb-1">pengurus_kelas</div>
+          <div id="dbPengurusWrap"></div>
+
+          <button type="button" class="btn btn-admin-primary btn-sm mt-2" onclick="simpanUmum()"><i class="bi bi-save"></i> Simpan Umum &amp; Pengurus</button>
+        </div>
+
+        <div class="dashboard-pane admin-form d-none" id="pane-anggota">
+          <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+            <div class="comment">total: <span id="dbAnggotaCount">0</span> anggota</div>
+            <button type="button" class="btn btn-admin-outline btn-sm" onclick="tambahAnggotaForm()"><i class="bi bi-plus-lg"></i> Tambah Anggota</button>
+          </div>
+          <div id="dbAnggotaWrap"></div>
+          <button type="button" class="btn btn-admin-primary btn-sm mt-3" onclick="simpanAnggota()"><i class="bi bi-save"></i> Simpan Anggota</button>
+        </div>
+
+        <div class="dashboard-pane admin-form d-none" id="pane-piket">
+          <p class="text-muted small">Anggota squad dipisahkan dengan tanda koma.</p>
+          <div id="dbPiketWrap"></div>
+          <button type="button" class="btn btn-admin-primary btn-sm" onclick="simpanPiket()"><i class="bi bi-save"></i> Simpan Piket</button>
+        </div>
+
+        <div class="dashboard-pane admin-form d-none" id="pane-jadwal">
+          <p class="text-muted small">Satu baris untuk satu jam pelajaran, format: <code>Jam | Mata Pelajaran | Guru</code></p>
+          <div id="dbJadwalWrap"></div>
+          <button type="button" class="btn btn-admin-primary btn-sm" onclick="simpanJadwal()"><i class="bi bi-save"></i> Simpan Jadwal</button>
+        </div>
+
+        <div class="dashboard-pane admin-form d-none" id="pane-data">
+          <p class="text-muted small">Website ini menyimpan data di <b>Firebase Realtime Database</b> &mdash; semua perubahan langsung tersinkron ke semua perangkat/pengunjung. Gunakan Export/Import untuk cadangan manual.</p>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="btn btn-admin-outline btn-sm" onclick="exportData()"><i class="bi bi-download"></i> Export JSON</button>
+            <label class="btn btn-admin-outline btn-sm mb-0">
+              <i class="bi bi-upload"></i> Import JSON
+              <input type="file" accept="application/json" class="d-none" onchange="importDataFile(event)">
+            </label>
+            <button type="button" class="btn btn-admin-danger btn-sm" onclick="resetDataDefault()"><i class="bi bi-arrow-counterclockwise"></i> Reset ke Default</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<audio id="audioGaleri" preload="none" loop></audio>
+
+<footer class="py-4 text-center">
+  <div class="container">
+    <div class="small font-mono">WEB KELAS RPL 1</div>
+    <div class="small mt-1">WEB KELAS RPL 1 &middot; XI RPL 1 &middot; Tahun Ajaran 2025/2027</div>
+    <div class="small font-mono" style="color:var(--muted);">syntaxone</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ===== FIREBASE (agar perubahan admin tersinkron di semua perangkat) ===== -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBzRDHhRrnPLfE2z11qhfh5aTYoETKrq8",
+    authDomain: "web-rpl1-1e465.firebaseapp.com",
+    databaseURL: "https://web-rpl1-1e465-default-rtdb.firebaseio.com",
+    projectId: "web-rpl1-1e465",
+    storageBucket: "web-rpl1-1e465.firebasestorage.app",
+    messagingSenderId: "164166266573",
+    appId: "1:164166266573:web:e8b6ba44d162e5bf88c384"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const dbRealtime = firebase.database();
+  const refSiteData = dbRealtime.ref("site-data");
+</script>
+
+<script>
+const anggotaKelasDefault = [
+  "ABD. RAUF",
+  "Aini Resky Ramadhan",
+  "AKRAM JASIR HAERI",
+  "AMELIA",
+  "Arif Purnama",
+  "ASYRAF ZHAHIR SYULFA",
+  "AYUNING SUARDI",
+  "FADEL MUHAMMAD",
+  "FAIQAH KALTSUM RUDI",
+  "HASBIA",
+  "IBRAHIM",
+  "JASINDA IRIANI SATTI",
+  "JUSRIADI",
+  "KHUSNUL KHATIMAH SN",
+  "MOHD IZMAN BIN YUDING",
+  "MUH. RIDWAN BIN ABDULLAH",
+  "MUH.SYAUQI ANDRI",
+  "Muhammad Arif Gifari",
+  "MUHAMMAD IHSAAN ABDILLAH. MK",
+  "MUHAMMAD LUTFI",
+  "NATASYA",
+  "Nur Hafizah",
+  "NUR SYAFIKHA",
+  "Nurul Halisa",
+  "Rahmawati",
+  "RESKY AHMAD YANI",
+  "RISKY SAPUTRA",
+  "SRI WAHIDAH",
+  "WIWI ANGRENI",
+  "YUSRAN SAPUTRA SALAM",
+  "ZAHRATUN NISA"
+];
+
+const fotoOverrideDefault = {
+  "ABD. RAUF": "",
+  "Aini Resky Ramadhan": "assets/aini.png",
+  "AKRAM JASIR HAERI": "assets/akram.jpeg",
+  "AMELIA": "assets/amel.png",
+  "Arif Purnama": "assets/arif.png",
+  "ASYRAF ZHAHIR SYULFA": "assets/azraf.png",
+  "AYUNING SUARDI": "assets/ayu.png",
+  "FADEL MUHAMMAD": "assets/padel.png",
+  "FAIQAH KALTSUM RUDI": "assets/faika.png",
+  "HASBIA": "assets/hasbia.png",
+  "IBRAHIM": "assets/ibrahim.png",
+  "JASINDA IRIANI SATTI": "assets/jasinda.png",
+  "JUSRIADI": "assets/jus.png",
+  "KHUSNUL KHATIMAH SN": "assets/usnul.png",
+  "MOHD IZMAN BIN YUDING": "assets/izman.png",
+  "MUH. RIDWAN BIN ABDULLAH": "",
+  "MUH.SYAUQI ANDRI": "assets/delon.png",
+  "Muhammad Arif Gifari": "assets/arif gifari.png",
+  "MUHAMMAD IHSAAN ABDILLAH. MK": "",
+  "MUHAMMAD LUTFI": "assets/luppi.png",
+  "NATASYA": "",
+  "Nur Hafizah": "assets/pisa.png",
+  "NUR SYAFIKHA": "assets/pika.png",
+  "Nurul Halisa": "assets/lisa.png",
+  "Rahmawati": "assets/amma.png",
+  "RESKY AHMAD YANI": "assets/ambon.png",
+  "RISKY SAPUTRA": "assets/risky.png",
+  "SRI WAHIDAH": "assets/sri.png",
+  "WIWI ANGRENI": "",
+  "YUSRAN SAPUTRA SALAM": "assets/yusran.png",
+  "ZAHRATUN NISA": "assets/zaratun.png"
+};
+
+const piketPerHariDefault = {
+  "Senin":   { kelompok:"Squad 1", tugas:"Menyapu lantai, membersihkan papan tulis, merapikan meja guru" },
+  "Selasa":  { kelompok:"Squad 2", tugas:"Membuang sampah, menyiram tanaman kelas, mengelap jendela" },
+  "Rabu":    { kelompok:"Squad 3", tugas:"Menyapu lantai, merapikan kabel & perangkat lab komputer" },
+  "Kamis":   { kelompok:"Squad 4", tugas:"Membersihkan papan tulis, merapikan kursi" },
+  "Jumat":   { kelompok:"Squad 5", tugas:"Menyapu lantai, membuang sampah, mengunci jendela" }
+};
+const anggotaPiketDefault = {
+  "Squad 1": ["Abd Rauf","Arif Purnama","Muhammad Arif Gifari","Muhammad Ihsan Abdillah","Hasbia","Nur Hafizah","Rahmawati"],
+  "Squad 2": ["Fadel Muhammad","Fadel Muhammad","Risky Saputra","Khusnul Khatimah","Sri Wahidah","Wiwi Angreni"],
+  "Squad 3": ["Akram Jasir Haeri","Jusriadi","Muhammad Lutfi","Faiqah Kaltsum","Natasya","Nur Syafikha"],
+  "Squad 4": ["Ibrahim","Resky Ahmad Yani","Yusran Saputra Salam","Amelia","Jasinda Iriani Satti","Nurul Halisa"],
+  "Squad 5": ["Asyraf Zhahir Syulfa","Muh. Syauqi Andri","Mohd Izman","Aini Resky Ramadhan","Ayuning Suardi","Zahratun Nisa"]
+};
+
+const jadwalPelajaranDefault = {
+ "Senin": [
+    ["07.30 - 08.10", "Upacara", ""],
+    ["08.50 - 10.40", "Kejuruan", "Asriyani, S.Kom., M.M."],
+    ["11.20 - 13.40", "PKK", "Suriani, S.Pd., M.M."],
+    ["14.20 - 15.40", "PJOK", "Andi Cella, S.Pd., M.Pd."]
+  ],
+  "Selasa": [
+    ["07.30 - 08.50", "Sejarah", "Dahlia Pago, S.Pd."],
+    ["08.50 - 12.00", "Kejuruan", "Arwinsyah, S.Kom."],
+    ["12.00 - 13.40", "Pendidikan Pancasila", "Ida Gusti Putu Ardja, S.Pd., M.M."],
+    ["14.20 - 15.40", "PKK", "Suriani, S.Pd., M.M."]
+  ],
+  "Rabu": [
+    ["07.30 - 08.50", "Bahasa Indonesia", "Ernawati, S.S."],
+    ["10.00 - 14.20", "Kejuruan", "Muh. Taufiq Rustan, S.Kom."],
+    ["14.20 - 15.40", "Bahasa Inggris", "Daruqti, S.Pd."]
+  ],
+   "Kamis": [
+    ["07.30 - 08.50", "Kimia", "Ekawati, S.Si., M.Pd."],
+    ["08.50 - 10.00", "Bahasa Inggris", "Daruqti, S.Pd."],
+    ["10.00 - 12.00", "Pendidikan Agama Islam", "Muh. Afdzal N., S.Ag., M.Pd."],
+    ["13.40 - 15.40", "Matematika", "Juliana Mashar, S.Pd."]
+  ],
+
+  "Jumat": [
+    ["07.30 - 08.10", "Yasinan", ""],
+    ["08.10 - 10.00", "Kimia", "Ekawati, S.Si., M.Pd."],
+    ["10.00 - 14.20", "Kejuruan", "Nur Fitriah Mukhlis, S.Pd."]
+  ]
+};
+
+const albumFoto = {
+  cewek: {
+    judul: "Foto Cewek",
+    deskripsi: "Momen kebersamaan siswi XI RPL 1",
+    foto: [
+    { file:"assets/cewek1.png", seed:"cewek1" },
+      { file:"assets/cewek2.png", seed:"cewek2" },
+      { file:"assets/cewek3.png", seed:"cewek3" }
+    ]
+  },
+  cowok: {
+    judul: "Foto Cowok",
+    deskripsi: "Momen kebersamaan siswa XI RPL 1",
+    foto: [
+      { file:"assets/cowok1.png", seed:"cowok1" },
+      { file:"assets/cowok2.png", seed:"cowok2" },
+      { file:"assets/cowok3.png", seed:"cowok3" }
+    ]
+  },
+  bersama: {
+    judul: "Foto Bersama \u00b7 Dokumentasi",
+    deskripsi: "Momen kebersamaan XI RPL 1 \u00b7 Tahun Ajaran 2025/2027",
+    foto: [
+      { file:"assets/cewek-cowok1.png", seed:"rpl1" },
+      { file:"assets/cewek-cowok2.png", seed:"rpl2" },
+      { file:"assets/cewek-cowok3.png", seed:"rpl3" },
+      { file:"assets/cewek-cowok4.png", seed:"rpl4" },
+      { file:"assets/cewek-cowok5.png", seed:"rpl5" },
+      { file:"assets/cewek-cowok6.png", seed:"rpl6" },
+      { file:"assets/cewek-cowok7.png", seed:"rpl7" },
+
+    ]
+  }
+};
+
+/* ==== musik per album galeri ====
+   Ganti "src" di bawah dengan file mp3 milikmu sendiri di folder assets/
+   (pastikan itu musik bebas royalti / memang milikmu, biar aman secara hak cipta) */
+const musikGaleri = {
+  cewek:   { src: "assets/musik-cewek.mp3",   judul: "Musik Album Cewek" },
+  cowok:   { src: "assets/musik-cowok.mp3",   judul: "Musik Album Cowok" },
+  bersama: { src: "assets/lagu-cewek-cowok.mp3", judul: "Musik Album Bersama" }
+};
+
+/* ==================================================================
+   ADMIN: LOGIN & DASHBOARD (data disimpan di Firebase Realtime Database
+   supaya semua perangkat/pengunjung melihat perubahan yang sama)
+   ================================================================== */
+// GANTI PASSWORD INI sebelum website dipublikasikan!
+const ADMIN_PASSWORD = "rpl1admin2026";
+const SESSION_KEY = "rpl1-admin-session";
+const LOCAL_CACHE_KEY = "rpl1-site-data-cache-v1"; // hanya sebagai cache offline, bukan sumber utama
+
+const DEFAULT_DATA = {
+  motto: "Debug bareng, deploy bareng, lulus bareng.",
+  waliKelas: { nama: "Daruqti, S.Pd.", foto: "assets/ibu.png", desc: "Wali kelas XI RPL 1" },
+  pengurus: [
+    { jabatan: "KETUA KELAS \u00b7 ADMIN", nama: "Mohd Izman", absen: "15", foto: "assets/izman.png" },
+    { jabatan: "WAKIL KETUA", nama: "Asyraf Zhahir Syulfa", absen: "06", foto: "assets/azraf.png" },
+    { jabatan: "SEKRETARIS I", nama: "KHUSNUL KHATIMAH SN", absen: "14", foto: "assets/usnul.png" },
+    { jabatan: "BENDAHARA I", nama: "NUR HAFIZAH", absen: "22", foto: "assets/pisa.png" }
+  ],
+  anggota: anggotaKelasDefault.map(nama => ({ nama, foto: fotoOverrideDefault[nama] || "" })),
+  piketPerHari: JSON.parse(JSON.stringify(piketPerHariDefault)),
+  anggotaPiket: JSON.parse(JSON.stringify(anggotaPiketDefault)),
+  jadwalPelajaran: JSON.parse(JSON.stringify(jadwalPelajaranDefault))
+};
+
+function lengkapiData(parsed){
+  if(!parsed) return JSON.parse(JSON.stringify(DEFAULT_DATA));
+  return {
+    motto: parsed.motto ?? DEFAULT_DATA.motto,
+    waliKelas: parsed.waliKelas ?? DEFAULT_DATA.waliKelas,
+    pengurus: parsed.pengurus ?? DEFAULT_DATA.pengurus,
+    anggota: parsed.anggota ?? DEFAULT_DATA.anggota,
+    piketPerHari: parsed.piketPerHari ?? DEFAULT_DATA.piketPerHari,
+    anggotaPiket: parsed.anggotaPiket ?? DEFAULT_DATA.anggotaPiket,
+    jadwalPelajaran: parsed.jadwalPelajaran ?? DEFAULT_DATA.jadwalPelajaran
+  };
+}
+
+function muatCacheLokal(){
+  try{
+    const raw = localStorage.getItem(LOCAL_CACHE_KEY);
+    if(raw) return lengkapiData(JSON.parse(raw));
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+function simpanCacheLokal(){
+  try{ localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(DATA)); }catch(e){}
+}
+
+// DATA dimulai dari cache lokal (biar langsung tampil), lalu ditimpa begitu Firebase merespons
+let DATA = muatCacheLokal();
+
+function setSyncStatus(mode, teks){
+  const el = document.getElementById("syncStatus");
+  const txt = document.getElementById("syncStatusText");
+  if(!el || !txt) return;
+  el.classList.remove("ok","error","loading");
+  el.classList.add(mode);
+  txt.textContent = teks;
+}
+
+// Simpan data terbaru ke Firebase (dipanggil oleh semua fungsi simpanXxx())
+function simpanData(){
+  simpanCacheLokal();
+  setSyncStatus("loading", "menyimpan...");
+  refSiteData.set(DATA)
+    .then(() => setSyncStatus("ok", "tersimpan \u00b7 tersinkron"))
+    .catch((err) => {
+      console.error("Gagal menyimpan ke Firebase:", err);
+      setSyncStatus("error", "gagal sinkron, cek koneksi");
+      tampilkanToast("Gagal menyimpan ke server, perubahan hanya tersimpan lokal");
+    });
+}
+
+// Dengarkan perubahan data secara real-time dari Firebase
+// (begitu admin menyimpan dari perangkat manapun, semua pengunjung lain ikut ter-update otomatis)
+refSiteData.on("value", (snapshot) => {
+  const val = snapshot.val();
+  if(val){
+    DATA = lengkapiData(val);
+    simpanCacheLokal();
+    setSyncStatus("ok", "tersinkron");
+  }else{
+    // Belum ada data di Firebase sama sekali -> isi dengan default
+    DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    refSiteData.set(DATA);
+    setSyncStatus("ok", "data awal dibuat");
+  }
+  renderSemua();
+  // kalau dashboard admin sedang terbuka, refresh juga form-nya
+  if(document.getElementById("modalDashboard").classList.contains("show")){
+    isiFormUmum(); isiFormAnggota(); isiFormPiket(); isiFormJadwal();
+  }
+}, (err) => {
+  console.error("Gagal membaca dari Firebase:", err);
+  setSyncStatus("error", "offline \u00b7 pakai data lokal");
+});
+
+function isAdmin(){ return sessionStorage.getItem(SESSION_KEY) === "1"; }
+
+function updateAdminUI(){
+  const login = isAdmin();
+  const btnLogin = document.getElementById("navLogin");
+  const btnDash = document.getElementById("navDashboard");
+  const btnLogout = document.getElementById("navLogout");
+  if(btnLogin) btnLogin.style.display = login ? "none" : "";
+  if(btnDash) btnDash.style.display = login ? "" : "none";
+  if(btnLogout) btnLogout.style.display = login ? "" : "none";
+}
+
+function bukaLogin(){
+  document.getElementById("loginError").classList.add("d-none");
+  document.getElementById("inputPasswordAdmin").value = "";
+  const modal = new bootstrap.Modal(document.getElementById("modalLogin"));
+  modal.show();
+}
+
+function prosesLogin(e){
+  if(e) e.preventDefault();
+  const pass = document.getElementById("inputPasswordAdmin").value;
+  if(pass === ADMIN_PASSWORD){
+    sessionStorage.setItem(SESSION_KEY, "1");
+    updateAdminUI();
+    const inst = bootstrap.Modal.getInstance(document.getElementById("modalLogin"));
+    if(inst) inst.hide();
+    tampilkanToast("Berhasil masuk sebagai admin");
+  }else{
+    document.getElementById("loginError").classList.remove("d-none");
+  }
+  return false;
+}
+
+function logoutAdmin(){
+  sessionStorage.removeItem(SESSION_KEY);
+  updateAdminUI();
+  tampilkanToast("Berhasil keluar dari mode admin");
+}
+
+function tampilkanToast(pesan){
+  let toast = document.getElementById("toastAdmin");
+  if(!toast){
+    toast = document.createElement("div");
+    toast.id = "toastAdmin";
+    toast.className = "toast-admin";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = pesan;
+  toast.classList.add("show");
+  clearTimeout(window._toastTimeout);
+  window._toastTimeout = setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+function bukaDashboard(){
+  if(!isAdmin()){ bukaLogin(); return; }
+  isiFormUmum();
+  isiFormAnggota();
+  isiFormPiket();
+  isiFormJadwal();
+  const modal = new bootstrap.Modal(document.getElementById("modalDashboard"));
+  modal.show();
+}
+
+function pindahTabDashboard(tab, btn){
+  document.querySelectorAll("#dashboardTabs .nav-link").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  document.querySelectorAll(".dashboard-pane").forEach(p => p.classList.add("d-none"));
+  document.getElementById("pane-"+tab).classList.remove("d-none");
+}
+
+/* ---- tab: Umum & Pengurus ---- */
+function isiFormUmum(){
+  document.getElementById("dbMotto").value = DATA.motto;
+  document.getElementById("dbWaliNama").value = DATA.waliKelas.nama;
+  document.getElementById("dbWaliFoto").value = DATA.waliKelas.foto;
+  document.getElementById("dbWaliFotoPreview").src = DATA.waliKelas.foto;
+  document.getElementById("dbWaliDesc").value = DATA.waliKelas.desc;
+  const wrap = document.getElementById("dbPengurusWrap");
+  wrap.innerHTML = DATA.pengurus.map((p,i) => `
+    <div class="piket-hari-form">
+      <div class="comment mb-2">pengurus_${i+1}</div>
+      <div class="row g-2">
+        <div class="col-md-3"><label>Jabatan</label><input class="form-control form-control-sm" id="dbPJabatan${i}" value="${p.jabatan}"></div>
+        <div class="col-md-3"><label>Nama</label><input class="form-control form-control-sm" id="dbPNama${i}" value="${p.nama}"></div>
+        <div class="col-md-2"><label>No. Absen</label><input class="form-control form-control-sm" id="dbPAbsen${i}" value="${p.absen}"></div>
+        <div class="col-md-4">
+          <label>Foto</label>
+          <div class="d-flex align-items-center gap-2">
+            <img id="dbPFoto${i}Preview" src="${p.foto}" class="anggota-thumb" alt="">
+            <input class="form-control form-control-sm" id="dbPFoto${i}" value="${p.foto}" placeholder="path/URL atau upload" oninput="document.getElementById('dbPFoto${i}Preview').src=this.value">
+            <button type="button" class="btn btn-admin-outline btn-sm" onclick="document.getElementById('filePFoto${i}').click()"><i class="bi bi-upload"></i></button>
+            <input type="file" accept="image/*" id="filePFoto${i}" class="d-none" onchange="uploadFotoField(this,'dbPFoto${i}')">
+          </div>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+/* ---- upload foto (kompres jadi kecil, disimpan sbg base64 di Firebase) ---- */
+function bacaFotoUpload(file, callback){
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = new Image();
+    img.onload = function(){
+      const maxW = 400;
+      let w = img.width, h = img.height;
+      if(w > maxW){ h = Math.round(h * (maxW / w)); w = maxW; }
+      const canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL("image/jpeg", 0.82));
+    };
+    img.onerror = function(){ tampilkanToast("Gagal membaca gambar"); };
+    img.src = e.target.result;
+  };
+  reader.onerror = function(){ tampilkanToast("Gagal membaca file"); };
+  reader.readAsDataURL(file);
+}
+function uploadFotoField(inputFile, targetId){
+  const file = inputFile.files[0];
+  if(!file) return;
+  bacaFotoUpload(file, (dataUrl) => {
+    const target = document.getElementById(targetId);
+    if(target) target.value = dataUrl;
+    const preview = document.getElementById(targetId + "Preview");
+    if(preview) preview.src = dataUrl;
+    tampilkanToast("Foto berhasil diupload");
+  });
+  inputFile.value = "";
+}
+function simpanUmum(){
+  DATA.motto = document.getElementById("dbMotto").value.trim();
+  DATA.waliKelas = {
+    nama: document.getElementById("dbWaliNama").value.trim(),
+    foto: document.getElementById("dbWaliFoto").value.trim(),
+    desc: document.getElementById("dbWaliDesc").value.trim()
+  };
+  DATA.pengurus = DATA.pengurus.map((p,i) => ({
+    jabatan: document.getElementById("dbPJabatan"+i).value.trim(),
+    nama: document.getElementById("dbPNama"+i).value.trim(),
+    absen: document.getElementById("dbPAbsen"+i).value.trim(),
+    foto: document.getElementById("dbPFoto"+i).value.trim()
+  }));
+  simpanData();
+  tampilkanMotto();
+  renderPengurus();
+  tampilkanToast("Data umum & pengurus tersimpan");
+}
+
+/* ---- tab: Anggota ---- */
+let tempAnggota = [];
+function isiFormAnggota(){
+  tempAnggota = JSON.parse(JSON.stringify(DATA.anggota));
+  gambarFormAnggota();
+}
+function gambarFormAnggota(){
+  const wrap = document.getElementById("dbAnggotaWrap");
+  wrap.innerHTML = tempAnggota.map((a,i) => {
+    const sudahUpload = a.foto && a.foto.startsWith("data:");
+    const thumb = (a.foto && a.foto.trim() !== "") ? a.foto : `https://i.pravatar.cc/60?u=${encodeURIComponent(a.nama)}`;
+    const tengah = sudahUpload
+      ? `<span class="foto-upload-label"><i class="bi bi-check-circle-fill"></i> Foto diupload dari perangkat</span>`
+      : `<input class="form-control form-control-sm" style="flex:2" placeholder="Path/URL foto (opsional)" value="${a.foto}" oninput="tempAnggota[${i}].foto=this.value; document.getElementById('thumb${i}').src=this.value || 'https://i.pravatar.cc/60?u='+encodeURIComponent(tempAnggota[${i}].nama)">`;
+    return `
+    <div class="anggota-row">
+      <img id="thumb${i}" src="${thumb}" class="anggota-thumb" alt="">
+      <input class="form-control form-control-sm" style="flex:1.4" placeholder="Nama" value="${a.nama}" oninput="tempAnggota[${i}].nama=this.value">
+      ${tengah}
+      <button type="button" class="btn btn-admin-outline btn-sm" title="Upload foto dari perangkat" onclick="document.getElementById('fileFoto${i}').click()"><i class="bi bi-upload"></i></button>
+      <input type="file" accept="image/*" id="fileFoto${i}" class="d-none" onchange="uploadFotoAnggota(${i}, this)">
+      ${sudahUpload ? `<button type="button" class="btn btn-admin-outline btn-sm" title="Hapus foto" onclick="hapusFotoAnggota(${i})"><i class="bi bi-x-lg"></i></button>` : ""}
+      <button type="button" class="btn btn-admin-danger btn-sm" title="Hapus anggota" onclick="hapusAnggotaForm(${i})"><i class="bi bi-trash"></i></button>
+    </div>`;
+  }).join("");
+  document.getElementById("dbAnggotaCount").textContent = tempAnggota.length;
+}
+function uploadFotoAnggota(i, inputFile){
+  const file = inputFile.files[0];
+  if(!file) return;
+  bacaFotoUpload(file, (dataUrl) => {
+    tempAnggota[i].foto = dataUrl;
+    gambarFormAnggota();
+    tampilkanToast("Foto berhasil diupload");
+  });
+  inputFile.value = "";
+}
+function hapusFotoAnggota(i){
+  tempAnggota[i].foto = "";
+  gambarFormAnggota();
+}
+function tambahAnggotaForm(){
+  tempAnggota.push({ nama: "Siswa Baru", foto: "" });
+  gambarFormAnggota();
+}
+function hapusAnggotaForm(i){
+  tempAnggota.splice(i,1);
+  gambarFormAnggota();
+}
+function simpanAnggota(){
+  DATA.anggota = tempAnggota.filter(a => a.nama.trim() !== "");
+  simpanData();
+  renderAnggota();
+  tampilkanToast("Daftar anggota tersimpan");
+}
+
+/* ---- tab: Piket ---- */
+function isiFormPiket(){
+  const wrap = document.getElementById("dbPiketWrap");
+  const hariList = Object.keys(DATA.piketPerHari);
+  wrap.innerHTML = hariList.map(hari => {
+    const d = DATA.piketPerHari[hari];
+    const anggota = (DATA.anggotaPiket[d.kelompok] || []).join(", ");
+    return `
+    <div class="piket-hari-form">
+      <div class="comment mb-2">${hari}</div>
+      <div class="row g-2">
+        <div class="col-md-4"><label>Nama Squad</label><input class="form-control form-control-sm" id="dbPiketSquad-${hari}" value="${d.kelompok}"></div>
+        <div class="col-md-8"><label>Tugas</label><input class="form-control form-control-sm" id="dbPiketTugas-${hari}" value="${d.tugas}"></div>
+        <div class="col-12"><label>Anggota (pisahkan dengan koma)</label><textarea class="form-control form-control-sm" rows="2" id="dbPiketAnggota-${hari}">${anggota}</textarea></div>
+      </div>
+    </div>`;
+  }).join("");
+}
+function simpanPiket(){
+  const hariList = Object.keys(DATA.piketPerHari);
+  const anggotaPiketBaru = {};
+  hariList.forEach(hari => {
+    const squad = document.getElementById(`dbPiketSquad-${hari}`).value.trim();
+    const tugas = document.getElementById(`dbPiketTugas-${hari}`).value.trim();
+    const anggotaStr = document.getElementById(`dbPiketAnggota-${hari}`).value.trim();
+    const anggotaArr = anggotaStr.split(",").map(s => s.trim()).filter(Boolean);
+    DATA.piketPerHari[hari] = { kelompok: squad, tugas: tugas };
+    anggotaPiketBaru[squad] = anggotaArr;
+  });
+  DATA.anggotaPiket = anggotaPiketBaru;
+  simpanData();
+  renderPiketTabs();
+  tampilkanPiketHariIni();
+  tampilkanCountdownPiket();
+  tampilkanToast("Jadwal piket tersimpan");
+}
+
+/* ---- tab: Jadwal ---- */
+function isiFormJadwal(){
+  const wrap = document.getElementById("dbJadwalWrap");
+  const hariList = Object.keys(DATA.jadwalPelajaran);
+  wrap.innerHTML = hariList.map(hari => {
+    const baris = DATA.jadwalPelajaran[hari].map(r => r.join(" | ")).join("\n");
+    return `
+    <div class="piket-hari-form">
+      <div class="comment mb-2">${hari}</div>
+      <textarea class="form-control form-control-sm font-mono" rows="5" id="dbJadwal-${hari}">${baris}</textarea>
+    </div>`;
+  }).join("");
+}
+function simpanJadwal(){
+  const hariList = Object.keys(DATA.jadwalPelajaran);
+  hariList.forEach(hari => {
+    const teks = document.getElementById(`dbJadwal-${hari}`).value.trim();
+    const baris = teks.split("\n").map(l => l.trim()).filter(Boolean);
+    DATA.jadwalPelajaran[hari] = baris.map(l => {
+      const bagian = l.split("|").map(s => s.trim());
+      return [bagian[0]||"", bagian[1]||"", bagian[2]||""];
+    });
+  });
+  simpanData();
+  renderJadwalTabs();
+  tampilkanToast("Jadwal pelajaran tersimpan");
+}
+
+/* ---- tab: Data & Backup ---- */
+function exportData(){
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "data-xirpl1-backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function importDataFile(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const parsed = JSON.parse(e.target.result);
+      DATA = lengkapiData(parsed);
+      simpanData();
+      renderSemua();
+      isiFormUmum(); isiFormAnggota(); isiFormPiket(); isiFormJadwal();
+      tampilkanToast("Data berhasil diimpor & disinkronkan");
+    }catch(err){
+      tampilkanToast("Gagal membaca file JSON");
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = "";
+}
+function resetDataDefault(){
+  if(!confirm("Kembalikan semua data ke pengaturan awal? Perubahan tersimpan di semua perangkat akan hilang.")) return;
+  DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  simpanData();
+  renderSemua();
+  isiFormUmum(); isiFormAnggota(); isiFormPiket(); isiFormJadwal();
+  tampilkanToast("Data dikembalikan ke pengaturan awal");
+}
+function renderSemua(){
+  tampilkanMotto();
+  renderPengurus();
+  renderAnggota();
+  renderPiketTabs();
+  renderJadwalTabs();
+  tampilkanPiketHariIni();
+  tampilkanCountdownPiket();
+}
+
+function tampilkanMotto(){
+  const el = document.getElementById("mottoDisplay");
+  if(el) el.textContent = `"${DATA.motto}"`;
+}
+
+function renderPengurus(){
+  const waliWrap = document.getElementById("waliKelasWrap");
+  if(waliWrap){
+    waliWrap.innerHTML = `
+      <div class="col-md-5">
+        <div class="kartu kartu-anggota p-4 text-center">
+          <img src="${DATA.waliKelas.foto}" class="foto-pengurus mb-3" alt="Wali Kelas">
+          <span class="badge badge-jabatan mb-2">WALI KELAS</span>
+          <h5 class="mb-0">${DATA.waliKelas.nama}</h5>
+          <div class="text-muted small">${DATA.waliKelas.desc}</div>
+        </div>
+      </div>`;
+  }
+  const pWrap = document.getElementById("pengurusWrap");
+  if(pWrap){
+    pWrap.innerHTML = DATA.pengurus.map(p => `
+      <div class="col-6 col-md-3">
+        <div class="kartu kartu-anggota p-4 text-center h-100">
+          <img src="${p.foto}" class="foto-pengurus mb-3" alt="${p.jabatan}">
+          <span class="badge badge-jabatan mb-2">${p.jabatan}</span>
+          <h5 class="mb-0">${p.nama}</h5>
+          <div class="text-muted small">No. Absen ${p.absen}</div>
+        </div>
+      </div>`).join("");
+  }
+}
+/* ================== akhir bagian admin ================== */
+
+function fotoSiswa(nama){
+  let hash = 0;
+  for(let i=0;i<nama.length;i++){
+    hash = nama.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const id = (Math.abs(hash) % 70) + 1;
+  return `https://i.pravatar.cc/300?img=${id}`;
+}
+
+function renderAnggota(filter=""){
+  const wrap = document.getElementById("daftarAnggota");
+  wrap.innerHTML = "";
+  const hasil = DATA.anggota.filter(a => a.nama.toLowerCase().includes(filter.toLowerCase()));
+  hasil.forEach(a => {
+    const nomor = DATA.anggota.indexOf(a) + 1;
+    const col = document.createElement("div");
+    col.className = "col-6 col-md-3 col-lg-2";
+    const fotoSrc = (a.foto && a.foto.trim() !== "") ? a.foto : fotoSiswa(a.nama);
+    col.innerHTML = `
+      <div class="kartu kartu-anggota p-3 text-center h-100">
+        <img src="${fotoSrc}" class="foto-bulat mb-2" alt="${a.nama}">
+        <div class="fw-semibold small">${a.nama}</div>
+        <div class="text-muted font-mono" style="font-size:.72rem;">#${String(nomor).padStart(2,"0")}</div>
+      </div>`;
+    wrap.appendChild(col);
+  });
+  if(hasil.length === 0){
+    wrap.innerHTML = `<div class="col-12 text-center text-muted py-4 font-mono"><i class="bi bi-terminal"></i> $ 0 results found</div>`;
+  }
+  document.getElementById("statAnggota").textContent = DATA.anggota.length;
+}
+document.getElementById("cariAnggota").addEventListener("input", e => renderAnggota(e.target.value));
+
+function renderPiketTabs(){
+  const tabWrap = document.getElementById("tabPiket");
+  const hariList = Object.keys(DATA.piketPerHari);
+  tabWrap.innerHTML = hariList.map((hari,i) =>
+    `<li class="nav-item"><button class="nav-link ${i===0?'active':''}" onclick="tampilkanPiket('${hari}', this)">${hari}</button></li>`
+  ).join("");
+  tampilkanPiket(hariList[0]);
+}
+function tampilkanPiket(hari, btn){
+  if(btn){
+    document.querySelectorAll("#tabPiket .nav-link").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+  const data = DATA.piketPerHari[hari];
+  const tbody = document.querySelector("#tabelPiket tbody");
+  const anggota = DATA.anggotaPiket[data.kelompok] || [];
+  tbody.innerHTML = `<tr><td colspan="3" class="fw-semibold font-mono" style="color:var(--cyan);">${data.kelompok} — ${hari} — ${data.tugas}</td></tr>` +
+    anggota.map((nama,i) => `<tr><td>${i+1}</td><td>${nama}</td><td><span class="badge" style="background:rgba(74,222,128,.15); color:#4ADE80; font-family:var(--font-mono); font-weight:600;">active</span></td></tr>`).join("");
+}
+
+function renderJadwalTabs(){
+  const tabWrap = document.getElementById("tabJadwal");
+  const hariList = Object.keys(DATA.jadwalPelajaran);
+  tabWrap.innerHTML = hariList.map((hari,i) =>
+    `<li class="nav-item"><button class="nav-link ${i===0?'active':''}" onclick="tampilkanJadwal('${hari}', this)">${hari}</button></li>`
+  ).join("");
+  tampilkanJadwal(hariList[0]);
+}
+function tampilkanJadwal(hari, btn){
+  if(btn){
+    document.querySelectorAll("#tabJadwal .nav-link").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+  const tbody = document.querySelector("#tabelJadwal tbody");
+  tbody.innerHTML = DATA.jadwalPelajaran[hari].map(([jam,mapel,guru]) => `
+    <tr>
+      <td class="font-mono small jam-cell">${jam}</td>
+      <td class="fw-semibold mapel-cell">${mapel}</td>
+      <td class="text-muted guru-cell">${guru || "-"}</td>
+    </tr>`).join("");
+}
+
+const LIKE_NAMESPACE = "xirpl1-smk-webkelas-2026-";
+const LIKE_API = "https://countapi.mileshilliard.com/api/v1";
+
+function likeKey(file){
+  return LIKE_NAMESPACE + file.replace(/[^a-zA-Z0-9]/g, "_");
+}
+function viewKey(album){
+  return LIKE_NAMESPACE + "views_" + album;
+}
+
+let likedPhotos = new Set();
+function loadLikedPhotos(){
+  try{
+    const raw = localStorage.getItem("rpl1-liked-photos");
+    likedPhotos = new Set(raw ? JSON.parse(raw) : []);
+  }catch(e){ likedPhotos = new Set(); }
+}
+function saveLikedPhotos(){
+  try{ localStorage.setItem("rpl1-liked-photos", JSON.stringify([...likedPhotos])); }catch(e){}
+}
+function idFoto(file){
+  return "like-" + file.replace(/[^a-zA-Z0-9]/g, "_");
+}
+
+let viewedAlbums = new Set();
+function loadViewedAlbums(){
+  try{
+    const raw = localStorage.getItem("rpl1-viewed-albums");
+    viewedAlbums = new Set(raw ? JSON.parse(raw) : []);
+  }catch(e){ viewedAlbums = new Set(); }
+}
+function saveViewedAlbums(){
+  try{ localStorage.setItem("rpl1-viewed-albums", JSON.stringify([...viewedAlbums])); }catch(e){}
+}
+
+async function ambilJumlahLike(file){
+  try{
+    const res = await fetch(`${LIKE_API}/get/${likeKey(file)}`);
+    if(res.status === 404) return 0;
+    const data = await res.json();
+    return parseInt(data.value, 10) || 0;
+  }catch(e){
+    return null;
+  }
+}
+
+async function tambahJumlahLike(file){
+  try{
+    const res = await fetch(`${LIKE_API}/hit/${likeKey(file)}`);
+    const data = await res.json();
+    return parseInt(data.value, 10) || null;
+  }catch(e){
+    return null;
+  }
+}
+
+async function ambilJumlahView(album){
+  try{
+    const res = await fetch(`${LIKE_API}/get/${viewKey(album)}`);
+    if(res.status === 404) return 0;
+    const data = await res.json();
+    return parseInt(data.value, 10) || 0;
+  }catch(e){
+    return null;
+  }
+}
+
+async function tambahJumlahView(album){
+  try{
+    const res = await fetch(`${LIKE_API}/hit/${viewKey(album)}`);
+    const data = await res.json();
+    return parseInt(data.value, 10) || null;
+  }catch(e){
+    return null;
+  }
+}
+
+async function totalLikeAlbum(album){
+  const data = albumFoto[album];
+  if(!data) return 0;
+  const hasil = await Promise.all(data.foto.map(item => ambilJumlahLike(item.file)));
+  return hasil.reduce((a,b) => a + (b || 0), 0);
+}
+
+async function updateStatCover(album){
+  const wrap = document.getElementById(`stats-${album}`);
+  if(!wrap) return;
+  const viewEl = wrap.querySelector(".view-count");
+  const likeEl = wrap.querySelector(".like-count-total");
+  const [views, likes] = await Promise.all([ambilJumlahView(album), totalLikeAlbum(album)]);
+  if(viewEl) viewEl.textContent = (views === null) ? "?" : views;
+  if(likeEl) likeEl.textContent = likes;
+}
+
+async function toggleLike(file){
+  if(likedPhotos.has(file)) return;
+
+  const btn = document.getElementById(idFoto(file));
+  if(!btn || btn.disabled) return;
+
+  btn.disabled = true;
+  btn.classList.add("liked");
+  btn.querySelector("i").className = "bi bi-heart-fill";
+
+  const hasilBaru = await tambahJumlahLike(file);
+
+  if(hasilBaru === null){
+    btn.disabled = false;
+    btn.classList.remove("liked");
+    btn.querySelector("i").className = "bi bi-heart";
+    return;
+  }
+
+  likedPhotos.add(file);
+  saveLikedPhotos();
+  btn.querySelector(".like-count").textContent = hasilBaru;
+}
+
+function renderAlbumCovers(){
+  Object.keys(albumFoto).forEach(key => {
+    const el = document.getElementById(`countCover-${key}`);
+    if(el) el.textContent = albumFoto[key].foto.length;
+    updateStatCover(key);
+  });
+}
+
+/* ==== kontrol audio galeri ==== */
+const audioGaleri = document.getElementById("audioGaleri");
+let kategoriAudioAktif = null;
+
+function putarMusikGaleri(kategori){
+  const info = musikGaleri[kategori];
+  const bar = document.getElementById("musikGaleriBar");
+  const judulEl = document.getElementById("judulLaguGaleri");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(!info){
+    if(bar) bar.style.display = "none";
+    return;
+  }
+  if(bar) bar.style.display = "flex";
+  if(judulEl) judulEl.textContent = info.judul;
+
+  kategoriAudioAktif = kategori;
+
+  if(!audioGaleri.src.endsWith(info.src)){
+    audioGaleri.src = info.src;
+  }
+  audioGaleri.currentTime = 0;
+
+  audioGaleri.play().then(() => {
+    if(bar) bar.classList.add("playing");
+    if(iconEl) iconEl.className = "bi bi-pause-fill";
+  }).catch(() => {
+    // autoplay diblokir browser, tunggu klik tombol play manual
+    if(bar) bar.classList.remove("playing");
+    if(iconEl) iconEl.className = "bi bi-play-fill";
+  });
+}
+
+function hentikanMusikGaleri(){
+  audioGaleri.pause();
+  audioGaleri.currentTime = 0;
+  kategoriAudioAktif = null;
+  const bar = document.getElementById("musikGaleriBar");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(bar) bar.classList.remove("playing");
+  if(iconEl) iconEl.className = "bi bi-play-fill";
+}
+
+function toggleMusikGaleri(){
+  const bar = document.getElementById("musikGaleriBar");
+  const iconEl = document.getElementById("iconMusikGaleri");
+  if(audioGaleri.paused){
+    audioGaleri.play().then(() => {
+      if(bar) bar.classList.add("playing");
+      if(iconEl) iconEl.className = "bi bi-pause-fill";
+    }).catch(()=>{});
+  }else{
+    audioGaleri.pause();
+    if(bar) bar.classList.remove("playing");
+    if(iconEl) iconEl.className = "bi bi-play-fill";
+  }
+}
+
+function bukaGaleri(kategori){
+  const data = albumFoto[kategori];
+  if(!data) return;
+  document.getElementById("galeriCoverList").classList.add("d-none");
+  document.getElementById("galeriDetail").classList.remove("d-none");
+  document.getElementById("galeriDetailTitle").textContent = data.judul;
+  document.getElementById("galeriDetailDesc").textContent = data.deskripsi;
+  document.getElementById("galeriDetailCount").textContent = data.foto.length;
+
+  // putar lagu sesuai album yang dibuka
+  putarMusikGaleri(kategori);
+
+  const wrap = document.getElementById("galeriIsi");
+  wrap.innerHTML = data.foto.map(item => `
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="foto-wrap">
+        <img src="${item.file}"
+             class="foto-kenangan galeri-thumb w-100"
+             alt="${item.file}"
+             onerror="this.onerror=null;this.src='https://picsum.photos/seed/${item.seed}/500/380';"
+             onclick="bukaLightbox('${item.file}','${item.file}')">
+        <button type="button" class="like-btn ${likedPhotos.has(item.file) ? 'liked' : ''}" id="${idFoto(item.file)}" ${likedPhotos.has(item.file) ? 'disabled' : ''} onclick="event.stopPropagation(); toggleLike('${item.file}')">
+          <i class="bi ${likedPhotos.has(item.file) ? 'bi-heart-fill' : 'bi-heart'}"></i>
+          <span class="like-count">&hellip;</span>
+        </button>
+      </div>
+      <div class="small text-muted mt-1 font-mono" style="font-size:.7rem;">${item.file}</div>
+    </div>`).join("");
+
+  data.foto.forEach(async item => {
+    const btn = document.getElementById(idFoto(item.file));
+    if(!btn) return;
+    const jumlah = await ambilJumlahLike(item.file);
+    const span = btn.querySelector(".like-count");
+    if(span) span.textContent = (jumlah === null) ? "?" : jumlah;
+  });
+
+  const wrapStat = document.getElementById(`stats-${kategori}`);
+  if(viewedAlbums.has(kategori)){
+    ambilJumlahView(kategori).then(jumlah => {
+      if(wrapStat && jumlah !== null){
+        const viewEl = wrapStat.querySelector(".view-count");
+        if(viewEl) viewEl.textContent = jumlah;
+      }
+    });
+  }else{
+    tambahJumlahView(kategori).then(hasilBaru => {
+      if(hasilBaru !== null){
+        viewedAlbums.add(kategori);
+        saveViewedAlbums();
+        if(wrapStat){
+          const viewEl = wrapStat.querySelector(".view-count");
+          if(viewEl) viewEl.textContent = hasilBaru;
+        }
+      }
+    });
+  }
+}
+function tutupGaleri(){
+  document.getElementById("galeriDetail").classList.add("d-none");
+  document.getElementById("galeriCoverList").classList.remove("d-none");
+
+  // hentikan musik saat kembali ke daftar galeri
+  hentikanMusikGaleri();
+}
+
+function bukaLightbox(src, caption){
+  document.getElementById("lightboxImg").src = src;
+  document.getElementById("lightboxImg").alt = caption;
+  document.getElementById("lightboxCaption").textContent = caption;
+  const modal = new bootstrap.Modal(document.getElementById("modalLightbox"));
+  modal.show();
+}
+
+const HARI_OVERRIDE = null;
+
+function tampilkanPiketHariIni(){
+  const wrap = document.getElementById("piketHariIni");
+  if(!wrap) return;
+
+  const namaHariJS = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const hariIni = HARI_OVERRIDE || namaHariJS[new Date().getDay()];
+  const data = DATA.piketPerHari[hariIni];
+
+  if(!data){
+    wrap.innerHTML = `
+      <span class="status-dot" style="background:var(--muted); box-shadow:none;"></span>
+      <div>
+        <div class="lbl-hari">Hari ini &middot; ${hariIni}</div>
+        <div class="nama-squad">Libur, tidak ada piket</div>
+      </div>`;
+    return;
+  }
+
+  const anggota = DATA.anggotaPiket[data.kelompok] || [];
+  wrap.innerHTML = `
+    <span class="status-dot"></span>
+    <div>
+      <div class="lbl-hari">Piket hari ini &middot; ${hariIni}</div>
+      <div class="nama-squad">${data.kelompok} &mdash; ${anggota.join(", ")}</div>
+      <div class="tugas-txt">${data.tugas}</div>
+    </div>`;
+}
+
+const JAM_MULAI_PIKET = { jam: 7, menit: 30 };
+
+function cariPiketBerikutnya(){
+  const namaHariJS = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const now = new Date();
+
+  const hariIniNama = HARI_OVERRIDE || namaHariJS[now.getDay()];
+  const dataHariIni = DATA.piketPerHari[hariIniNama];
+  if(dataHariIni){
+    const mulaiHariIni = new Date(now);
+    mulaiHariIni.setHours(JAM_MULAI_PIKET.jam, JAM_MULAI_PIKET.menit, 0, 0);
+    if(mulaiHariIni.getTime() > now.getTime()){
+      return { tanggal: mulaiHariIni, hari: hariIniNama, data: dataHariIni };
+    }
+  }
+
+  for(let tambah = 1; tambah <= 14; tambah++){
+    const d = new Date(now);
+    d.setDate(d.getDate() + tambah);
+    const namaHari = namaHariJS[d.getDay()];
+    const data = DATA.piketPerHari[namaHari];
+    if(data){
+      d.setHours(JAM_MULAI_PIKET.jam, JAM_MULAI_PIKET.menit, 0, 0);
+      return { tanggal: d, hari: namaHari, data: data };
+    }
+  }
+  return null;
+}
+
+function tampilkanCountdownPiket(){
+  const wrap = document.getElementById("countdownPiketBerikutnya");
+  const label = document.getElementById("labelCountdownPiket");
+  if(!wrap) return;
+
+  const target = cariPiketBerikutnya();
+  if(!target){
+    wrap.innerHTML = `<div class="text-muted font-mono small">Tidak ada jadwal piket ditemukan</div>`;
+    return;
+  }
+
+  if(label){
+    label.textContent = `piket_berikutnya · ${target.hari} · ${target.data.kelompok}`;
+  }
+
+  const waktuTarget = target.tanggal.getTime();
+
+  function update(){
+    const now = Date.now();
+    const sisa = waktuTarget - now;
+
+    if(sisa <= 0){
+      tampilkanCountdownPiket();
+      return;
+    }
+
+    const hari = Math.floor(sisa / (1000*60*60*24));
+    const jam = Math.floor((sisa / (1000*60*60)) % 24);
+    const menit = Math.floor((sisa / (1000*60)) % 60);
+    const detik = Math.floor((sisa / 1000) % 60);
+
+    wrap.innerHTML = `
+      <div class="kotak"><div class="num">${hari}</div><div class="unit">Hari</div></div>
+      <div class="kotak"><div class="num">${String(jam).padStart(2,"0")}</div><div class="unit">Jam</div></div>
+      <div class="kotak"><div class="num">${String(menit).padStart(2,"0")}</div><div class="unit">Menit</div></div>
+      <div class="kotak"><div class="num">${String(detik).padStart(2,"0")}</div><div class="unit">Detik</div></div>
+    `;
+  }
+  update();
+  if(window._piketCountdownInterval) clearInterval(window._piketCountdownInterval);
+  window._piketCountdownInterval = setInterval(update, 1000);
+}
+
+loadLikedPhotos();
+loadViewedAlbums();
+// Render awal pakai cache lokal (biar langsung ada tampilan),
+// lalu refSiteData.on("value", ...) di atas akan menimpanya begitu Firebase merespons.
+tampilkanMotto();
+renderPengurus();
+renderAnggota();
+renderPiketTabs();
+renderJadwalTabs();
+renderAlbumCovers();
+tampilkanPiketHariIni();
+tampilkanCountdownPiket();
+updateAdminUI();
+
+(function(){
+  const namaKelas = "XI RPL 1";
+  const target = document.getElementById("loaderNama");
+  const fill = document.getElementById("loaderFill");
+  const pct = document.getElementById("loaderPct");
+  const loader = document.getElementById("loader");
+  let i = 0;
+
+  function ketikNama(){
+    if(i <= namaKelas.length){
+      target.textContent = namaKelas.slice(0, i);
+      i++;
+      setTimeout(ketikNama, 70);
+    }
+  }
+  ketikNama();
+
+  let progress = 0;
+  const naikProgress = setInterval(() => {
+    progress += Math.random() * 18 + 6;
+    if(progress >= 100){
+      progress = 100;
+      clearInterval(naikProgress);
+      setTimeout(() => {
+        loader.classList.add("hide");
+        document.body.style.overflow = "";
+      }, 350);
+    }
+    fill.style.width = progress + "%";
+    pct.textContent = Math.floor(progress) + "%";
+  }, 220);
+
+  document.body.style.overflow = "hidden";
+  setTimeout(() => { document.body.style.overflow = ""; }, 3000);
+})();
+
+window.addEventListener("scroll", () => {
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById("scrollProgress").style.width = scrolled + "%";
+});
+
+document.querySelectorAll("section .comment, section h2, section p.text-muted, .kartu, .terminal, .chip-stat")
+  .forEach(el => el.classList.add("reveal"));
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+</script>
+</body>
+</html>
