@@ -794,17 +794,30 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
   const firebaseConfig = {
-    apiKey: "AIzaSyBBzRDHhRrnPLfE2z11qhfh5aTYoETKrq8",
-    authDomain: "web-rpl1-1e465.firebaseapp.com",
-    databaseURL: "https://web-rpl1-1e465-default-rtdb.firebaseio.com",
-    projectId: "web-rpl1-1e465",
-    storageBucket: "web-rpl1-1e465.firebasestorage.app",
-    messagingSenderId: "164166266573",
-    appId: "1:164166266573:web:e8b6ba44d162e5bf88c384"
+    apiKey: "AIzaSyAYicRysedZer8OqkAm1aTVuv9CRii0GxI",
+    authDomain: "kelas-xi-rpl-1.firebaseapp.com",
+    databaseURL: "https://kelas-xi-rpl-1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "kelas-xi-rpl-1",
+    storageBucket: "kelas-xi-rpl-1.firebasestorage.app",
+    messagingSenderId: "142611593496",
+    appId: "1:142611593496:web:4d2e2a12a4652656f8066d",
+    measurementId: "G-0628DQHFES"
   };
   firebase.initializeApp(firebaseConfig);
   const dbRealtime = firebase.database();
   const refSiteData = dbRealtime.ref("site-data");
+
+  // Cek koneksi Firebase secara langsung.
+  // Ini membantu membedakan "belum tersambung" dari data lokal.
+  const refKoneksiFirebase = dbRealtime.ref(".info/connected");
+  refKoneksiFirebase.on("value", (snap) => {
+    if (snap.val() === true) {
+      setTimeout(() => setSyncStatus("ok", "tersambung ke Firebase"), 0);
+    } else {
+      setTimeout(() => setSyncStatus("loading", "menghubungkan ke Firebase..."), 0);
+    }
+  });
+
   // Komentar galeri sengaja ditaruh SEBAGAI ANAK dari "site-data"
   // (bukan path terpisah) supaya otomatis ikut aturan baca/tulis
   // yang sudah ada untuk site-data, tanpa perlu ubah Firebase Rules lagi.
@@ -1044,7 +1057,8 @@ refSiteData.on("value", (snapshot) => {
   renderSemua();
 }, (err) => {
   console.error("Gagal membaca dari Firebase:", err);
-  setSyncStatus("error", "offline \u00b7 pakai data lokal");
+  const kode = err && err.code ? err.code : "unknown";
+  setSyncStatus("error", "Firebase gagal: " + kode);
 });
 
 function renderSemua(){
