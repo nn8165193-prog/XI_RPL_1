@@ -451,6 +451,57 @@
   .sync-status.ok .dot{background:#4ADE80; box-shadow:0 0 6px rgba(74,222,128,.7);}
   .sync-status.error .dot{background:#F87171; box-shadow:0 0 6px rgba(248,113,113,.7);}
   .sync-status.loading .dot{background:var(--amber); box-shadow:0 0 6px rgba(251,191,36,.7);}
+
+  /* ==== komentar galeri ==== */
+  .komentar-wrap{
+    margin-top:2rem;
+    border-top:1px solid var(--line);
+    padding-top:1.5rem;
+  }
+  .komentar-judul{
+    font-family:var(--font-mono);
+    font-size:1rem;
+    color:var(--text);
+    display:flex; align-items:center; gap:.5rem;
+  }
+  .komentar-judul .bi{color:var(--cyan);}
+  .komentar-form{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:1rem;
+    margin:1rem 0 1.5rem;
+  }
+  .komentar-form input, .komentar-form textarea{
+    background:var(--panel-alt); color:var(--text); border:1px solid var(--line);
+  }
+  .komentar-form input::placeholder, .komentar-form textarea::placeholder{color:var(--muted);}
+  .komentar-form input:focus, .komentar-form textarea:focus{
+    background:var(--panel-alt); color:var(--text);
+    border-color:var(--cyan); box-shadow:0 0 0 .2rem rgba(45,212,191,.15);
+  }
+  .komentar-list{display:flex; flex-direction:column; gap:.75rem;}
+  .komentar-item{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:.8rem 1rem;
+  }
+  .komentar-item .nama{
+    font-family:var(--font-mono); font-weight:700; color:var(--cyan); font-size:.85rem;
+  }
+  .komentar-item .waktu{
+    font-family:var(--font-mono); font-size:.68rem; color:var(--muted); margin-left:.5rem;
+  }
+  .komentar-item .isi{color:var(--text); font-size:.9rem; margin-top:.25rem; white-space:pre-wrap; word-break:break-word;}
+  .komentar-kosong{color:var(--muted); font-size:.85rem; font-family:var(--font-mono);}
+  .btn-kirim-komentar{
+    background:var(--cyan); border:none; color:#04211D; font-weight:700;
+    font-family:var(--font-mono); font-size:.82rem;
+    border-radius:8px; padding:.5rem 1.1rem;
+  }
+  .btn-kirim-komentar:hover{filter:brightness(1.08); color:#04211D;}
+  .btn-kirim-komentar:disabled{opacity:.6;}
 </style>
 </head>
 <body>
@@ -688,6 +739,30 @@
         <i class="bi bi-images"></i> <span id="galeriDetailCount">0</span> foto &middot; klik untuk memperbesar
       </div>
       <div class="row g-3" id="galeriIsi"></div>
+
+      <div class="komentar-wrap">
+        <div class="komentar-judul"><i class="bi bi-chat-left-text"></i> Komentar <span class="text-muted" id="komentarJumlah" style="font-size:.75rem; font-weight:400;"></span></div>
+
+        <form class="komentar-form" id="formKomentar" onsubmit="return kirimKomentar(event)">
+          <div class="row g-2">
+            <div class="col-md-4">
+              <input type="text" class="form-control" id="komentarNama" placeholder="Nama kamu" maxlength="40" required>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control" id="komentarPesan" placeholder="Tulis komentar tentang album ini..." maxlength="300" required>
+            </div>
+          </div>
+          <div class="text-end mt-2">
+            <button type="submit" class="btn btn-kirim-komentar" id="btnKirimKomentar">
+              <i class="bi bi-send"></i> Kirim
+            </button>
+          </div>
+        </form>
+
+        <div class="komentar-list" id="komentarList">
+          <div class="komentar-kosong">Memuat komentar...</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -730,6 +805,10 @@
   firebase.initializeApp(firebaseConfig);
   const dbRealtime = firebase.database();
   const refSiteData = dbRealtime.ref("site-data");
+  // Komentar galeri sengaja ditaruh SEBAGAI ANAK dari "site-data"
+  // (bukan path terpisah) supaya otomatis ikut aturan baca/tulis
+  // yang sudah ada untuk site-data, tanpa perlu ubah Firebase Rules lagi.
+  const refKomentarGaleri = refSiteData.child("komentar-galeri");
 </script>
 
 <script>
@@ -782,8 +861,8 @@ const fotoOverrideDefault = {
   "JASINDA IRIANI SATTI": "assets/jasinda.png",
   "JUSRIADI": "assets/jus.png",
   "KHUSNUL KHATIMAH SN": "assets/usnul.png",
-  "MOHD IZMAN BIN YUDING": "assets/izman.png",
-  "MUH. RIDWAN BIN ABDULLAH": "",
+  "MOHD IZMAN BIN YUDING": "assets/izman2.jpeg",
+  "MUH. RIDWAN BIN ABDULLAH": "assets/download.jpg",
   "MUH.SYAUQI ANDRI": "assets/delon.png",
   "Muhammad Arif Gifari": "assets/arif gifari.png",
   "MUHAMMAD IHSAAN ABDILLAH. MK": "",
@@ -902,7 +981,7 @@ const DEFAULT_DATA = {
   motto: "Debug bareng, deploy bareng, lulus bareng.",
   waliKelas: { nama: "Daruqti, S.Pd.", foto: "assets/ibu.png", desc: "Wali kelas XI RPL 1" },
   pengurus: [
-    { jabatan: "KETUA KELAS \u00b7 ADMIN", nama: "Mohd Izman", absen: "15", foto: "assets/izman.png" },
+    { jabatan: "KETUA KELAS \u00b7 ADMIN", nama: "Mohd Izman", absen: "15", foto: "assets/izman2.jpeg" },
     { jabatan: "WAKIL KETUA", nama: "Asyraf Zhahir Syulfa", absen: "06", foto: "assets/azraf.png" },
     { jabatan: "SEKRETARIS I", nama: "KHUSNUL KHATIMAH SN", absen: "14", foto: "assets/usnul.png" },
     { jabatan: "BENDAHARA I", nama: "NUR HAFIZAH", absen: "22", foto: "assets/pisa.png" }
@@ -1269,6 +1348,126 @@ function toggleMusikGaleri(){
   }
 }
 
+/* ==== komentar per album galeri (Firebase Realtime Database) ==== */
+let albumAktifKomentar = null;
+let refKomentarAktif = null;
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+
+/* ==== filter kata kasar sederhana untuk komentar galeri ====
+   Daftar ini tidak lengkap / tidak sempurna, cuma menyaring kata-kata
+   kasar umum bahasa Indonesia & Inggris. Kata yang cocok akan diganti
+   jadi tanda bintang (mis. "anjing" -> "a*****g") sebelum komentar
+   disimpan, bukan memblokir pengiriman. */
+const DAFTAR_KATA_KASAR = [
+  "anjing","anjir","anjrit","asu","bangsat","bajingan","brengsek",
+  "bego","goblok","tolol","idiot","kontol","memek","ngentot","jancok",
+  "jancuk","kampret","keparat","sialan","setan","tai","taik","babi",
+  "pantek","pukimak","lonte","pelacur","perek","cok",
+  "fuck","fucking","shit","bitch","asshole","bastard","dick","pussy",
+  "cunt","nigger","nigga","whore","slut"
+];
+
+function saringKataKasar(teks){
+  let hasil = String(teks);
+  DAFTAR_KATA_KASAR.forEach(kata => {
+    const re = new RegExp(`\\b(${kata})\\b`, "gi");
+    hasil = hasil.replace(re, (match) => {
+      if(match.length <= 2) return "*".repeat(match.length);
+      return match[0] + "*".repeat(match.length - 2) + match[match.length - 1];
+    });
+  });
+  return hasil;
+}
+
+function formatWaktuKomentar(ts){
+  if(!ts) return "";
+  const d = new Date(ts);
+  return d.toLocaleString("id-ID", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
+}
+
+function renderKomentarList(dataObj){
+  const wrap = document.getElementById("komentarList");
+  const jumlahEl = document.getElementById("komentarJumlah");
+  if(!wrap) return;
+
+  const daftar = dataObj ? Object.values(dataObj).sort((a,b) => (b.waktu||0) - (a.waktu||0)) : [];
+
+  if(jumlahEl) jumlahEl.textContent = daftar.length ? `(${daftar.length})` : "";
+
+  if(daftar.length === 0){
+    wrap.innerHTML = `<div class="komentar-kosong"><i class="bi bi-chat-square"></i> Belum ada komentar. Jadi yang pertama komentar di album ini!</div>`;
+    return;
+  }
+
+  wrap.innerHTML = daftar.map(k => `
+    <div class="komentar-item">
+      <span class="nama">${escapeHtml(k.nama || "Anonim")}</span><span class="waktu">${formatWaktuKomentar(k.waktu)}</span>
+      <div class="isi">${escapeHtml(k.pesan || "")}</div>
+    </div>`).join("");
+}
+
+function pasangListenerKomentar(album){
+  if(refKomentarAktif) refKomentarAktif.off();
+  albumAktifKomentar = album;
+  refKomentarAktif = refKomentarGaleri.child(album);
+
+  document.getElementById("komentarList").innerHTML = `<div class="komentar-kosong">Memuat komentar...</div>`;
+
+  refKomentarAktif.on("value", (snap) => {
+    renderKomentarList(snap.val());
+  }, (err) => {
+    console.error("Gagal memuat komentar:", err);
+    document.getElementById("komentarList").innerHTML = `<div class="komentar-kosong">Gagal memuat komentar, coba muat ulang halaman.</div>`;
+  });
+}
+
+function lepasListenerKomentar(){
+  if(refKomentarAktif) refKomentarAktif.off();
+  refKomentarAktif = null;
+  albumAktifKomentar = null;
+}
+
+function kirimKomentar(ev){
+  ev.preventDefault();
+  if(!albumAktifKomentar) return false;
+
+  const namaEl = document.getElementById("komentarNama");
+  const pesanEl = document.getElementById("komentarPesan");
+  const btn = document.getElementById("btnKirimKomentar");
+
+  const nama = saringKataKasar(namaEl.value.trim());
+  const pesan = saringKataKasar(pesanEl.value.trim());
+  if(!nama || !pesan) return false;
+
+  btn.disabled = true;
+  refKomentarGaleri.child(albumAktifKomentar).push({
+    nama: nama.slice(0,40),
+    pesan: pesan.slice(0,300),
+    waktu: Date.now()
+  }).then(() => {
+    try{ localStorage.setItem("rpl1-nama-komentator", nama); }catch(e){}
+    pesanEl.value = "";
+  }).catch((e) => {
+    console.error("Gagal kirim komentar:", e);
+    alert("Gagal mengirim komentar. Periksa koneksi internet kamu lalu coba lagi.");
+  }).finally(() => {
+    btn.disabled = false;
+  });
+
+  return false;
+}
+
+// isi otomatis nama komentator dari komentar sebelumnya
+try{
+  const namaTersimpan = localStorage.getItem("rpl1-nama-komentator");
+  if(namaTersimpan) document.getElementById("komentarNama").value = namaTersimpan;
+}catch(e){}
+
 function bukaGaleri(kategori){
   const data = albumFoto[kategori];
   if(!data) return;
@@ -1280,6 +1479,9 @@ function bukaGaleri(kategori){
 
   // putar lagu sesuai album yang dibuka
   putarMusikGaleri(kategori);
+
+  // pasang listener komentar untuk album ini
+  pasangListenerKomentar(kategori);
 
   const wrap = document.getElementById("galeriIsi");
   wrap.innerHTML = data.foto.map(item => `
@@ -1333,6 +1535,9 @@ function tutupGaleri(){
 
   // hentikan musik saat kembali ke daftar galeri
   hentikanMusikGaleri();
+
+  // lepas listener komentar biar tidak boros koneksi
+  lepasListenerKomentar();
 }
 
 function bukaLightbox(src, caption){
